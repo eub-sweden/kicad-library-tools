@@ -614,7 +614,7 @@ def makeDSubEdge(
     y1 = 0
 
     pad_type = Pad.TYPE_SMT
-    pad_shape1 = Pad.SHAPE_RECT
+    pad_shape = Pad.SHAPE_RECT
     pad_layers_top = Pad.LAYERS_SMT
     pad_layers_bot = ["B.Cu", "B.Paste", "B.Mask"]
     slk_layers_top = "F.SilkS"
@@ -633,7 +633,7 @@ def makeDSubEdge(
             Pad(
                 number=p,
                 type=pad_type,
-                shape=pad_shape1,
+                shape=pad_shape,
                 at=[x1, y1],
                 size=pad,
                 drill=0,
@@ -671,7 +671,7 @@ def makeDSubEdge(
             Pad(
                 number=p,
                 type=pad_type,
-                shape=pad_shape1,
+                shape=pad_shape,
                 at=[x1, y1],
                 size=pad,
                 drill=0,
