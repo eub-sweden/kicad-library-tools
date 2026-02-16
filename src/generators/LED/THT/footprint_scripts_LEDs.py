@@ -14,10 +14,12 @@
 import math
 
 from KicadModTree import *  # NOQA
+from KicadModTree.nodes import Point
 from generators.tools.footprint.drawing_tools import *
 from generators.tools.footprint.footprint_global_properties import *
 from kilibs.config import global_config as GC
 from generators.tools.footprint.save_footprint import write_footprint
+
 
 global_config = GC.GLOBAL_CONFIG
 
@@ -543,6 +545,14 @@ def makeLEDRadial(
                 layers=Pad.LAYERS_THT,
             )
         )
+    # Add a snap-point, it should be in the center between the pads
+    kicad_mod.append(
+        Point(
+            at=offset,
+            size=2,
+            layer=global_config.get_layer_for_function("centroid"),
+        )
+    )
 
     # add model
     if has3d != 0:
@@ -740,7 +750,6 @@ def makeLEDHorizontal(
 
     # create FAB-layer
     if led_type == "round":
-
         kicad_modg.append(
             Arc(
                 center=[0, offsetled + wled - dled / 2],
@@ -782,7 +791,12 @@ def makeLEDHorizontal(
                 width=lw_fab,
             )
         )
+        snappoint_lens = [
+            offset[0],
+            offsetled + wled - dled / 2,
+        ]  # same as the center of the lens-arc
     elif led_type == "box":
+        snappoint_lens = [offset[0], offsetled + wled]
         if wledback <= 0:
             kicad_modg.append(
                 Rectangle(
@@ -801,6 +815,7 @@ def makeLEDHorizontal(
                     width=lw_fab,
                 )
             )
+            snappoint_lens = [offset[0], offsetled + wledback]
         if dled != dledout:
             kicad_modg.append(
                 Rectangle(
@@ -810,6 +825,23 @@ def makeLEDHorizontal(
                     width=lw_fab,
                 )
             )
+
+    # add snap point between the pins
+    kicad_mod.append(
+        Point(
+            at=offset,
+            size=2,
+            layer=global_config.get_layer_for_function("centroid"),
+        )
+    )
+    # and a snap-point where the lens is
+    kicad_mod.append(
+        Point(
+            at=snappoint_lens,
+            size=2,
+            layer=global_config.get_layer_for_function("centroid"),
+        )
+    )
 
     for p in padpos:
         kicad_modg.append(
