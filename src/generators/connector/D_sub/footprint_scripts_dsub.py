@@ -614,7 +614,7 @@ def makeDSubEdge(
     y1 = 0
 
     pad_type = Pad.TYPE_SMT
-    pad_shape = Pad.SHAPE_RECT
+    pad_shape = Pad.SHAPE_ROUNDRECT
     pad_layers_top = Pad.LAYERS_SMT
     pad_layers_bot = ["B.Cu", "B.Paste", "B.Mask"]
     slk_layers_top = "F.SilkS"
@@ -638,6 +638,7 @@ def makeDSubEdge(
                 size=pad,
                 drill=0,
                 layers=pad_layers_top,
+                round_radius_handler=global_config.roundrect_radius_handler,
             )
         )
         keepouts = keepouts + addKeepoutRect(
@@ -676,6 +677,7 @@ def makeDSubEdge(
                 size=pad,
                 drill=0,
                 layers=pad_layers_bot,
+                round_radius_handler=global_config.roundrect_radius_handler,
             )
         )
         keepouts = keepouts + addKeepoutRect(
