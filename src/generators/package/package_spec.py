@@ -11,6 +11,7 @@
 #
 # (C) The KiCad Librarian Team
 
+import copy
 from typing import Any
 
 from generators.tools.spec.base_spec import BaseSpec
@@ -43,7 +44,7 @@ class PackageSpec(BaseSpec):
 
         super().__init__(id, spec, file_name)
 
-        self.spec = spec
+        self.spec = copy.deepcopy(spec)
         self.metadata = common_metadata.CommonMetadata(self.spec)
         self.has_fp_data = False
         self.has_3d_data = False

@@ -153,7 +153,7 @@ class InductorModelBuilder(abc.ABC):
     """
 
     def __init__(self, spec: SmdInductorSpec) -> None:
-        self.spec = spec
+        self.spec = copy.deepcopy(spec)
 
     @abc.abstractmethod
     def build(self) -> export_tools.AssemblyParts:

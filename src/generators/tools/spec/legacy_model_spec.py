@@ -11,6 +11,7 @@
 #
 # (C) The KiCad Librarian Team
 
+import copy
 from typing import Any
 
 from .base_spec import BaseSpec
@@ -42,7 +43,7 @@ class LegacyModelSpec(BaseSpec):
 
         super().__init__(id, spec, file_name)
 
-        self.spec = spec
+        self.spec = copy.deepcopy(spec)
         self.has_fp_data = False
         self.has_3d_data = True
 

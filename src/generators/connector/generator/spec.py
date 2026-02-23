@@ -13,6 +13,7 @@
 
 from __future__ import annotations
 
+import copy
 from typing import Any
 
 from generators.tools.spec.base_spec import BaseSpec
@@ -36,4 +37,4 @@ class ConnectorSpec(BaseSpec):
             file_name: The name of the YAML file that holds this spec definition.
         """
         super().__init__(id, spec, file_name)
-        self.spec = spec
+        self.spec = copy.deepcopy(spec)
