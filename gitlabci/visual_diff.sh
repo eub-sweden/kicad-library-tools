@@ -6,8 +6,8 @@
 # => TODO: Refactor to extract common functionality?
 set -ex
 
-if [ -z "${KICAD_LIBRARY_UTILS}" ]; then
-    echo "KICAD_LIBRARY_UTILS environment variable is not set"
+if [ -z "${KICAD_LIBRARY_UTILS_DIR}" ]; then
+    echo "KICAD_LIBRARY_UTILS_DIR environment variable is not set"
     exit 1
 fi
 
@@ -29,8 +29,8 @@ for target_path in "${changed_dirs[@]}"; do
 
     echo "Diffing $rel_target against $target_path -> $output_subdir"
 
-    python3 "${KICAD_LIBRARY_UTILS}/html-diff/src/html_diff.py" -j0 -v "$rel_base" "$target_path" -o "$output_subdir"
+    python3 "${KICAD_LIBRARY_UTILS_DIR}/html-diff/src/html_diff.py" -j0 -v "$rel_base" "$target_path" -o "$output_subdir"
 done
 
 # Create the index HTML file
-python3 "${KICAD_LIBRARY_UTILS}/html-diff/src/render_index_html.py" "$output_dir"
+python3 "${KICAD_LIBRARY_UTILS_DIR}/html-diff/src/render_index_html.py" "$output_dir"
