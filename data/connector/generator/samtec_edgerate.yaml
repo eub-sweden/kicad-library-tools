@@ -106,4 +106,3 @@ ERF8-XXX-DV-L:
   body_size:
     x_offset: 4.15      # offset from edge-pad center
   clean_silk: True
-
