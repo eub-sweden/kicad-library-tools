@@ -232,7 +232,7 @@
 # destination_dir:  packages directory name
 # source:           datasheet URL
 
-SW_TH_Tactile_Omron_B3F-100x: &SW_TH_Tactile_Omron_B3F-100x
+SW_TH_Tactile_Omron_B3F-100x:
   modelName: SW_TH_Tactile_Omron_B3F-100x
   model_class: tactile
 
@@ -299,7 +299,7 @@ SW_TH_Tactile_Omron_B3F-100x: &SW_TH_Tactile_Omron_B3F-100x
   source: https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3f.pdf
 
 SW_TH_Tactile_Omron_B3F-102x:
-  <<: *SW_TH_Tactile_Omron_B3F-100x
+  inherit: SW_TH_Tactile_Omron_B3F-100x
   modelName: SW_TH_Tactile_Omron_B3F-102x
 
   actuator_height: 5.0
@@ -308,7 +308,7 @@ SW_TH_Tactile_Omron_B3F-102x:
   include_in_qa: True
 
 SW_TH_Tactile_Omron_B3F-106x:
-  <<: *SW_TH_Tactile_Omron_B3F-100x
+  inherit: SW_TH_Tactile_Omron_B3F-100x
   modelName: SW_TH_Tactile_Omron_B3F-102x
 
   actuator_height: 7.0
@@ -316,7 +316,7 @@ SW_TH_Tactile_Omron_B3F-106x:
   actuator_color_key: black body
 
 SW_TH_Tactile_Omron_B3F-107x:
-  <<: *SW_TH_Tactile_Omron_B3F-100x
+  inherit: SW_TH_Tactile_Omron_B3F-100x
   modelName: SW_TH_Tactile_Omron_B3F-102x
 
   actuator_height: [3.1, 3.4, 9.5]
@@ -324,8 +324,8 @@ SW_TH_Tactile_Omron_B3F-107x:
 
   actuator_color_key: black body
 
-SW_TH_Tactile_Omron_B3F-110x: &SW_TH_Tactile_Omron_B3F-110x
-  <<: *SW_TH_Tactile_Omron_B3F-100x
+SW_TH_Tactile_Omron_B3F-110x:
+  inherit: SW_TH_Tactile_Omron_B3F-100x
   modelName: SW_TH_Tactile_Omron_B3F-110x
 
   shell_top_lips: [
@@ -348,8 +348,8 @@ SW_TH_Tactile_Omron_B3F-110x: &SW_TH_Tactile_Omron_B3F-110x
     [straight, 270, 0.0, -4.25, -3.5, 0.7, tip_chamfer, [0.2, 1.0], top_width, 1.5, mid_top_height, 0.8, mid_bottom_height, 0.1], # type, direction, x, y, bottom_height, width, extra params
   ]
 
-SW_TH_Tactile_Omron_B3F-112x: &SW_TH_Tactile_Omron_B3F-112x
-  <<: *SW_TH_Tactile_Omron_B3F-110x
+SW_TH_Tactile_Omron_B3F-112x:
+  inherit: SW_TH_Tactile_Omron_B3F-110x
   modelName: SW_TH_Tactile_Omron_B3F-112x
 
   actuator_height: 5.0
@@ -357,7 +357,7 @@ SW_TH_Tactile_Omron_B3F-112x: &SW_TH_Tactile_Omron_B3F-112x
   actuator_color_key: black body
 
 SW_TH_Tactile_Omron_B3F-1110:
-  <<: *SW_TH_Tactile_Omron_B3F-112x
+  inherit: SW_TH_Tactile_Omron_B3F-112x
   modelName: SW_TH_Tactile_Omron_B3F-1110
 
   translation: [3.75, -2.25, 0]
@@ -375,7 +375,7 @@ SW_TH_Tactile_Omron_B3F-1110:
     [ 3.75,  2.25,   0],
   ]
 
-SW_SPST_Omron_B3FS-100xP: &SW_SPST_Omron_B3FS-100xP
+SW_SPST_Omron_B3FS-100xP:
   modelName: SW_SPST_Omron_B3FS-100xP
   model_class: tactile
 
@@ -443,13 +443,13 @@ SW_SPST_Omron_B3FS-100xP: &SW_SPST_Omron_B3FS-100xP
   source: https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3fs.pdf
 
 SW_SPST_Omron_B3FS-101xP:
-  <<: *SW_SPST_Omron_B3FS-100xP
+  inherit: SW_SPST_Omron_B3FS-100xP
   modelName: SW_SPST_Omron_B3FS-101xP
 
   actuator_height: 4.3
 
 SW_SPST_Omron_B3FS-105xP:
-  <<: *SW_SPST_Omron_B3FS-100xP
+  inherit: SW_SPST_Omron_B3FS-100xP
   modelName: SW_SPST_Omron_B3FS-105xP
 
   actuator_type: top-rectangle
@@ -463,7 +463,7 @@ SW_SPST_Omron_B3FS-105xP:
   actuator_round_bottom_fillet: 0.2
   actuator_shell_hole_diameter: 3.2
 
-SW_SPST_B3S-1000: &SW_SPST_B3S-1000
+SW_SPST_B3S-1000:
   modelName: SW_SPST_B3S-1000
   model_class: tactile
 
@@ -527,7 +527,7 @@ SW_SPST_B3S-1000: &SW_SPST_B3S-1000
   source: https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3s.pdf
 
 SW_SPST_B3S-1100:
-  <<: *SW_SPST_B3S-1000
+  inherit: SW_SPST_B3S-1000
   modelName: SW_SPST_B3S-1100
 
   translation: [0, 0.92, 0]
@@ -536,7 +536,7 @@ SW_SPST_B3S-1100:
     [gullwing, 270, 0.0, -4.7, 0.7, top_width, 1.5, mid_top_height, 1.8, mid_bottom_height, 1.1], # type, direction, tip_x, tip_y, width, extra params
   ]
 
-SW_SPST_B3SL-1002P: &SW_SPST_B3SL-1002P
+SW_SPST_B3SL-1002P:
   modelName: SW_SPST_B3SL-1002P
   model_class: tactile
 
@@ -608,7 +608,7 @@ SW_SPST_B3SL-1002P: &SW_SPST_B3SL-1002P
   source: https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3sl.pdf
 
 SW_SPST_B3SL-1022P:
-  <<: *SW_SPST_B3SL-1002P
+  inherit: SW_SPST_B3SL-1002P
   modelName: SW_SPST_B3SL-1022P
 
   actuator_height: 5.1
@@ -616,7 +616,7 @@ SW_SPST_B3SL-1022P:
   actuator_color_key: grey body
   actuator_base_color_key: grey body
 
-SW_SPST_B3U-1000P: &SW_SPST_B3U-1000P
+SW_SPST_B3U-1000P:
   modelName: SW_SPST_B3U-1000P
   model_class: tactile
 
@@ -673,15 +673,15 @@ SW_SPST_B3U-1000P: &SW_SPST_B3U-1000P
   source: https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3u.pdf
 
 SW_SPST_B3U-1000P-B:
-  <<: *SW_SPST_B3U-1000P
+  inherit: SW_SPST_B3U-1000P
   modelName: SW_SPST_B3U-1000P-B
 
   pegs: [
     [0, 0, 0.65, -0.5, chamfer, [0.15, 0.15]], # x, y, diameter, height, extra params
   ]
 
-SW_SPST_B3U-1100P: &SW_SPST_B3U-1100P
-  <<: *SW_SPST_B3U-1000P
+SW_SPST_B3U-1100P:
+  inherit: SW_SPST_B3U-1000P
   modelName: SW_SPST_B3U-1100P
 
   translation: [0, 0.82, 0]
@@ -691,14 +691,14 @@ SW_SPST_B3U-1100P: &SW_SPST_B3U-1100P
   ]
 
 SW_SPST_B3U-1100P-B:
-  <<: *SW_SPST_B3U-1100P
+  inherit: SW_SPST_B3U-1100P
   modelName: SW_SPST_B3U-1100P-B
 
   pegs: [
     [0, 0, 0.65, -0.5, chamfer, [0.15, 0.15]], # x, y, diameter, height, extra params
   ]
 
-SW_SPST_B3U-3000P: &SW_SPST_B3U-3000P
+SW_SPST_B3U-3000P:
   modelName: SW_SPST_B3U-3000P
   model_class: tactile
 
@@ -782,15 +782,15 @@ SW_SPST_B3U-3000P: &SW_SPST_B3U-3000P
   source: https://omronfs.omron.com/en_US/ecb/products/pdf/en-b3u.pdf
 
 SW_SPST_B3U-3000P-B:
-  <<: *SW_SPST_B3U-3000P
+  inherit: SW_SPST_B3U-3000P
   modelName: SW_SPST_B3U-3000P-B
 
   pegs: [
     [0, 0, 0.65, -0.5, chamfer, [0.15, 0.15]], # x, y, diameter, height, extra params
   ]
 
-SW_SPST_B3U-3100P: &SW_SPST_B3U-3100P
-  <<: *SW_SPST_B3U-3000P
+SW_SPST_B3U-3100P:
+  inherit: SW_SPST_B3U-3000P
   modelName: SW_SPST_B3U-3100P
 
   translation: [0, 0.82, 0]
@@ -800,7 +800,7 @@ SW_SPST_B3U-3100P: &SW_SPST_B3U-3100P
   ]
 
 SW_SPST_B3U-3100P-B:
-  <<: *SW_SPST_B3U-3100P
+  inherit: SW_SPST_B3U-3100P
   modelName: SW_SPST_B3U-3100P-B
 
   pegs: [
@@ -956,7 +956,7 @@ SW_SPST_EVQP0:
   destination_dir: Button_Switch_SMD.3dshapes
   source: https://industrial.panasonic.com/cdbs/www-data/pdf/ATK0000/ATK0000C360.pdf
 
-SW_SPST_EVQP2_MiddlePushTravel_H2.5mm: &SW_SPST_EVQP2_MiddlePushTravel
+SW_SPST_EVQP2_MiddlePushTravel_H2.5mm:
   modelName: SW_SPST_EVQP2_MiddlePushTravel_H2.5mm
   model_class: tactile
 
@@ -1027,8 +1027,8 @@ SW_SPST_EVQP2_MiddlePushTravel_H2.5mm: &SW_SPST_EVQP2_MiddlePushTravel
   destination_dir: Button_Switch_SMD.3dshapes
   source: https://industry.panasonic.com/ac/cdn/e/control/switch/light-touch/catalog/sw_lt_eng_4735s.pdf
 
-SW_SPST_EVQP2_ShortPushTravel_H2.1mm: &SW_SPST_EVQP2_ShortPushTravel
-  <<: *SW_SPST_EVQP2_MiddlePushTravel
+SW_SPST_EVQP2_ShortPushTravel_H2.1mm:
+  inherit: SW_SPST_EVQP2_MiddlePushTravel_H2.5mm
   modelName: SW_SPST_EVQP2_ShortPushTravel_H2.1mm
 
   actuator_type: top-rectangle-round
@@ -1046,14 +1046,14 @@ SW_SPST_EVQP2_ShortPushTravel_H2.1mm: &SW_SPST_EVQP2_ShortPushTravel
   actuator_color_key: white body
 
 SW_SPST_EVQP2_ShortPushTravel_H2.5mm:
-  <<: *SW_SPST_EVQP2_ShortPushTravel
+  inherit: SW_SPST_EVQP2_ShortPushTravel_H2.1mm
   modelName: SW_SPST_EVQP2_ShortPushTravel_H2.5mm
 
   actuator_height: 2.5
 
   actuator_color_key: white body
 
-SW_SPST_EVQP7A: &SW_SPST_EVQP7A
+SW_SPST_EVQP7A:
   modelName: SW_SPST_EVQP7A
   model_class: tactile
 
@@ -1149,7 +1149,7 @@ SW_SPST_EVQP7A: &SW_SPST_EVQP7A
   source: https://industrial.panasonic.com/cdbs/www-data/pdf/ATK0000/ATK0000C378.pdf
 
 SW_SPST_EVQP7C:
-  <<: *SW_SPST_EVQP7A
+  inherit: SW_SPST_EVQP7A
   modelName: SW_SPST_EVQP7C
 
   pegs: [
@@ -1157,7 +1157,7 @@ SW_SPST_EVQP7C:
     [0,  0.9, 0.65, -0.5, chamfer, [0.225, 0.3]],
   ]
 
-SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A08: &SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A08
+SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A08:
   modelName: SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A08
   model_class: tactile
 
@@ -1228,7 +1228,7 @@ SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A08: &SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A08
   source: https://www.mouser.com/datasheet/2/315/ATK0000CE3-32226.pdf
 
 SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A15:
-  <<: *SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A08
+  inherit: SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A08
   modelName: SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A15
 
   shell_top_cover_type: rectangle
@@ -1244,7 +1244,7 @@ SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A15:
 
   actuator_color_key: metal silver
 
-Panasonic_EVQPUJ_EVQPUA: &Panasonic_EVQPUJ_EVQPUA
+Panasonic_EVQPUJ_EVQPUA:
   modelName: Panasonic_EVQPUJ_EVQPUA
   model_class: tactile
 
@@ -1337,7 +1337,7 @@ Panasonic_EVQPUJ_EVQPUA: &Panasonic_EVQPUJ_EVQPUA
   source: https://media.digikey.com/pdf/Data%20Sheets/Panasonic%20Switches%20PDFs/EVQ-PU.pdf
 
 Panasonic_EVQPUL_EVQPUC:
-  <<: *Panasonic_EVQPUJ_EVQPUA
+  inherit: Panasonic_EVQPUJ_EVQPUA
   modelName: Panasonic_EVQPUL_EVQPUC
 
   pegs: [
@@ -1345,8 +1345,8 @@ Panasonic_EVQPUL_EVQPUC:
     [0,  1.375, 0.65, -0.5, chamfer, [0.225, 0.3]],
   ]
 
-Panasonic_EVQPUK_EVQPUB: &Panasonic_EVQPUK_EVQPUB
-  <<: *Panasonic_EVQPUJ_EVQPUA
+Panasonic_EVQPUK_EVQPUB:
+  inherit: Panasonic_EVQPUJ_EVQPUA
   modelName: Panasonic_EVQPUK_EVQPUB
 
   pin_type: bottom-jbend
@@ -1364,7 +1364,7 @@ Panasonic_EVQPUK_EVQPUB: &Panasonic_EVQPUK_EVQPUB
   ]
 
 Panasonic_EVQPUM_EVQPUD:
-  <<: *Panasonic_EVQPUK_EVQPUB
+  inherit: Panasonic_EVQPUK_EVQPUB
   modelName: Panasonic_EVQPUM_EVQPUD
 
   pegs: [
@@ -1372,7 +1372,7 @@ Panasonic_EVQPUM_EVQPUD:
     [0,  1.375, 0.65, -0.5, chamfer, [0.225, 0.3]],
   ]
 
-SW_Push_1P1T_NO_CK_KMR2: &SW_Push_1P1T_NO_CK_KMR2
+SW_Push_1P1T_NO_CK_KMR2:
   modelName: SW_Push_1P1T_NO_CK_KMR2
   model_class: tactile
 
@@ -1438,7 +1438,7 @@ SW_Push_1P1T_NO_CK_KMR2: &SW_Push_1P1T_NO_CK_KMR2
   source: https://www.ckswitches.com/media/2665/kmr.pdf
 
 SW_Push_1P1T-SH_NO_CK_KMR2xxG:
-  <<: *SW_Push_1P1T_NO_CK_KMR2
+  inherit: SW_Push_1P1T_NO_CK_KMR2
   modelName: SW_Push_1P1T-SH_NO_CK_KMR2xxG
 
   shell_length: 2.4
@@ -1455,7 +1455,7 @@ SW_Push_1P1T-SH_NO_CK_KMR2xxG:
     [straight, 90, 0.0, 1.3, -0.04, 1.0], # type, direction, x, y, bottom_height, width, extra params
   ]
 
-SW_Tactile_Straight_KSA0Axx1LFTR: &SW_Tactile_Straight_KSA0Axx1LFTR
+SW_Tactile_Straight_KSA0Axx1LFTR:
   modelName: SW_Tactile_Straight_KSA0Axx1LFTR
   model_class: tactile
 
@@ -1545,7 +1545,7 @@ SW_Tactile_Straight_KSA0Axx1LFTR: &SW_Tactile_Straight_KSA0Axx1LFTR
   source: https://www.ckswitches.com/media/1457/ksa_ksl.pdf
 
 SW_Tactile_Straight_KSL0Axx1LFTR:
-  <<: *SW_Tactile_Straight_KSA0Axx1LFTR
+  inherit: SW_Tactile_Straight_KSA0Axx1LFTR
   modelName: SW_Tactile_Straight_KSL0Axx1LFTR
 
   actuator_height: 9.9
@@ -1553,7 +1553,7 @@ SW_Tactile_Straight_KSL0Axx1LFTR:
 
   actuator_color_key: black body
 
-SW_Push_1P1T_NO_CK_KSC6xxG: &SW_Push_1P1T_NO_CK_KSC6xxG
+SW_Push_1P1T_NO_CK_KSC6xxG:
   modelName: SW_Push_1P1T_NO_CK_KSC6xxG
   model_class: tactile
 
@@ -1622,7 +1622,7 @@ SW_Push_1P1T_NO_CK_KSC6xxG: &SW_Push_1P1T_NO_CK_KSC6xxG
   source: https://www.ckswitches.com/media/1972/ksc6.pdf
 
 SW_Push_1P1T_NO_CK_KSC6xxJ:
-  <<: *SW_Push_1P1T_NO_CK_KSC6xxG
+  inherit: SW_Push_1P1T_NO_CK_KSC6xxG
   modelName: SW_Push_1P1T_NO_CK_KSC6xxJ
 
   actuator_height: [2.0, 7.68, 7.68, 7.58]
@@ -1705,7 +1705,7 @@ SW_Push_1P1T_NO_CK_KSC7xxJ:
   destination_dir: Button_Switch_SMD.3dshapes
   source: https://www.ckswitches.com/media/1973/ksc7.pdf
 
-SW_Push_1P1T_NO_CK_KSC9xxG: &SW_Push_1P1T_NO_CK_KSC9xxG
+SW_Push_1P1T_NO_CK_KSC9xxG:
   modelName: SW_Push_1P1T_NO_CK_KSC9xxG
   model_class: tactile
 
@@ -1774,7 +1774,7 @@ SW_Push_1P1T_NO_CK_KSC9xxG: &SW_Push_1P1T_NO_CK_KSC9xxG
   source: https://www.ckswitches.com/media/1975/ksc9.pdf
 
 SW_Push_1P1T_NO_CK_KSC9xxJ:
-  <<: *SW_Push_1P1T_NO_CK_KSC9xxG
+  inherit: SW_Push_1P1T_NO_CK_KSC9xxG
   modelName: SW_Push_1P1T_NO_CK_KSC9xxJ
 
   pin_type: top-jbend
@@ -1792,7 +1792,7 @@ SW_Push_1P1T_NO_CK_KSC9xxJ:
     [ 3.4,  2.0,   0],
   ]
 
-SW_PUSH_1P1T_6x3.5mm_H4.3_APEM_MJTP1243: &APEM_MJTP1243
+SW_PUSH_1P1T_6x3.5mm_H4.3_APEM_MJTP1243:
   modelName: SW_PUSH_1P1T_6x3.5mm_H4.3_APEM_MJTP1243
   model_class: tactile
 
@@ -1850,7 +1850,7 @@ SW_PUSH_1P1T_6x3.5mm_H4.3_APEM_MJTP1243: &APEM_MJTP1243
   source: https://www.apem.com/idec-apem/en_US/PCB-switches/Tactile-Switches/MJTP-PHAP33-6mm-through-hole/c/MJTP_6mm_through%20hole
 
 SW_PUSH_1P1T_6x3.5mm_H5.0_APEM_MJTP1250:
-  <<: *APEM_MJTP1243
+  inherit: SW_PUSH_1P1T_6x3.5mm_H4.3_APEM_MJTP1243
   modelName: SW_PUSH_1P1T_6x3.5mm_H5.0_APEM_MJTP1250
 
   body_height: 3.2
@@ -1866,7 +1866,7 @@ SW_PUSH_1P1T_6x3.5mm_H5.0_APEM_MJTP1250:
   actuator_width: 3.0
   actuator_shell_hole_width: 3.2
 
-SW_Push_1P1T_NO_CK_PTS125Sx43SMTR: &SW_Push_1P1T_NO_CK_PTS125Sx43SMTR
+SW_Push_1P1T_NO_CK_PTS125Sx43SMTR:
   modelName: SW_Push_1P1T_NO_CK_PTS125Sx43SMTR
   model_class: tactile
 
@@ -1932,13 +1932,13 @@ SW_Push_1P1T_NO_CK_PTS125Sx43SMTR: &SW_Push_1P1T_NO_CK_PTS125Sx43SMTR
   source: https://www.ckswitches.com/media/1462/pts125.pdf
 
 SW_Push_1P1T_NO_CK_PTS125Sx85SMTR:
-  <<: *SW_Push_1P1T_NO_CK_PTS125Sx43SMTR
+  inherit: SW_Push_1P1T_NO_CK_PTS125Sx43SMTR
   modelName: SW_Push_1P1T_NO_CK_PTS125Sx85SMTR
 
   actuator_height: 8.5
 
 SW_Push_1P1T_NO_CK_PTS125Sx73SMTR:
-  <<: *SW_Push_1P1T_NO_CK_PTS125Sx43SMTR
+  inherit: SW_Push_1P1T_NO_CK_PTS125Sx43SMTR
   modelName: SW_Push_1P1T_NO_CK_PTS125Sx73SMTR
 
   actuator_type: top-rectangle
@@ -1953,8 +1953,8 @@ SW_Push_1P1T_NO_CK_PTS125Sx73SMTR:
   actuator_round_bottom_fillet: 0.1
   actuator_shell_hole_diameter: 7.3
 
-SW_Push_1P1T_NO_CK_PTS125Sx43PSMTR: &SW_Push_1P1T_NO_CK_PTS125Sx43PSMTR
-  <<: *SW_Push_1P1T_NO_CK_PTS125Sx43SMTR
+SW_Push_1P1T_NO_CK_PTS125Sx43PSMTR:
+  inherit: SW_Push_1P1T_NO_CK_PTS125Sx43SMTR
   modelName: SW_Push_1P1T_NO_CK_PTS125Sx43PSMTR
 
   body_corner_chamfer: 1.5
@@ -1997,13 +1997,13 @@ SW_Push_1P1T_NO_CK_PTS125Sx43PSMTR: &SW_Push_1P1T_NO_CK_PTS125Sx43PSMTR
   pin_bottom_height: -0.05
 
 SW_Push_1P1T_NO_CK_PTS125Sx85PSMTR:
-  <<: *SW_Push_1P1T_NO_CK_PTS125Sx43PSMTR
+  inherit: SW_Push_1P1T_NO_CK_PTS125Sx43PSMTR
   modelName: SW_Push_1P1T_NO_CK_PTS125Sx85PSMTR
 
   actuator_height: 8.5
 
 SW_Push_1P1T_NO_CK_PTS125Sx73PSMTR:
-  <<: *SW_Push_1P1T_NO_CK_PTS125Sx43PSMTR
+  inherit: SW_Push_1P1T_NO_CK_PTS125Sx43PSMTR
   modelName: SW_Push_1P1T_NO_CK_PTS125Sx73PSMTR
 
   actuator_type: top-rectangle
@@ -2132,7 +2132,7 @@ SW_SPST_PTS810:
   destination_dir: Button_Switch_SMD.3dshapes
   source: https://www.ckswitches.com/media/1476/pts810.pdf
 
-SW_SPST_SKQG_WithoutStem: &SW_SPST_SKQG_WithoutStem
+SW_SPST_SKQG_WithoutStem:
   modelName: SW_SPST_SKQG_WithoutStem
   model_class: tactile
 
@@ -2199,7 +2199,7 @@ SW_SPST_SKQG_WithoutStem: &SW_SPST_SKQG_WithoutStem
   source: https://www.mouser.com/datasheet/2/15/SKQG-1155865.pdf
 
 SW_SPST_SKQG_WithStem:
-  <<: *SW_SPST_SKQG_WithoutStem
+  inherit: SW_SPST_SKQG_WithoutStem
   modelName: SW_SPST_SKQG_WithStem
 
   shell_top_cover_type: rectangle
@@ -2340,7 +2340,7 @@ SW_Push_1P1T_NO_E-Switch_TL3301NxxxxxG:
   destination_dir: Button_Switch_SMD.3dshapes
   source: https://www.e-switch.com/wp-content/uploads/2024/03/TL3301.pdf
 
-SW_SPST_TL3305A: &SW_SPST_TL3305A
+SW_SPST_TL3305A:
   modelName: SW_SPST_TL3305A
   model_class: tactile
 
@@ -2394,18 +2394,18 @@ SW_SPST_TL3305A: &SW_SPST_TL3305A
   source: https://www.e-switch.com/wp-content/uploads/2024/08/TL3305.pdf
 
 SW_SPST_TL3305B:
-  <<: *SW_SPST_TL3305A
+  inherit: SW_SPST_TL3305A
   modelName: SW_SPST_TL3305B
 
   actuator_height: 5.0
 
 SW_SPST_TL3305C:
-  <<: *SW_SPST_TL3305A
+  inherit: SW_SPST_TL3305A
   modelName: SW_SPST_TL3305C
 
   actuator_height: 7.0
 
-SW_SPST_TS-1088-xR020: &SW_SPST_TS-1088-xR020
+SW_SPST_TS-1088-xR020:
   modelName: SW_SPST_TS-1088-xR020
   model_class: tactile
 
@@ -2452,7 +2452,7 @@ SW_SPST_TS-1088-xR020: &SW_SPST_TS-1088-xR020
   source: https://lcsc.com/datasheet/lcsc_datasheet_2504101957_XUNPU-TS-1088-AR02016_C720477.pdf
 
 SW_SPST_TS-1088-xR025:
-  <<: *SW_SPST_TS-1088-xR020
+  inherit: SW_SPST_TS-1088-xR020
   modelName: SW_SPST_TS-1088-xR025
 
   actuator_height: 2.5
