@@ -232,7 +232,7 @@ def _create_arg_parser(args_files: list[str]) -> ArgumentParser:
     for args_file in args_files:
         module_path = "generators." + args_file.replace("/", ".")
         mod = importlib.import_module(module_path)
-        if args_file is not MODULE_NAME_ARGS:  # Skip root-level args.py
+        if args_file != MODULE_NAME_ARGS:  # Skip root-level args.py
             mod.add_argparse_arguments(parser_gen_group)
     return argparser
 
