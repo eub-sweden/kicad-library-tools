@@ -36,7 +36,7 @@ QFN-24-1EP_3x3mm_P0.4mm_EP1.75x1.6mm:
     minimum: 0.25
     nominal: 0.3
     maximum: 0.35
-    
+
     # Chosen for backwards compatibility
   chamfer_edge_pins: 0.12
   EP_size_x:

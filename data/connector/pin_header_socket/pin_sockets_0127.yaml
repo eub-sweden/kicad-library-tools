@@ -109,7 +109,7 @@ THT-2row_Angled_Right:
     width:  4.4
     height: 3.10
     offset: 0.15
-    # overlength: 0.35 
+    # overlength: 0.35
     # interestingly, socket_strips.py->pinSocketHorizontalTHT() did not use body_overlength at all.
   pins:
     width:  0.5

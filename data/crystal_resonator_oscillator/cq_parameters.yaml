@@ -623,9 +623,9 @@ SMD_WurthElektronik_IQXC-26:
   A1: 0.0
   p_cnt: 4
   # Pads sticking out from footprint with datasheet values.
-  p_split_x: 1.1 
+  p_split_x: 1.1
   p_split_y: 0.8
-  p_length: 0.6 
+  p_length: 0.6
   p_width: 0.5
   body_top_color_key: metal aluminum
   body_color_key: gold pins

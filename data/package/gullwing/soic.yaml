@@ -307,10 +307,10 @@ SOIC-8_3.81x9.35mm_P2.54mm:
   size_source: 'https://www.littelfuse.com/assetdocs/littelfuse-integrated-circuits-cpc2014n-datasheet?assetguid=6e3baf84-de75-4ea7-97ce-3a5e05a007c9'
   device_type: 'SOIC' # temporary
   body_size_x:
-    nominal: 3.810 
+    nominal: 3.810
     tolerance: 0.051
   body_size_y:
-    nominal: 9.347 
+    nominal: 9.347
     tolerance: 0.203
   overall_height:
     maximum: 2.184
@@ -543,7 +543,7 @@ JEITA_SOIC-8_3.9x4.9mm_P1.27mm:
     nominal: 6.00
   lead_width: 0.30 .. 0.45
   lead_len:
-    minimum: 0.40 
+    minimum: 0.40
     maximum: 0.80 # JEITA Lp, min/max values
   lead_height: 0.17 .. 0.27
   pitch: 1.27

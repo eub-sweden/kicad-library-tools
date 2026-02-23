@@ -59,7 +59,7 @@ THT-1row_Straight_Right:
     width:  0.3
     #thick:  0.1
     drill:  0.5
-    offset: 0.0 
+    offset: 0.0
     #length: 1.8 # under the socket
   pads:
     length: 0.85
@@ -100,7 +100,7 @@ THT-1row_Straight_Right:
     # length: 0.85
     # width:  0.85
     # offset: 0
-  # datasheet: 
+  # datasheet:
 
 # Disabled in the old generator:
 # THT-2row_Angled_Right:

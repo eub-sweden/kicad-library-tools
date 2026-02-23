@@ -2156,7 +2156,7 @@ MPS_QFN-16_3x3mm_P0.5mm:
     1:
       size_increase: [0.1, null]
       move: [0.05, null]
-      
+
       # Bottom pad extensions
     6:
       size_increase: [null, 0.5]
@@ -2164,7 +2164,7 @@ MPS_QFN-16_3x3mm_P0.5mm:
     7:
       size_increase: [null, 0.5]
       move: [null, -0.25]
-      
+
       # Top pad extensions
     14:
       size_increase: [null, 0.5]

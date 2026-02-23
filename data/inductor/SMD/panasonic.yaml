@@ -4,7 +4,7 @@ default_parameters:
 
 series PCC:
   default_parameters:
-    datasheet: https://industrial.panasonic.com/cdbs/www-data/pdf/AGL0000/AGL0000C59.pdf 
+    datasheet: https://industrial.panasonic.com/cdbs/www-data/pdf/AGL0000/AGL0000C59.pdf
     3d:
       type: 2 # best effort, these parts are more like tantalum caps
       bodyColor: black body
@@ -14,4 +14,4 @@ series PCC:
       - power
       - automotive
       - ETQPxM
-  csv: panasonic.csv 
+  csv: panasonic.csv

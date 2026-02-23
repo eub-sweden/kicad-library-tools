@@ -416,7 +416,7 @@ QFN-20-1EP_3x3mm_P0.45mm_EP1.6x1.6mm:
     minimum: 0.35
     nominal: 0.4
     maximum: 0.45
-    
+
     # For backwards compatibility use 1.6mm even though nominal would be 1.55
   chamfer_edge_pins: 0.15
   EP_size_x:

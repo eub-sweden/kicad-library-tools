@@ -26,6 +26,6 @@ series_BWVS:
       padThickness: 0.05
     tags:
       - bwvs
-  # CSV note: CSV from datasheet: 
+  # CSV note: CSV from datasheet:
   # The CSV columns are: [A, B, C, D, B, H, I, I+J]
   csv: chilisin_bwvs.csv

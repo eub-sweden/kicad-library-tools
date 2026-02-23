@@ -1,5 +1,5 @@
 default_parameters:
-  # Note: LCSC calls the company TechFuse, but the 
+  # Note: LCSC calls the company TechFuse, but the
   # company calls itself Sea & Land Technology Corp.
   # AlphaTop is the resettable fuse branch!
   manufacturer: TechFuse

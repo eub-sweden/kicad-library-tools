@@ -14,7 +14,7 @@ defaults_IDC_THT:
 # description = description + " {class_description}, {row_count}x{pos_count:02}, {pin_pitch:03.2f}mm pitch, DIN 41651 / IEC 60603-13, {description_rows}{0}{1}{2}".format(", {0:03.1f}mm".format(latch_len) if latch_len > 0 else "", " latches" if latching else "", ", mounting holes" if mh_present else "", )
 # example: Through hole IDC header, 2x05, 2.54mm pitch, DIN 41651 / IEC 60603-13, double rows, 6.5mm latches, mounting holes, https://docs.google.com/spreadsheets/d/16SsEcesNF15N3Lb4niX7dcUr-NY5_MFPQhobNuNppn4/edit#gid=0
 # tags = tags + f" {orientation.lower()} {class_description} {mounting_type} {row_count}x{pos_count:02} {pin_pitch:03.2f}mm {tags_rows}"
-# example: Through hole vertical IDC header THT 2x05 2.54mm double row  
+# example: Through hole vertical IDC header THT 2x05 2.54mm double row
 
 defaults_IDC_SMD:
   lib_format: 'Connector_IDC'

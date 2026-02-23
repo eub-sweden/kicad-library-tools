@@ -36,7 +36,7 @@ TSOP-I-24_12.4x6mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation AA'
   body_size_x: 12.40 +/-0.10
   body_size_y: 6.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 14.00 +/-0.25
@@ -53,7 +53,7 @@ TSOP-I-24_14.4x6mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation AB'
   body_size_x: 14.40 +/-0.10
   body_size_y: 6.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 16.00 +/-0.25
@@ -70,7 +70,7 @@ TSOP-I-24_16.4x6mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation AC'
   body_size_x: 16.40 +/-0.10
   body_size_y: 6.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 18.00 +/-0.25
@@ -87,7 +87,7 @@ TSOP-I-24_18.4x6mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation AD'
   body_size_x: 18.40 +/-0.10
   body_size_y: 6.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 20.00 +/-0.25
@@ -104,7 +104,7 @@ TSOP-I-32_12.4x8mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation BA'
   body_size_x: 12.40 +/-0.10
   body_size_y: 8.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 14.00 +/-0.25
@@ -121,7 +121,7 @@ TSOP-I-32_14.4x8mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation BB'
   body_size_x: 14.40 +/-0.10
   body_size_y: 8.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 16.00 +/-0.25
@@ -138,7 +138,7 @@ TSOP-I-32_16.4x8mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation BC'
   body_size_x: 16.40 +/-0.10
   body_size_y: 8.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 18.00 +/-0.25
@@ -155,7 +155,7 @@ TSOP-I-32_18.4x8mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation BD'
   body_size_x: 18.40 +/-0.10
   body_size_y: 8.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 20.00 +/-0.25
@@ -172,7 +172,7 @@ TSOP-I-40_12.4x10mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation CA'
   body_size_x: 12.40 +/-0.10
   body_size_y: 10.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 14.00 +/-0.25
@@ -189,7 +189,7 @@ TSOP-I-40_14.4x10mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation CB'
   body_size_x: 14.40 +/-0.10
   body_size_y: 10.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 16.00 +/-0.25
@@ -206,7 +206,7 @@ TSOP-I-40_16.4x10mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation CC'
   body_size_x: 16.40 +/-0.10
   body_size_y: 10.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 18.00 +/-0.25
@@ -223,7 +223,7 @@ TSOP-I-40_18.4x10mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation CD'
   body_size_x: 18.40 +/-0.10
   body_size_y: 10.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 20.00 +/-0.25
@@ -240,7 +240,7 @@ TSOP-I-48_12.4x12mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation DA'
   body_size_x: 12.40 +/-0.10
   body_size_y: 12.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 14.00 +/-0.25
@@ -257,7 +257,7 @@ TSOP-I-48_14.4x12mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation DB'
   body_size_x: 14.40 +/-0.10
   body_size_y: 12.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 16.00 +/-0.25
@@ -274,7 +274,7 @@ TSOP-I-48_16.4x12mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation DC'
   body_size_x: 16.40 +/-0.10
   body_size_y: 12.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 18.00 +/-0.25
@@ -291,7 +291,7 @@ TSOP-I-48_18.4x12mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation DD'
   body_size_x: 18.40 +/-0.10
   body_size_y: 12.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 20.00 +/-0.25
@@ -308,7 +308,7 @@ TSOP-I-56_14.4x14mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation EA'
   body_size_x: 14.40 +/-0.10
   body_size_y: 14.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 16.00 +/-0.25
@@ -325,7 +325,7 @@ TSOP-I-56_16.4x14mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation EB'
   body_size_x: 16.40 +/-0.10
   body_size_y: 14.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 18.00 +/-0.25
@@ -342,7 +342,7 @@ TSOP-I-56_18.4x14mm_P0.5mm:
   size_source: 'https://www.jedec.org/standards-documents/docs/mo-142-d variation EC'
   body_size_x: 18.40 +/-0.10
   body_size_y: 14.00 +/-0.10
-  body_height: 0.95 .. 1.0 .. 1.05 
+  body_height: 0.95 .. 1.0 .. 1.05
   overall_height: 1.2  # max
   body_pcb_gap: 0.05 .. 0.15
   overall_size_x: 20.00 +/-0.25
