@@ -54,8 +54,6 @@ __Comment__ = """This generator loads cadquery model scripts and generates step/
 
 ___ver___ = "2.0.0"
 
-import cadquery as cq
-
 from generators.tools.model import export_tools
 from generators.tools.spec.legacy_model_spec import LegacyModelSpec
 
@@ -74,9 +72,6 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     """
     # Make the parts of the model
     body, pins, mark = make_tantalum(spec.spec)
-    body = body.rotate((0, 0, 0), (0, 0, 1), 90)
-    pins = pins.rotate((0, 0, 0), (0, 0, 1), 90)
-    mark = mark.rotate((0, 0, 0), (0, 0, 1), 90)
 
     # Assemble the filename
     file_name = spec.spec["file_name"].format(
@@ -87,18 +82,19 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         maui_name=spec.spec["modelName_maui"],
     )
 
-    parts: list[cq.Workplane] = [body, mark, pins]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["mark_color_key"],
-        spec.spec["pin_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (mark, spec.spec["mark_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+        ]
+    )
+    parts.rotate(90)
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=file_name,
         parts=parts,
-        color_names=color_names,
     )
     return 1

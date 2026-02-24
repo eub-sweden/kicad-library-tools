@@ -6,8 +6,11 @@ from generators.tools.model import add_license
 # crease_angle=0.5 is a good compromise
 crease_angle_default = 0.5
 
+# Define the Mesh named tuple
+Mesh = namedtuple("Mesh", ["points", "faces", "color", "transp"])
 
-def shape_to_mesh(shape, color, transparency, scale=None):
+
+def shape_to_mesh(shape, color, transparency, scale=None) -> Mesh:
     """
     Tessellates a shape and applies scaling to it, if needed.
     Parameters:
@@ -16,9 +19,6 @@ def shape_to_mesh(shape, color, transparency, scale=None):
         transparency - How opaque or transparent the mesh should be
         scale - Allows the meshes to be scaled up or down arbitrarily
     """
-
-    # Define the Mesh named tuple
-    Mesh = namedtuple("Mesh", ["points", "faces", "color", "transp"])
 
     # The smaller the better the quality, 1 coarse; 0.03 good compromise
     mesh_deviation = 0.7
@@ -39,32 +39,29 @@ def shape_to_mesh(shape, color, transparency, scale=None):
     return new_mesh
 
 
-def get_colored_meshes(export_objects, used_color_keys, scale=None):
+def get_colored_meshes(export_parts, scale=None) -> list[Mesh]:
     """
     Extracts the faces from the given objects and saves their tessellated meshes.
     Parameters:
-        export_objects - A list of the CadQuery objects to be exported to VRML
-        used_color_keys - A list of the colors used for the export_objects, with matching indexes
-        scale - Allows the meshes to be scaled up or down arbitrarily
+        export_parts - AseemblyParts to be exported to VRML
     """
 
     # The list that will hold all the face meshes
-    meshes = []
+    meshes: list[Mesh] = []
 
     # For now, the transparency is locked at opaque
     transparency = 1.0
 
     # Step through all of the CadQuery shape objects and tessellate the faces
     shape_index = 0
-    for exp_obj in export_objects:
+    for part, color_name in export_parts.parts:
         # Get the wrapped OCCT shape from CadQuery
-        occt_shape = exp_obj.val()  # .wrapped
-        face_color = used_color_keys[shape_index]
+        occt_shape = part.val()  # .wrapped
 
         # Step through all of the faces in the shape
         for single_face in occt_shape.Faces():
             # Triangulate the face to a mesh and save it
-            meshes.append(shape_to_mesh(single_face, face_color, transparency, scale))
+            meshes.append(shape_to_mesh(single_face, color_name, transparency, scale))
 
         # Moves to the next shape color
         shape_index += 1
@@ -72,18 +69,18 @@ def get_colored_meshes(export_objects, used_color_keys, scale=None):
     return meshes
 
 
-def write_VRML_file(objects, filepath, used_color_keys, licence_info=None):
+def write_VRML_file(meshes: list[Mesh], filepath, licence_info=None):
     """
     Export given list of Mesh objects to a VRML file.
-
-    `Mesh` structure is defined at root.
     """
     used_colors = None
 
     creaseAngle = crease_angle_default
 
-    if used_color_keys is not None:
-        used_colors = {x: shaderColors.named_colors[x] for x in used_color_keys}
+    used_colors: dict[str, shaderColors.shaderColor] = {}
+    for mesh in meshes:
+        if mesh.color not in used_colors:
+            used_colors[mesh.color] = shaderColors.named_colors[mesh.color]
 
     with open(filepath, "w", newline="\n") as f:
         # Write the standard VRML header
@@ -91,10 +88,13 @@ def write_VRML_file(objects, filepath, used_color_keys, licence_info=None):
         if licence_info is not None:
             for line in licence_info:
                 f.write("# " + line + "\n")
-        for shader_color in used_colors.values():
+
+        # Stably sort the colors for export
+        for shader_color_key in sorted(list(used_colors.keys())):
+            shader_color = used_colors[shader_color_key]
             f.write(shader_color.toVRMLdefinition())
 
-        for obj in objects:
+        for obj in meshes:
             if creaseAngle == 0:
                 f.write("Shape { geometry IndexedFaceSet \n{ coordIndex [")
             else:
@@ -124,22 +124,21 @@ def write_VRML_file(objects, filepath, used_color_keys, licence_info=None):
             f.write("}\n")  # closes shape
 
 
-def export_VRML(output_path, export_objects, used_color_keys):
+def export_VRML(output_path, export_parts):
     """
     Exports an array of export objects to a file with their associated colors.
     Parameters:
         output_path - The path to the .wrl file to be written
-        export_objects - A list of shape objects to convert to colored meshes
-        used_color_keys - A list of colors with indexed positions matching the export_objects
+        export_objects - AssemblyParts containing the parts and colors
     """
 
     # KiCAD uses this scale for their VRML objects
     scale = 1 / 2.54
 
     # Get the meshes together with their assigned colors
-    colored_meshes = get_colored_meshes(export_objects, used_color_keys, scale)
+    colored_meshes = get_colored_meshes(export_parts, scale)
 
     # Save the meshes to a file
     write_VRML_file(
-        colored_meshes, output_path, used_color_keys, add_license.LIST_int_license
+        colored_meshes, output_path, add_license.LIST_int_license
     )

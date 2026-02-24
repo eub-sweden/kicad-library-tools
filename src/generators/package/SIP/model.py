@@ -160,31 +160,26 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         )
         return 0
 
-    # Make the parts of the model
-    body_top = body_top.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    body = body.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    pins = pins.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    npth_pins = npth_pins.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+        ]
+    )
 
-    parts: list[cq.Workplane] = [body, pins]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["pin_color_key"],
-    ]
     # Make sure we do not have a dummy top
     if not isinstance(body_top.val(), cq.Vector):
-        parts.append(body_top)
-        color_names.append(spec.spec["body_top_color_key"])
-    # Make sure we do not have dummy nth pins
+        parts.append(body_top, spec.spec["body_top_color_key"])
+    # Make sure we do not have dummy NPTH pins
     if not isinstance(npth_pins.val(), cq.Vector):
-        parts.append(npth_pins)
-        color_names.append(spec.spec["npth_pin_color_key"])
+        parts.append(npth_pins, spec.spec["npth_pin_color_key"])
+
+    parts.rotate(spec.spec["rotation"])
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["model_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

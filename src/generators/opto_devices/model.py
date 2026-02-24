@@ -59,26 +59,21 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     elif modelName == "Vishay_TCRT5000":
         (body, em, dt, text, pin) = make_Vishay_TCRT5000(spec.spec)
 
-    body = body.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    em = em.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    dt = dt.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    text = text.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    pin = pin.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-
-    parts: list[cq.Workplane] = [body, em, dt, text, pin]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["emitter_color_key"],
-        spec.spec["detector_color_key"],
-        spec.spec["text_color_key"],
-        spec.spec["pin_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (em, spec.spec["emitter_color_key"]),
+            (dt, spec.spec["detector_color_key"]),
+            (text, spec.spec["text_color_key"]),
+            (pin, spec.spec["pin_color_key"]),
+        ]
+    )
+    parts.rotate(spec.spec.get("rotation", 0))
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["model_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

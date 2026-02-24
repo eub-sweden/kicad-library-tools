@@ -125,20 +125,17 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         case = make_case_Cylinder1(spec.spec)
         pins = make_pins(spec.spec)
 
-    parts: list[cq.Workplane] = []
-    color_names: list[str] = []
-    if case is not None:
-        parts.append(case)
-        color_names.append(spec.spec["body_color_key"])
-    if pins is not None:
-        parts.append(pins)
-        color_names.append(spec.spec["pins_color_key"])
+    parts = export_tools.AssemblyParts(
+        [
+            (case, spec.spec["body_color_key"]),
+            (pins, spec.spec["pins_color_key"]),
+        ]
+    )
 
     export_tools.export(
         generator_name=generator_name,
         lib_name="Battery",
         model_name=spec.id,
         parts=parts,
-        color_names=color_names,
     )
     return 1

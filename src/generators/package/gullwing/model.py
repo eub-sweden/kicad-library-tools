@@ -420,20 +420,19 @@ def create_models(spec: GullwingSpec, generator_name: str) -> int:
 
     case = case.cut(pins)
 
-    parts = [case, pins]
-    color_names = ["black body", "metal grey pins"]
-    if epad is not None:
-        parts.append(epad)
-        color_names.append("metal grey pins")
-    if pinmark is not None:
-        parts.append(pinmark)
-        color_names.append("light brown label")
+    parts = export_tools.AssemblyParts(
+        [
+            (case, "black body"),
+            (pins, "metal grey pins"),
+            (epad, "metal grey pins"),
+            (pinmark, "light brown label"),
+        ]
+    )
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.lib_name,
         model_name=spec.model_name,
         parts=parts,
-        color_names=color_names,
     )
     return 1

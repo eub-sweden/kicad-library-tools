@@ -56,8 +56,6 @@ __Comment__ = """This generator loads cadquery model scripts and generates step/
 
 ___ver___ = "2.0.0"
 
-import cadquery as cq
-
 from generators.tools.model import export_tools
 from generators.tools.spec.legacy_model_spec import LegacyModelSpec
 
@@ -115,15 +113,18 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         )
 
         lib_name = "Mounting_Wuerth.3dshapes"
-        parts: list[cq.Workplane] = [body]
-        color_names: list[str] = ["metal grey pins"]
+
+        parts = export_tools.AssemblyParts(
+            [
+                (body, "metal grey pins"),
+            ]
+        )
 
         export_tools.export(
             generator_name=generator_name,
             lib_name=lib_name,
             model_name=file_name,
             parts=parts,
-            color_names=color_names,
         )
 
     return len(spec.spec["parts"])

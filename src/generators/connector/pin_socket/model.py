@@ -58,8 +58,6 @@ ___ver___ = "2.0.0"
 
 import logging
 
-import cadquery as cq
-
 from generators.tools.model import export_tools
 from generators.tools.spec.legacy_model_spec import LegacyModelSpec
 
@@ -155,12 +153,6 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         # Generate the current strip
         body = cqm._make_body()
         pins = cqm._make_pins()
-        body = body.translate((-translation[0], translation[1], translation[2])).rotate(
-            (0, 0, 0), (0, 0, 1), spec.spec["rotation"]
-        )
-        pins = pins.translate((-translation[0], translation[1], translation[2])).rotate(
-            (0, 0, 0), (0, 0, 1), spec.spec["rotation"]
-        )
 
         # Make sure the pin name is zero padded
         if pin_num < 10:
@@ -173,17 +165,19 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
             spec.spec["num_pin_rows"], pin_num_str
         )
 
-        parts: list[cq.Workplane] = [body, pins]
-        color_names: list[str] = [
-            spec.spec["body_color_key"],
-            spec.spec["pins_color_key"],
-        ]
+        parts = export_tools.AssemblyParts(
+            [
+                (body, spec.spec["body_color_key"]),
+                (pins, spec.spec["pins_color_key"]),
+            ]
+        )
+        parts.translate((-translation[0], translation[1], translation[2]))
+        parts.rotate(spec.spec["rotation"])
 
         export_tools.export(
             generator_name=generator_name,
             lib_name=spec.spec["destination_dir"],
             model_name=file_name,
             parts=parts,
-            color_names=color_names,
         )
     return len(pin_range)

@@ -89,18 +89,18 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     if spec.spec["pintype"] == CASE_SMD_TYPE:
         pins = make_pins_smd(spec.spec)
 
-    parts: list[cq.Workplane] = [case, case_top, pins]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["body_top_color_key"],
-        spec.spec["pin_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (case, spec.spec["body_color_key"]),
+            (case_top, spec.spec["body_top_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+        ]
+    )
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["model_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

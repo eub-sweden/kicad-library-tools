@@ -77,30 +77,21 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     case = make_case(spec.spec)
     case_top = make_case_top(spec.spec)
     pins = make_pins(spec.spec)
-    # Translation and rotation of the parts, if needed
-    translation = spec.spec["translation"] if "translation" in spec.spec else (0, 0, 0)
-    case = case.translate(translation).rotate(
-        (0, 0, 0), (0, 0, 1), spec.spec["rotation"]
-    )
-    case_top = case_top.translate(translation).rotate(
-        (0, 0, 0), (0, 0, 1), spec.spec["rotation"]
-    )
-    pins = pins.translate(translation).rotate(
-        (0, 0, 0), (0, 0, 1), spec.spec["rotation"]
-    )
 
-    parts: list[cq.Workplane] = [case, case_top, pins]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["body_top_color_key"],
-        spec.spec["pin_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (case, spec.spec["body_color_key"]),
+            (case_top, spec.spec["body_top_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+        ]
+    )
+    parts.rotate(spec.spec.get("rotation", 0))
+    parts.translate(spec.spec.get("translation", (0, 0, 0)))
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["model_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

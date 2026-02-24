@@ -56,8 +56,6 @@ __Comment__ = """This generator loads cadquery model scripts and generates step/
 
 ___ver___ = "2.0.0"
 
-import cadquery as cq
-
 from generators.tools.model import export_tools
 
 from .dip_packages import make_case, make_pins_smd, make_pins_tht
@@ -94,24 +92,20 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     # Put the parts in the correct position relative to the pads on the board
     mvY = spec.spec["npins"] * spec.spec["e"] / 4 - spec.spec["e"] / 2.0
     mvX = (spec.spec["E"] - 0.254) / 2.0
-    body = body.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"]).translate(
-        (mvX, -mvY, 0)
-    )
-    pins = pins.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"]).translate(
-        (mvX, -mvY, 0)
-    )
 
-    parts: list[cq.Workplane] = [body, pins]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["pin_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+        ]
+    )
+    parts.rotate(spec.spec["rotation"])
+    parts.translate((mvX, -mvY, 0))
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["model_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

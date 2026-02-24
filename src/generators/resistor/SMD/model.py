@@ -131,14 +131,18 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     """
     body, top, pins = make_chip(spec.id, spec.spec)
 
-    parts: list[cq.Workplane] = [body, pins, top]
-    color_names = ["white body", "metal grey pins", "resistor black body"]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, "white body"),
+            (pins, "metal grey pins"),
+            (top, "resistor black body"),
+        ]
+    )
 
     export_tools.export(
         generator_name=generator_name,
         lib_name="Resistor_SMD",
         model_name=spec.id,
         parts=parts,
-        color_names=color_names,
     )
     return 1

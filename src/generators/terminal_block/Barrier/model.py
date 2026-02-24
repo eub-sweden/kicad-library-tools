@@ -24,18 +24,19 @@ def create_models(spec: TerminalBlockBarrierProperties, generator_name: str) -> 
         file_name = spec.getFootprintName(n_pins)
         body, pins, cover = generate_parts(spec, n_pins)
 
-        parts: list[cq.Workplane] = [body, pins]
-        color_names: list[str] = [spec.body_color_key, spec.pins_color_key]
-        if cover:
-            parts.append(cover)
-            color_names.append(spec.cover_color_key)
+        parts = export_tools.AssemblyParts(
+            [
+                (body, spec.body_color_key),
+                (pins, spec.pins_color_key),
+                (cover, spec.cover_color_key),
+            ]
+        )
 
         export_tools.export(
             generator_name=generator_name,
             lib_name=spec.lib_name,
             model_name=file_name,
             parts=parts,
-            color_names=color_names,
         )
     return len(spec.n_pin_variants)
 

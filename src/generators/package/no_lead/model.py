@@ -54,13 +54,7 @@ __Comment__ = """This generator loads cadquery model scripts and generates step/
 
 ___ver___ = "2.0.0"
 
-
-import cadquery as cq
-
 from generators.tools.model import export_tools  # type: ignore
-from generators.tools.model.exportVRML.export_part_to_VRML import (
-    export_VRML,  # type: ignore
-)
 
 from .qfn_packages import make_qfn  # type: ignore
 from .spec import NoLeadSpec
@@ -80,22 +74,21 @@ def create_models(spec: NoLeadSpec, generator_name: str) -> int:
         return 0
 
     # Make the parts of the model
-    (body, pins, epad, mark) = make_qfn(spec)
+    body, pins, epad, mark = make_qfn(spec)
 
-    parts: list[cq.Workplane] = [body, pins]
-    color_names: list[str] = ["black body", "metal grey pins"]
-    if epad:
-        parts.append(epad)
-        color_names.append("metal grey pins")
-    if mark:
-        parts.append(mark)
-        color_names.append("light brown label")
+    parts = export_tools.AssemblyParts(
+        [
+            (body, "black body"),
+            (pins, "metal grey pins"),
+            (epad, "metal grey pins"),
+            (mark, "light brown label"),
+        ]
+    )
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.lib_name,
         model_name=spec.model_name,
         parts=parts,
-        color_names=color_names,
     )
     return 1

@@ -74,22 +74,20 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     """
     # Make the parts of the model
     (body, body_top, pins) = make_chip(spec.spec)
-    body = body.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    body_top = body_top.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    pins = pins.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
 
-    parts: list[cq.Workplane] = [body, body_top, pins]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["body_top_color_key"],
-        spec.spec["pin_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (body_top, spec.spec["body_top_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+        ]
+    )
+    parts.rotate(spec.spec["rotation"])
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["model_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

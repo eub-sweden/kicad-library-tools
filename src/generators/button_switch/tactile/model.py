@@ -66,40 +66,22 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     actuator = cqm.make_actuator(spec.spec)
     actuator_base = cqm.make_actuator_base(spec.spec)
 
-    if spec.spec.get("rotation"):
-        body = body.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        shell = shell.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        pins = pins.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        actuator = actuator.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        if actuator_base:
-            actuator_base = actuator_base.rotate(
-                (0, 0, 0), (0, 0, 1), spec.spec["rotation"]
-            )
-
-    if spec.spec.get("translation"):
-        body = body.translate(spec.spec["translation"])
-        shell = shell.translate(spec.spec["translation"])
-        pins = pins.translate(spec.spec["translation"])
-        actuator = actuator.translate(spec.spec["translation"])
-        if actuator_base:
-            actuator_base = actuator_base.translate(spec.spec["translation"])
-
-    parts: list[cq.Workplane] = [body, shell, pins, actuator]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["shell_color_key"],
-        spec.spec["pins_color_key"],
-        spec.spec["actuator_color_key"],
-    ]
-    if actuator_base:
-        parts.append(actuator_base)
-        color_names.append(spec.spec["actuator_base_color_key"])
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (shell, spec.spec["shell_color_key"]),
+            (pins, spec.spec["pins_color_key"]),
+            (actuator, spec.spec["actuator_color_key"]),
+            (actuator_base, spec.spec.get("actuator_base_color_key", None)),
+        ]
+    )
+    parts.rotate(spec.spec.get("rotation", 0))
+    parts.translate(spec.spec.get("translation", (0, 0, 0)))
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.id,
         parts=parts,
-        color_names=color_names,
     )
     return 1

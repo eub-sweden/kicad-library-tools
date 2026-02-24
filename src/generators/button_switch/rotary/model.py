@@ -59,34 +59,22 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     pins = cqm.make_pins(spec.spec)
     labels = cqm.make_labels(spec.spec)
 
-    if spec.spec.get("rotation"):
-        body = body.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        pins = pins.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        dial = dial.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        shell = shell.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        labels = labels.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-
-    if spec.spec.get("translation"):
-        body = body.translate(spec.spec["translation"])
-        pins = pins.translate(spec.spec["translation"])
-        dial = dial.translate(spec.spec["translation"])
-        shell = shell.translate(spec.spec["translation"])
-        labels = labels.translate(spec.spec["translation"])
-
-    parts: list[cq.Workplane] = [body, dial, shell, pins, labels]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["dial_color_key"],
-        spec.spec["shell_color_key"],
-        spec.spec["pin_color_key"],
-        spec.spec["labels_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (dial, spec.spec["dial_color_key"]),
+            (shell, spec.spec["shell_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+            (labels, spec.spec["labels_color_key"]),
+        ]
+    )
+    parts.rotate(spec.spec.get("rotation", 0))
+    parts.translate(spec.spec.get("translation", (0, 0, 0)))
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.id,
         parts=parts,
-        color_names=color_names,
     )
     return 1

@@ -49,8 +49,6 @@
 # *                                                                          *
 # ****************************************************************************
 
-import cadquery as cq
-
 from generators.tools.model import export_tools
 
 from .cq_model_relay_smd import make_case, make_marker, make_pins
@@ -84,32 +82,27 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     )
 
     body = make_case(spec.spec, has_marker)
-    body = body.translate(spec.spec["translation"])
-    body = body.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
 
+    marker = None
     if has_marker:
         marker = make_marker(spec.spec)
-        marker = marker.translate(spec.spec["translation"])
-        marker = marker.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
 
     pins = make_pins(spec.spec)
-    pins = pins.translate(spec.spec["translation"])
-    pins = pins.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
 
-    parts: list[cq.Workplane] = [body, pins]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["pin_color_key"],
-    ]
-    if has_marker:
-        parts.append(marker)
-        color_names.append(spec.spec["marker_color_key"])
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+            (marker, spec.spec["marker_color_key"]),
+        ]
+    )
+    parts.translate(spec.spec["translation"])
+    parts.rotate(spec.spec["rotation"])
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["model_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

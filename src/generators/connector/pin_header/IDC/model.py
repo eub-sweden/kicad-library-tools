@@ -283,17 +283,17 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         pins = MakePinRow(n, -3.0, 8.0)
         pins = pins.union(MakePinRow(n, -3.0, 8.0).translate((2.54, 0, 0)))
 
-    parts: list[cq.Workplane] = [body, pins]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["pins_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (pins, spec.spec["pins_color_key"]),
+        ]
+    )
 
     export_tools.export(
         generator_name=generator_name,
         lib_name="Connector_IDC",
         model_name=spec.id,
         parts=parts,
-        color_names=color_names,
     )
     return 1

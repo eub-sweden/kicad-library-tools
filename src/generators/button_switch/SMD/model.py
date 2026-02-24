@@ -84,23 +84,19 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     if spec.spec["type"] == CASE_SMD_TYPE:
         pins = make_pins_smd(spec.spec)
 
-    # Put the parts in the correct orientation
-    body = body.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    pins = pins.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    pigs = pigs.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-
-    parts: list[cq.Workplane] = [body, pins, pigs]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["pin_color_key"],
-        spec.spec["pig_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+            (pigs, spec.spec["pig_color_key"]),
+        ]
+    )
+    parts.rotate(spec.spec.get("rotation", 0))
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["model_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

@@ -87,55 +87,30 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         logging.error("No match found for the model_class.")
         return 0
 
+    parts: export_tools.AssemblyParts
+
     # The CP Axial capacitors are a special case
     if spec.spec["model_class"] == "cp_axial_tht":
 
         body, mmb, bar, leads, top = cqm.generate_part(spec.spec)
 
-        body = body.translate(
+        parts = export_tools.AssemblyParts(
+            [
+                (body, spec.spec["body_color_key"]),
+                (leads, spec.spec["pins_color_key"]),
+                (mmb, spec.spec["mark_vg_color_key"]),
+                (bar, spec.spec["mark_bg_color_key"]),
+                (top, spec.spec["endcaps_color_key"]),
+            ]
+        )
+        parts.translate(
             (
                 spec.spec["body_setback_distance"],
                 0.0,
                 spec.spec["body_board_distance"],
             )
-        ).rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        leads = leads.translate(
-            (
-                spec.spec["body_setback_distance"],
-                0.0,
-                spec.spec["body_board_distance"],
-            )
-        ).rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        mmb = mmb.translate(
-            (
-                spec.spec["body_setback_distance"],
-                0.0,
-                spec.spec["body_board_distance"],
-            )
-        ).rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        bar = bar.translate(
-            (
-                spec.spec["body_setback_distance"],
-                0.0,
-                spec.spec["body_board_distance"],
-            )
-        ).rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        top = top.translate(
-            (
-                spec.spec["body_setback_distance"],
-                0.0,
-                spec.spec["body_board_distance"],
-            )
-        ).rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
+        )
 
-        parts = [body, leads, mmb, bar, top]
-        color_names = [
-            spec.spec["body_color_key"],
-            spec.spec["pins_color_key"],
-            spec.spec["mark_vg_color_key"],
-            spec.spec["mark_bg_color_key"],
-            spec.spec["endcaps_color_key"],
-        ]
     else:
         body, leads = cqm.generate_part(spec.spec)
 
@@ -145,22 +120,22 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
                 0.0,
                 spec.spec["body_board_distance"],
             )
-        ).rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        leads = leads.translate((spec.spec["body_setback_distance"], 0.0, 0.0)).rotate(
-            (0, 0, 0), (0, 0, 1), spec.spec["rotation"]
+        )
+        leads = leads.translate((spec.spec["body_setback_distance"], 0.0, 0.0))
+
+        parts = export_tools.AssemblyParts(
+            [
+                (body, spec.spec["body_color_key"]),
+                (leads, spec.spec["pins_color_key"]),
+            ]
         )
 
-        parts = [body, leads]
-        color_names = [
-            spec.spec["body_color_key"],
-            spec.spec["pins_color_key"],
-        ]
+    parts.rotate(spec.spec.get("rotation", 0))
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.id,
         parts=parts,
-        color_names=color_names,
     )
     return 1

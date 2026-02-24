@@ -137,20 +137,20 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
             orientation=spec.spec["orientation"],
         )
 
-        parts: list[cq.Workplane] = [body, pins]
-        color_names: list[str] = [
-            spec.spec["body_color_key"],
-            spec.spec["pin_color_key"],
-        ]
+        parts = export_tools.AssemblyParts(
+            [
+                (body, spec.spec["body_color_key"]),
+                (pins, spec.spec["pin_color_key"]),
+            ]
+        )
+
         if latch != None and not isinstance(latch.val(), cq.Vector):
-            parts.append(latch)
-            color_names.append(spec.spec["latch_color_key"])
+            parts.append(latch, spec.spec["latch_color_key"])
 
         export_tools.export(
             generator_name=generator_name,
             lib_name=spec.spec["destination_dir"],
             model_name=file_name,
             parts=parts,
-            color_names=color_names,
         )
     return len(spec.spec["pin_range"])

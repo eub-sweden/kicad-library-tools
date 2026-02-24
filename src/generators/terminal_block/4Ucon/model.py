@@ -54,10 +54,6 @@ __Comment__ = """This generator loads cadquery model scripts and generates step/
 
 ___ver___ = "2.0.0"
 
-import os
-
-import cadquery as cq
-
 from generators.tools.model import export_tools
 from generators.tools.model.parameters import load_aux_parameters
 from generators.tools.spec.legacy_model_spec import LegacyModelSpec
@@ -78,20 +74,20 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     globals = load_aux_parameters(__file__, "global_parameters.yaml")
 
     # Make the parts of the model
-    (pins, body, contacts) = generate_part(spec.spec, globals["globals"])
+    pins, body, contacts = generate_part(spec.spec, globals["globals"])
 
-    parts: list[cq.Workplane] = [body, pins, contacts]
-    color_names: list[str] = [
-        globals["globals"]["body_color_key"],
-        globals["globals"]["pin_color_key"],
-        globals["globals"]["contact_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, globals["globals"]["body_color_key"]),
+            (pins, globals["globals"]["pin_color_key"]),
+            (contacts, globals["globals"]["contact_color_key"]),
+        ]
+    )
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=globals["globals"]["destination_dir"],
         model_name=spec.spec["file_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

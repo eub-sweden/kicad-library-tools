@@ -1,7 +1,10 @@
+from dataclasses import dataclass
 import logging
 import os
 
 import cadquery as cq
+
+from kilibs.geom import Vec3DCompatible, Vector3D
 
 from generators.tools.model import cq_color_correct, shaderColors  # type: ignore
 from generators.tools.model.exportVRML.export_part_to_VRML import (
@@ -15,30 +18,73 @@ class AssemblyParts:
     """
     A group of parts in an assembly, including a colour definition key for each.
     """
-    def __init__(self, parts: list[tuple[cq.Workplane | None, str]] = []):
+
+    @dataclass
+    class Part:
+        part: cq.Workplane
+        color_key: str
+
+    def __init__(self, parts: list[tuple[cq.Workplane | None, str | None]] = []):
         """
         Construct a list of parts.
 
         Any entry that has a None part is discarded.
         """
-        self.parts: list[tuple[cq.Workplane, str]]
+        self.parts: list[AssemblyParts.Part] = []
 
-        self.parts = [p for p in parts if parts[0] is not None]
+        for part in parts:
+            self.append(part[0], part[1])
 
-    def append(self, part: cq.Workplane | None, color: str) -> None:
+    def append(self, part: cq.Workplane | None, color: str | None) -> None:
 
         if part is None:
             return
 
-        self.parts.append((part, color))
+        assert color, f"Color must be given if part is given, got {color} for {part}"
+        self.parts.append(AssemblyParts.Part(part, color))
+
+    def rotate(
+        self,
+        angle: float,
+        axis_start: Vec3DCompatible = (0, 0, 0),
+        axis_end: Vec3DCompatible = (0, 0, 1),
+    ) -> None:
+        """
+        Rotate each part in-place around the given axis.
+
+        The default is to rotate around the z-axis.
+
+        Args:
+            angle: the angle to rotate by, in degrees
+            axis_start: start of axis vector
+            axis_end: end of axis vector
+        """
+        if angle == 0:
+            return
+
+        for part in self.parts:
+            part.part = part.part.rotate(
+                Vector3D(axis_start).to_tuple(), Vector3D(axis_end).to_tuple(), angle
+            )
+
+    def translate(self, translation: Vec3DCompatible) -> None:
+        """
+        Translate every part in the list by the same amount
+        """
+        translation = Vector3D(translation)
+
+        if translation.is_nullvec():
+            return
+
+        for part in self.parts:
+            part.part = part.part.translate(translation.to_tuple())
 
 
 def export(
     generator_name: str,
     lib_name: str,
     model_name: str,
-    parts: list[cq.Workplane],
-    color_names: list[str],
+    parts: AssemblyParts
 ) -> None:
     """Save the model as STEP and optionally also as a VRML file.
 
@@ -55,7 +101,7 @@ def export(
     if CLI_ARGS.dry_run:
         return
 
-    if not parts or not color_names:
+    if len(parts.parts) == 0:
         logging.error(
             f"Generator '{generator_name}' called export() for model '{model_name}'"
             "with an empty parts list!"
@@ -77,19 +123,14 @@ def export(
     else:
         mode = cq.exporters.assembly.ExportModes.FUSED  # pyright: ignore
 
-    # Load the required colors:
-    colors: list[cq_color_correct.Color] = []
-    for color_name in color_names:
-        rgb = shaderColors.named_colors[color_name].getDiffuseFloat()
-        color = cq_color_correct.Color(rgb[0], rgb[1], rgb[2])
-        colors.append(color)
-
     # Create an assembly in which all parts are wrapped:
     assembly = cq.Assembly(name=model_name)
 
     # Add the parts to the assembly:
-    for i, part in enumerate(parts):
-        assembly.add(part, color=colors[i])  # pyright: ignore
+    for part in parts.parts:
+        rgb = shaderColors.named_colors[part.color_key].getDiffuseFloat()
+        color = cq_color_correct.Color(rgb[0], rgb[1], rgb[2])
+        assembly.add(part.part, color=color)
 
     if not hasattr(assembly, "export"):
         # for backward compatibility with CadQuery < 2.5.0
@@ -127,7 +168,6 @@ def export(
         export_VRML(
             os.path.join(output_dir, model_name + ".wrl"),
             parts,
-            color_names,
         )
 
 

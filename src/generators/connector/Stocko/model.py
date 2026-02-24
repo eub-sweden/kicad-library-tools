@@ -174,17 +174,17 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         spec.spec["pins"],
     )
 
-    parts: list[cq.Workplane] = [body, pins]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["pins_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (pins, spec.spec["pins_color_key"]),
+        ]
+    )
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=file_name,
         parts=parts,
-        color_names=color_names,
     )
     return 1

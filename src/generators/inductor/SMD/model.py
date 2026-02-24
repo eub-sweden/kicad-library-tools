@@ -94,14 +94,13 @@ def create_models(spec: SmdInductorSpec, generator_name: str) -> int:
     else:
         raise ValueError(f"Invalid body_type: {type(spec.body)}")
 
-    model_parts = model_builder.build()
+    parts = model_builder.build()
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.library_name,
         model_name=f"L_{spec.manufacturer}_{spec.part_number}",
-        parts=[part[0] for part in model_parts.parts],
-        color_names=[part[1] for part in model_parts.parts],
+        parts=parts,
     )
     return 1
 
@@ -191,7 +190,7 @@ class CubicInductorBuilder(InductorModelBuilder):
             print(f"seriesType = {series_data.body_type}")
             print(f"seriesPadThickness = {series_data.pad_thickness}")
             print(f"seriesCornerRadius = {series_data.corner_radius}")
-        rotation = 0
+
         case = cq.Workplane("XY").box(widthX, lengthY, height, (True, True, False))
 
         # If no corner radius, the default is 5%
@@ -222,15 +221,13 @@ class CubicInductorBuilder(InductorModelBuilder):
         pins = build_pins(pad_dims, pad_thickness, widthX)
         case = case.cut(pins)
 
-        case = case.rotate((0, 0, 0), (0, 0, 1), rotation)
-        pins = pins.rotate((0, 0, 0), (0, 0, 1), rotation)
-
-        return export_tools.AssemblyParts(
+        parts = export_tools.AssemblyParts(
             [
                 (case, self.spec.body_color),
                 (pins, self.spec.pad_color),
             ]
         )
+        return parts
 
 
 class HoriziontalAirCoreBuilder(InductorModelBuilder):

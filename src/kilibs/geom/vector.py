@@ -546,13 +546,6 @@ class Vector2D:
 class Vector3D:
     """A 3D vector."""
 
-    x: float
-    """The x-coordinate."""
-    y: float
-    """The y-coordinate."""
-    z: float
-    """The z-coordinate."""
-
     def __init__(
         self,
         coordinates: Vec3DCompatible | float | int | None = None,
@@ -576,6 +569,14 @@ class Vector3D:
             >>> Vector3D(Vector2D(0, 0))
             >>> Vector3D(Vector3D(0, 0, 0))
         """
+
+        self.x: float
+        """The x-coordinate."""
+        self.y: float
+        """The y-coordinate."""
+        self.z: float
+        """The z-coordinate."""
+
         self.z = 0.0
         if isinstance(coordinates, float | int):
             self.x = float(coordinates)
@@ -642,6 +643,20 @@ class Vector3D:
         other = Vector3D.__arithmetic_parse(other)
         return self.x * other.x + self.y * other.y + self.z * other.z
 
+    def is_nullvec(self, tol: float = TOL_MM) -> bool:
+        """Check if the vector is equal to the null-vector.
+
+        Args:
+            tol: Manhattan distance that the vector is allowed to be away from (0, 0, 0)
+                in any axis and still be considered equal to (0, 0).
+
+        Returns:
+            `True` if the vector is a null-vector, `False` otherwise.
+        """
+        if abs(self.x) > tol or abs(self.y) > tol or abs(self.z) > tol:
+            return False
+        return True
+
     def round_to(self, base: float) -> Vector3D:
         """Round to a specific base (like it's required for a grid).
 
@@ -659,6 +674,10 @@ class Vector3D:
     def to_dict(self) -> dict[str, float]:
         """Return a dictionary containing the coordinates."""
         return {"x": self.x, "y": self.y, "z": self.z}
+
+    def to_tuple(self) -> tuple[float, float, float]:
+        """Return a tuple of (x, y, z)"""
+        return (self.x, self.y, self.z)
 
     @staticmethod
     def __arithmetic_parse(

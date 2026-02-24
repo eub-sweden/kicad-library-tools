@@ -97,10 +97,6 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     Returns:
         The number of models generated.
     """
-    # Collections of the components and their matching colors to export to VRML
-    parts: list[cq.Workplane] = []
-    color_names: list[str] = []
-
     BODY_PINS = ("cq_parameters_smd_generic_rectangular",)
     CASETOP_PINS = (
         "cq_parameters_murata_PKMCS0909E4000",
@@ -119,37 +115,33 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
 
     model_class_name = spec.spec["model_class"]
 
+    parts = export_tools.AssemblyParts()
+
     if model_class_name in BODY_PINS:
         cqm = globals()[model_class_name]
         body = cqm.make_body(spec.spec)
         pins = cqm.make_pins(spec.spec)
-        parts = [body, pins]
-        color_names = [
-            spec.spec["body_color_key"],
-            spec.spec["pins_color_key"],
-        ]
+
+        parts.append(body, spec.spec["body_color_key"])
+        parts.append(pins, spec.spec["pins_color_key"])
 
     elif model_class_name in CASETOP_PINS:
         cqm = globals()[model_class_name]()
         case_top = cqm.make_case(spec.spec)
         pins = cqm.make_pins(spec.spec)
-        parts = [case_top, pins]
-        color_names = [
-            spec.spec["case_top_color_key"],
-            spec.spec["pins_color_key"],
-        ]
+
+        parts.append(case_top, spec.spec["case_top_color_key"])
+        parts.append(pins, spec.spec["pins_color_key"])
 
     elif model_class_name in CASETOP_BODY_PINS:
         cqm = globals()[model_class_name]()
         case_top = cqm.make_top(spec.spec)
         case = cqm.make_case(spec.spec)
         pins = cqm.make_pins(spec.spec)
-        parts = [case_top, case, pins]
-        color_names = [
-            spec.spec["case_top_color_key"],
-            spec.spec["body_color_key"],
-            spec.spec["pins_color_key"],
-        ]
+
+        parts.append(case_top, spec.spec["case_top_color_key"])
+        parts.append(case, spec.spec["body_color_key"])
+        parts.append(pins, spec.spec["pins_color_key"])
 
     elif model_class_name in CASETOP_BODY_PINS_NTHPIN:
         cqm = globals()[model_class_name]()
@@ -157,15 +149,12 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         case = cqm.make_case(spec.spec)
         pins = cqm.make_pins(spec.spec)
         npth_pins = cqm.make_npth_pins(spec.spec)
-        parts = [case_top, case, pins]
-        color_names = [
-            spec.spec["case_top_color_key"],
-            spec.spec["body_color_key"],
-            spec.spec["pins_color_key"],
-        ]
-        if npth_pins:
-            parts.append(npth_pins)
-            color_names.append(spec.spec["npth_pin_color_key"])
+
+        parts.append(case_top, spec.spec["case_top_color_key"])
+        parts.append(case, spec.spec["body_color_key"])
+        parts.append(pins, spec.spec["pins_color_key"])
+        parts.append(npth_pins, spec.spec.get("npth_pin_color_key", None))
+
     else:
         logging.error("No match found for the model_class")
         return 0
@@ -175,6 +164,5 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         lib_name=spec.spec["destination_dir"],
         model_name=spec.id,
         parts=parts,
-        color_names=color_names,
     )
     return 1

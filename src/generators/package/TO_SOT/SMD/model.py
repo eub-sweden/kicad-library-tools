@@ -61,8 +61,6 @@ ___ver___ = "2.0.0"
 
 import logging
 
-import cadquery as cq
-
 from generators.tools.model import export_tools
 from generators.tools.spec.legacy_model_spec import LegacyModelSpec
 
@@ -114,22 +112,22 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     # Build all the variants
     for variant in spec.spec["variants"]:
         # Make the parts of the model
-        (body, tab, pins, file_name) = cqm.build_series(
+        body, tab, pins, file_name = cqm.build_series(
             spec.spec["base"], spec.spec["variants"][variant]
         )
 
-        parts: list[cq.Workplane] = [body, tab, pins]
-        color_names: list[str] = [
-            spec.spec["base"]["device"]["body"]["colour"],
-            spec.spec["base"]["device"]["tab"]["colour"],
-            spec.spec["base"]["device"]["pins"]["colour"],
-        ]
+        parts = export_tools.AssemblyParts(
+            [
+                (body, spec.spec["base"]["device"]["body"]["colour"]),
+                (tab, spec.spec["base"]["device"]["tab"]["colour"]),
+                (pins, spec.spec["base"]["device"]["pins"]["colour"]),
+            ]
+        )
 
         export_tools.export(
             generator_name=generator_name,
             lib_name=spec.spec["destination_dir"],
             model_name=file_name,
             parts=parts,
-            color_names=color_names,
         )
     return len(spec.spec["variants"])

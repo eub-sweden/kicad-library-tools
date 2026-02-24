@@ -54,8 +54,6 @@ __Comment__ = """This generator loads cadquery model scripts and generates step/
 
 ___ver___ = "2.0.0"
 
-import cadquery as cq
-
 from generators.tools.model import export_tools
 from generators.tools.spec.legacy_model_spec import LegacyModelSpec
 
@@ -91,35 +89,22 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         cqm = cq_parameters_socket_generic()
 
     # Make the parts of the model
-    (body_top, body, pins, npth_pins) = cqm.make_3D_model(spec.spec)
-    body = body.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    if body_top:
-        body_top = body_top.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    if pins:
-        pins = pins.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-    if npth_pins:
-        npth_pins = npth_pins.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
+    body_top, body, pins, npth_pins = cqm.make_3D_model(spec.spec)
 
-    parts: list[cq.Workplane] = []
-    color_names: list[str] = []
-    if body is not None:
-        parts.append(body)
-        color_names.append(spec.spec["body_color_key"])
-    if body_top is not None:
-        parts.append(body_top)
-        color_names.append(spec.spec["body_top_color_key"])
-    if pins is not None:
-        parts.append(pins)
-        color_names.append(spec.spec["pin_color_key"])
-    if npth_pins is not None:
-        parts.append(npth_pins)
-        color_names.append(spec.spec["npth_pin_color_key"])
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (body_top, spec.spec["body_top_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+            (npth_pins, spec.spec["npth_pin_color_key"]),
+        ]
+    )
+    parts.rotate(spec.spec["rotation"])
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["model_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

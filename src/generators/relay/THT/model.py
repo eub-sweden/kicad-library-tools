@@ -54,8 +54,6 @@ __Comment__ = """This generator loads cadquery model scripts and generates step/
 
 ___ver___ = "2.0.0"
 
-import cadquery as cq
-
 from generators.tools.model import export_tools
 from generators.tools.spec.legacy_model_spec import LegacyModelSpec
 
@@ -91,24 +89,19 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     if spec.spec["pintype"] == "smd":
         pins = make_pins_smd(spec.spec)
 
-    # Make sure the parts are in the correct orientation
-    rotation = spec.spec.get("rotation", 0)
-    body = body.rotate((0, 0, 0), (0, 0, 1), rotation)
-    body_top = body_top.rotate((0, 0, 0), (0, 0, 1), rotation)
-    pins = pins.rotate((0, 0, 0), (0, 0, 1), rotation)
-
-    parts: list[cq.Workplane] = [body, body_top, pins]
-    color_names: list[str] = [
-        spec.spec["body_color_key"],
-        spec.spec["body_top_color_key"],
-        spec.spec["pin_color_key"],
-    ]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (body_top, spec.spec["body_top_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+        ]
+    )
+    parts.rotate(spec.spec["rotation"])
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["model_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

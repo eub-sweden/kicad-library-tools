@@ -54,8 +54,6 @@ __Comment__ = """This generator loads cadquery model scripts and generates step/
 
 ___ver___ = "2.0.0"
 
-import cadquery as cq
-
 from generators.tools.model import export_tools
 from generators.tools.spec.legacy_model_spec import LegacyModelSpec
 
@@ -80,26 +78,19 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         spec.id.replace("-", "_").replace("(", "").replace(")", "")
     )  # Leaving the period out was breaking file names
 
-    parts: list[cq.Workplane] = []
-    color_names: list[str] = []
-    if body is not None:
-        parts.append(body)
-        color_names.append(spec.spec["body_color_key"])
-    if base is not None:
-        parts.append(base)
-        color_names.append(spec.spec["base_color_key"])
-    if mark is not None:
-        parts.append(mark)
-        color_names.append(spec.spec["mark_color_key"])
-    if pins is not None:
-        parts.append(pins)
-        color_names.append(spec.spec["pin_color_key"])
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (base, spec.spec["base_color_key"]),
+            (mark, spec.spec["mark_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+        ]
+    )
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=file_name,
         parts=parts,
-        color_names=color_names,
     )
     return 1

@@ -103,34 +103,25 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     else:
         pins = cqm.make_pins(body, spec.spec)
 
-    body_top = body_top.rotate(
-        (0, 0, 0), (0, 0, 1), spec.spec["rotation"]
-    )  # .translate((spec.spec['F'] / 2.0, 0, 0))
-    body = body.rotate(
-        (0, 0, 0), (0, 0, 1), spec.spec["rotation"]
-    )  # .translate((spec.spec['F'] / 2.0, 0, 0))
-    pins = pins.rotate(
-        (0, 0, 0), (0, 0, 1), spec.spec["rotation"]
-    )  # .translate((spec.spec['F'] / 2.0, 0, 0))
+    parts = export_tools.AssemblyParts(
+        [
+            (body, spec.spec["body_color_key"]),
+            (body_top, spec.spec["body_top_color_key"]),
+            (pins, spec.spec["pin_color_key"]),
+        ]
+    )
 
-    parts: list[cq.Workplane] = [body_top, body, pins]
-    color_names: list[str] = [
-        spec.spec["body_top_color_key"],
-        spec.spec["body_color_key"],
-        spec.spec["pin_color_key"],
-    ]
     # Handle the case of the SMD models that have a bottom as well as the other parts
     if spec.id.startswith("SMD") or spec.id.startswith("MicroCrystal"):
         bottom = cqm.make_bottom(body, spec.spec)
-        bottom = bottom.rotate((0, 0, 0), (0, 0, 1), spec.spec["rotation"])
-        parts.append(bottom)
-        color_names.append(spec.spec["bottom_color_key"])
+        parts.append(bottom, spec.spec["bottom_color_key"])
+
+    parts.rotate(spec.spec.get("rotation", 0))
 
     export_tools.export(
         generator_name=generator_name,
         lib_name=spec.spec["destination_dir"],
         model_name=spec.spec["file_name"],
         parts=parts,
-        color_names=color_names,
     )
     return 1

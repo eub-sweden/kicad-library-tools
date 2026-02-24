@@ -54,8 +54,6 @@ __Comment__ = """This generator loads cadquery model scripts and generates step/
 
 ___ver___ = "2.0.0"
 
-import cadquery as cq
-
 from generators.tools.model import export_tools
 from generators.tools.spec.legacy_model_spec import LegacyModelSpec
 
@@ -158,6 +156,9 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
         # Make the parts of the model
         body = cqm.make_body()
         pins = cqm.make_pins()
+        buttons = None
+        mark = None
+
         if i != 2:
             buttons = cqm.make_buttons()
             mark = cqm.make_pinmark(cqm.button_width + 0.2)
@@ -167,28 +168,22 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
             rotation = 90
         else:
             rotation = -90
-        body = body.rotate((0, 0, 0), (0, 0, 1), rotation).translate(offsets)
-        pins = pins.rotate((0, 0, 0), (0, 0, 1), rotation).translate(offsets)
-        if i != 2:
-            buttons = buttons.rotate((0, 0, 0), (0, 0, 1), rotation).translate(offsets)
-            mark = mark.rotate((0, 0, 0), (0, 0, 1), rotation).translate(offsets)
 
-        parts: list[cq.Workplane] = [body, pins]
-        color_names: list[str] = [
-            spec.spec["body_color_key"],
-            spec.spec["pin_color_key"],
-        ]
-        if i != 2:
-            parts.append(buttons)
-            parts.append(mark)
-            color_names.append(spec.spec["button_color_key"])
-            color_names.append(spec.spec["mark_color_key"])
+        parts = export_tools.AssemblyParts(
+            [
+                (body, spec.spec["body_color_key"]),
+                (pins, spec.spec["pin_color_key"]),
+                (buttons, spec.spec["button_color_key"]),
+                (mark, spec.spec["mark_color_key"]),
+            ]
+        )
+        parts.rotate(rotation)
+        parts.translate(offsets)
 
         export_tools.export(
             generator_name=generator_name,
             lib_name=spec.spec["destination_dir"],
             model_name=cqm.makeModelName(spec.id),
             parts=parts,
-            color_names=color_names,
         )
     return len(pin_range)

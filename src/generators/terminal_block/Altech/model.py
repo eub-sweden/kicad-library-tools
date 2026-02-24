@@ -269,14 +269,17 @@ def create_models(spec: LegacyModelSpec, generator_name: str) -> int:
     body = make_case_AK300(spec.spec, spec.spec["pin_number"])
     pins = make_pins_AK300(spec.spec, spec.spec["pin_number"])
 
-    parts: list[cq.Workplane] = [body, pins]
-    color_names = ["black body", "metal grey pins"]
+    parts = export_tools.AssemblyParts(
+        [
+            (body, "black body"),
+            (pins, "metal grey pins"),
+        ]
+    )
 
     export_tools.export(
         generator_name=generator_name,
         lib_name="TerminalBlock_Altech",
         model_name=spec.id,
         parts=parts,
-        color_names=color_names,
     )
     return 1
