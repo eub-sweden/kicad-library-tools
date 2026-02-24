@@ -142,7 +142,7 @@ ST_WLCSP-18_1.86x2.14mm_Layout7x5_P0.4mm_Stagger:
   paste_margin: 0.0125
 
 ST_WLCSP-19_1.643x2.492mm_Layout4x11_P0.35mm_Stagger:
-  size_source: "https://www.st.com/resource/en/datasheet/stm32c071kb.pdf#page=100"
+  size_source: "https://www.st.com/resource/en/datasheet/stm32c071kb.pdf#page=101" # rev 2
   description: "ST WLCSP-19, ST Die ID 493"
   compatible_mpns:
     - "ST-Die-493"
@@ -151,23 +151,31 @@ ST_WLCSP-19_1.643x2.492mm_Layout4x11_P0.35mm_Stagger:
   manufacturer: "ST"
   body_size_y: 2.492
   body_size_x: 1.643
+  body_pcb_gap: 0.152 # min
+  overall_height: 0.577
+  ball_diameter: 0.24
   pitch: 0.35
   layout_y: 11
   layout_x: 4
   pad_skips: [E2,G2,F3]
   staggered: y
   first_ball: A2
-  pad_diameter: 0.200  # Not in datasheet, copied from ST_WLCSP-72_3.38x3.38mm_P0.35m_Stagger
-  mask_margin: 0.0375  # Not in datasheet, copied from ST_WLCSP-72_3.38x3.38mm_P0.35m_Stagger
+  pad_diameter: 0.200
+  mask_margin: 0.0375
   paste_margin: 0.0375  # Not in datasheet, copied from ST_WLCSP-72_3.38x3.38mm_P0.35m_Stagger
 
 ST_WLCSP-20_1.94x2.4mm_Layout4x5_P0.4mm:
-  size_source: "https://www.st.com/resource/en/datasheet/stm32g051f8.pdf#page=102"
+  size_source: "https://www.st.com/resource/en/datasheet/stm32g051f8.pdf#page=105" #rev 4
   description: "ST WLCSP-20, ST die ID 456"
   device_type: "WLCSP"
   manufacturer: "ST"
+  compatible_mpns:
+    - "ST_B0E1"
   body_size_y: 2.40
   body_size_x: 1.94
+  body_pcb_gap: 0.18 # typ
+  overall_height: 0.59
+  ball_diameter: 0.25
   pitch: 0.4
   layout_y: 5
   layout_x: 4
@@ -176,13 +184,18 @@ ST_WLCSP-20_1.94x2.4mm_Layout4x5_P0.4mm:
   paste_margin: 0.0125
 
 ST_WLCSP-25_Die425:
-  size_source: "http://www.st.com/resource/en/datasheet/stm32l031f6.pdf#page=112"
+  size_source: "http://www.st.com/resource/en/datasheet/stm32l031f6.pdf#page=112" # rev 6
   description: "WLCSP-25"
   device_type: "WLCSP"
   manufacturer: "ST"
+  compatible_mpns:
+    - "ST_A046"
   name_equal_to_key: True
   body_size_y: 2.493
   body_size_x: 2.097
+  body_pcb_gap: 0.175 # typ
+  overall_height: 0.585
+  ball_diameter: 0.25
   pitch: 0.4
   layout_y: 5
   layout_x: 5
@@ -191,13 +204,18 @@ ST_WLCSP-25_Die425:
   paste_margin: 0.000001
 
 ST_WLCSP-25_Die444:
-  size_source: "http://www.st.com/resource/en/datasheet/stm32f031k6.pdf#page=93"
+  size_source: "http://www.st.com/resource/en/datasheet/stm32f031k6.pdf#page=93" # rev 6
   description: "WLCSP-25"
   device_type: "WLCSP"
   manufacturer: "ST"
+  compatible_mpns:
+    - "ST_A01N"
   name_equal_to_key: True
   body_size_y: 2.325
   body_size_x: 2.423
+  body_pcb_gap: 0.175 # typ
+  overall_height: 0.585
+  ball_diameter: 0.25
   pitch: 0.4
   layout_y: 5
   layout_x: 5
@@ -206,13 +224,18 @@ ST_WLCSP-25_Die444:
   paste_margin: 0.0125
 
 ST_WLCSP-25_Die457:
-  size_source: "http://www.st.com/resource/en/datasheet/stm32l011k3.pdf#page=100"
+  size_source: "http://www.st.com/resource/en/datasheet/stm32l011k3.pdf#page=100" # rev 5
   description: "WLCSP-25"
   device_type: "WLCSP"
   manufacturer: "ST"
+  compatible_mpns:
+    - "ST_A05M"
   name_equal_to_key: True
   body_size_y: 2.070
   body_size_x: 2.133
+  body_pcb_gap: 0.175 # typ
+  overall_height: 0.585
+  ball_diameter: 0.25
   pitch: 0.4
   layout_y: 5
   layout_x: 5
@@ -221,12 +244,17 @@ ST_WLCSP-25_Die457:
   paste_margin: 0.0125
 
 ST_WLCSP-25_2.33x2.24mm_Layout5x5_P0.4mm:
-  size_source: "https://www.st.com/resource/en/datasheet/stm32h503eb.pdf"
+  size_source: "https://www.st.com/resource/en/datasheet/stm32h503eb.pdf#page=155" # rev 4
   description: "ST WLCSP-25, ST Die ID 474"
   device_type: "WLCSP"
   manufacturer: "ST"
+  compatible_mpns:
+    - "ST_B0GN"
   body_size_y: 2.24
   body_size_x: 2.33
+  body_pcb_gap: 0.17 # typ
+  overall_height: 0.58
+  ball_diameter: 0.26
   pitch: 0.4
   layout_y: 5
   layout_x: 5
@@ -235,12 +263,17 @@ ST_WLCSP-25_2.33x2.24mm_Layout5x5_P0.4mm:
   paste_margin: 0.0125
 
 ST_WLCSP-27_2.34x2.55mm_Layout9x6_P0.4mm_Stagger:
-  size_source: "https://www.st.com/resource/en/datasheet/stm32u031g6.pdf"
+  size_source: "https://www.st.com/resource/en/datasheet/stm32u031g6.pdf#page=105" # rev 2
   description: "ST WLCSP-27, ST Die ID 459"
   device_type: "WLCSP"
   manufacturer: "ST"
+  compatible_mpns:
+    - "ST_B0KB"
   body_size_y: 2.55
   body_size_x: 2.34
+  body_pcb_gap: 0.17 # typ
+  overall_height: 0.58
+  ball_diameter: 0.25
   pitch: 0.40
   layout_y: 6
   layout_x: 9
@@ -279,13 +312,18 @@ ST_WLCSP-36_Die417:
   paste_margin: 0.000001
 
 ST_WLCSP-36_Die440:
-  size_source: "http://www.st.com/resource/en/datasheet/stm32f051t8.pdf#page=103"
+  size_source: "http://www.st.com/resource/en/datasheet/stm32f051t8.pdf#page=103" # rev 7
   description: "WLCSP-36"
   device_type: "WLCSP"
   manufacturer: "ST"
+  compatible_mpns:
+    - "ST_A0ZL"
   name_equal_to_key: True
   body_size_y: 2.703
   body_size_x: 2.605
+  body_pcb_gap: 0.175 # typ
+  overall_height: 0.585
+  ball_diameter: 0.25
   pitch: 0.4
   layout_y: 6
   layout_x: 6
@@ -309,13 +347,18 @@ ST_WLCSP-36_Die445:
   paste_margin: 0.000001
 
 ST_WLCSP-36_Die458:
-  size_source: "http://www.st.com/resource/en/datasheet/stm32f410t8.pdf#page=119"
+  size_source: "http://www.st.com/resource/en/datasheet/stm32f410t8.pdf#page=130" # rev 7
   description: "WLCSP-36"
   device_type: "WLCSP"
   manufacturer: "ST"
+  compatible_mpns:
+    - "ST_A05F"
   name_equal_to_key: True
   body_size_y: 2.579
   body_size_x: 2.553
+  body_pcb_gap: 0.17 # typ
+  overall_height: 0.585
+  ball_diameter: 0.25
   pitch: 0.4
   layout_y: 6
   layout_x: 6
@@ -380,7 +423,7 @@ ST_WLCSP-36_2.83x2.99mm_Layout7x13_P0.4mm_Stagger_Offcenter:
       pad_skips: [J5,K2,L3,N3]
 
 ST_WLCSP-39_2.76x2.78mm_Layout11x7_P0.4mm_Stagger:
-  size_source: "https://www.st.com/resource/en/datasheet/stm32h523he.pdf#page=197"
+  size_source: "https://www.st.com/resource/en/datasheet/stm32h523he.pdf#page=197" # rev 2
   description: "ST WLCSP-39, ST Die ID 478"
   compatible_mpns:
     - "ST-Package-B0MM"
@@ -388,6 +431,9 @@ ST_WLCSP-39_2.76x2.78mm_Layout11x7_P0.4mm_Stagger:
   manufacturer: "ST"
   body_size_y: 2.78
   body_size_x: 2.76
+  body_pcb_gap: 0.17 # typ
+  overall_height: 0.58
+  ball_diameter: 0.26
   pitch: 0.4
   layout_y: 7
   layout_x: 11
