@@ -1,5 +1,5 @@
 # Base configuration extracted by YAMLCommon (threshold=0.90)
-base: &base
+base:
   R_POW: 0
   classname: L_Toroid
   deco: chokewire
@@ -21,7 +21,7 @@ base: &base
     - 0
 
 L8.0mm_W5.0mm_Px5.08mm_Py0.00mm:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1.0
   h: 5
@@ -36,7 +36,7 @@ L8.0mm_W5.0mm_Px5.08mm_Py0.00mm:
 
 
 L10.4mm_W6.5mm_Px5.60mm_Py0.00mm:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1.3
   h: 6.5
@@ -51,7 +51,7 @@ L10.4mm_W6.5mm_Px5.60mm_Py0.00mm:
 
 
 L12.8mm_W8.0mm_Px7.62mm_Py0.00mm:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1.5
   h: 8
@@ -66,7 +66,7 @@ L12.8mm_W8.0mm_Px7.62mm_Py0.00mm:
 
 
 L11.8mm_W8.6mm_Px5.58mm_Py0.00mm_Pulse_KM-1:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.8
   h: 8.64
@@ -85,7 +85,7 @@ L11.8mm_W8.6mm_Px5.58mm_Py0.00mm_Pulse_KM-1:
 
 
 L13.2mm_W11.4mm_Px7.62mm_Py0.00mm_Pulse_KM-2:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.8
   h: 11.43
@@ -104,7 +104,7 @@ L13.2mm_W11.4mm_Px7.62mm_Py0.00mm_Pulse_KM-2:
 
 
 L17.3mm_W11.4mm_Px7.62mm_Py0.00mm_Pulse_KM-3:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.8
   h: 11.43
@@ -123,7 +123,7 @@ L17.3mm_W11.4mm_Px7.62mm_Py0.00mm_Pulse_KM-3:
 
 
 L19.7mm_W15.5mm_Px11.44mm_Py0.00mm_Pulse_KM-4:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.8
   h: 15.5
@@ -142,7 +142,7 @@ L19.7mm_W15.5mm_Px11.44mm_Py0.00mm_Pulse_KM-4:
 
 
 L26.4mm_W17.8mm_Px12.70mm_Py0.00mm_Pulse_KM-5:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.8
   h: 17.78
@@ -161,7 +161,7 @@ L26.4mm_W17.8mm_Px12.70mm_Py0.00mm_Pulse_KM-5:
 
 
 L14.0mm_W6.4mm_Px4.57mm_Py0.00mm_Pulse_A:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.5
   h: 6.35
@@ -178,7 +178,7 @@ L14.0mm_W6.4mm_Px4.57mm_Py0.00mm_Pulse_A:
 
 
 L17.8mm_W9.7mm_Px7.11mm_Py0.00mm_Pulse_B:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.5
   h: 9.65
@@ -195,7 +195,7 @@ L17.8mm_W9.7mm_Px7.11mm_Py0.00mm_Pulse_B:
 
 
 L21.6mm_W9.5mm_Px7.11mm_Py0.00mm_Pulse_C:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.8
   h: 9.53
@@ -212,7 +212,7 @@ L21.6mm_W9.5mm_Px7.11mm_Py0.00mm_Pulse_C:
 
 
 L26.7mm_W14.0mm_Px10.16mm_Py0.00mm_Pulse_D:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.8
   h: 13.97
@@ -229,7 +229,7 @@ L26.7mm_W14.0mm_Px10.16mm_Py0.00mm_Pulse_D:
 
 
 L35.6mm_W17.8mm_Px12.70mm_Py0.00mm_Pulse_E:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.8
   h: 17.78
@@ -246,7 +246,7 @@ L35.6mm_W17.8mm_Px12.70mm_Py0.00mm_Pulse_E:
 
 
 L41.9mm_W17.8mm_Px12.70mm_Py0.00mm_Pulse_F:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.8
   h: 17.78
@@ -263,7 +263,7 @@ L41.9mm_W17.8mm_Px12.70mm_Py0.00mm_Pulse_F:
 
 
 L21.6mm_W8.4mm_Px8.38mm_Py0.00mm_Pulse_G:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.5
   h: 8.38
@@ -280,7 +280,7 @@ L21.6mm_W8.4mm_Px8.38mm_Py0.00mm_Pulse_G:
 
 
 L16.3mm_W7.1mm_Px7.11mm_Py0.00mm_Pulse_H:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/PE-92112KNL-Pulse-datasheet-17853305.pdf
   ddrill: 1.5
   h: 7.11
@@ -297,7 +297,7 @@ L16.3mm_W7.1mm_Px7.11mm_Py0.00mm_Pulse_H:
 
 
 L16.4mm_W7.6mm_Px6.60mm_Py0.00mm_Vishay_TJ3:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.2
   h: 7.6
@@ -314,7 +314,7 @@ L16.4mm_W7.6mm_Px6.60mm_Py0.00mm_Vishay_TJ3:
 
 
 L16.8mm_W9.2mm_Px7.10mm_Py0.00mm_Vishay_TJ3:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.5
   h: 9.2
@@ -333,7 +333,7 @@ L16.8mm_W9.2mm_Px7.10mm_Py0.00mm_Vishay_TJ3:
 
 
 L16.8mm_W9.2mm_Px7.10mm_Py0.00mm_Vishay_TJ3__1:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.2
   h: 9.2
@@ -350,7 +350,7 @@ L16.8mm_W9.2mm_Px7.10mm_Py0.00mm_Vishay_TJ3__1:
 
 
 L22.4mm_W10.2mm_Px7.90mm_Py0.00mm_Vishay_TJ4:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.5
   h: 10.2
@@ -367,7 +367,7 @@ L22.4mm_W10.2mm_Px7.90mm_Py0.00mm_Vishay_TJ4:
 
 
 L25.4mm_W14.7mm_Px12.20mm_Py0.00mm_Vishay_TJ5:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.5
   h: 14.7
@@ -386,7 +386,7 @@ L25.4mm_W14.7mm_Px12.20mm_Py0.00mm_Vishay_TJ5:
 
 
 L25.4mm_W14.7mm_Px12.20mm_Py0.00mm_Vishay_TJ5__1:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.2
   h: 14.7
@@ -403,7 +403,7 @@ L25.4mm_W14.7mm_Px12.20mm_Py0.00mm_Vishay_TJ5__1:
 
 
 L35.1mm_W21.1mm_Px18.50mm_Py0.00mm_Vishay_TJ6:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.5
   h: 21.1
@@ -420,7 +420,7 @@ L35.1mm_W21.1mm_Px18.50mm_Py0.00mm_Vishay_TJ6:
 
 
 L41.9mm_W19.1mm_Px15.80mm_Py0.00mm_Vishay_TJ7:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.5
   h: 19.1
@@ -437,7 +437,7 @@ L41.9mm_W19.1mm_Px15.80mm_Py0.00mm_Vishay_TJ7:
 
 
 L48.8mm_W25.4mm_Px20.80mm_Py0.00mm_Vishay_TJ8:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.7
   h: 25.4
@@ -454,7 +454,7 @@ L48.8mm_W25.4mm_Px20.80mm_Py0.00mm_Vishay_TJ8:
 
 
 L67.6mm_W36.1mm_Px31.80mm_Py0.00mm_Vishay_TJ9:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 2
   h: 36.1
@@ -471,7 +471,7 @@ L67.6mm_W36.1mm_Px31.80mm_Py0.00mm_Vishay_TJ9:
 
 
 L28.6mm_W14.3mm_Px11.43mm_Py0.00mm_Bourns_5700:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/5700_series.pdf
   ddrill: 1.8
   h: 14.3
@@ -488,7 +488,7 @@ L28.6mm_W14.3mm_Px11.43mm_Py0.00mm_Bourns_5700:
 
 
 L31.8mm_W15.9mm_Px13.50mm_Py0.00mm_Bourns_5700:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/5700_series.pdf
   ddrill: 1.8
   h: 15.9
@@ -505,7 +505,7 @@ L31.8mm_W15.9mm_Px13.50mm_Py0.00mm_Bourns_5700:
 
 
 L46.0mm_W19.1mm_Px21.80mm_Py0.00mm_Bourns_5700:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/5700_series.pdf
   ddrill: 1.9
   h: 19.1
@@ -522,7 +522,7 @@ L46.0mm_W19.1mm_Px21.80mm_Py0.00mm_Bourns_5700:
 
 
 L54.0mm_W23.8mm_Px20.10mm_Py0.00mm_Bourns_5700:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/5700_series.pdf
   ddrill: 1.8
   h: 23.8
@@ -539,7 +539,7 @@ L54.0mm_W23.8mm_Px20.10mm_Py0.00mm_Bourns_5700:
 
 
 L14.0mm_W5.6mm_Px5.30mm_Py0.00mm_Bourns_5700:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/5700_series.pdf
   ddrill: 0.8
   h: 5.6
@@ -556,7 +556,7 @@ L14.0mm_W5.6mm_Px5.30mm_Py0.00mm_Bourns_5700:
 
 
 L17.8mm_W8.1mm_Px7.62mm_Py0.00mm_Bourns_5700:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/5700_series.pdf
   ddrill: 0.9
   h: 8.1
@@ -573,7 +573,7 @@ L17.8mm_W8.1mm_Px7.62mm_Py0.00mm_Bourns_5700:
 
 
 L19.1mm_W8.1mm_Px7.10mm_Py0.00mm_Bourns_5700:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/5700_series.pdf
   ddrill: 0.8
   h: 8.1
@@ -590,7 +590,7 @@ L19.1mm_W8.1mm_Px7.10mm_Py0.00mm_Bourns_5700:
 
 
 L21.6mm_W9.1mm_Px8.40mm_Py0.00mm_Bourns_5700:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/5700_series.pdf
   ddrill: 1.1
   h: 9.1

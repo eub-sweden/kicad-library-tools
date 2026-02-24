@@ -1,5 +1,5 @@
 # Base configuration extracted by YAMLCommon (threshold=0.90)
-base: &base
+base:
   R_POW: 0
   classname: L
   d2: 0
@@ -18,7 +18,7 @@ base: &base
     - 0
 
 L9.5mm_D4.0mm_P12.70mm_Horizontal_Fastron_SMCC:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_SMCC_NEU.pdf, http://cdn-reichelt.de/documents/datenblatt/B400/LEADEDINDUCTORS.pdf
   d: 4
   ddrill: 1
@@ -33,7 +33,7 @@ L9.5mm_D4.0mm_P12.70mm_Horizontal_Fastron_SMCC:
 
 
 L9.5mm_D4.0mm_P15.24mm_Horizontal_Fastron_SMCC:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_SMCC_NEU.pdf, http://cdn-reichelt.de/documents/datenblatt/B400/LEADEDINDUCTORS.pdf
   d: 4
   ddrill: 1
@@ -48,7 +48,7 @@ L9.5mm_D4.0mm_P15.24mm_Horizontal_Fastron_SMCC:
 
 
 L9.5mm_D4.0mm_P2.54mm_Vertical_Fastron_SMCC:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_SMCC_NEU.pdf, http://cdn-reichelt.de/documents/datenblatt/B400/LEADEDINDUCTORS.pdf
   d: 4
   ddrill: 1
@@ -65,7 +65,7 @@ L9.5mm_D4.0mm_P2.54mm_Vertical_Fastron_SMCC:
 
 
 L9.5mm_D4.0mm_P5.08mm_Vertical_Fastron_SMCC:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_SMCC_NEU.pdf, http://cdn-reichelt.de/documents/datenblatt/B400/LEADEDINDUCTORS.pdf
   d: 4
   ddrill: 1
@@ -82,7 +82,7 @@ L9.5mm_D4.0mm_P5.08mm_Vertical_Fastron_SMCC:
 
 
 L7.0mm_D3.3mm_P10.16mm_Horizontal_Fastron_MICC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/70/MICC.pdf?type=Complete-DataSheet&productType=series
   d: 3.3
   ddrill: 0.8
@@ -99,7 +99,7 @@ L7.0mm_D3.3mm_P10.16mm_Horizontal_Fastron_MICC:
 
 
 L7.0mm_D3.3mm_P12.70mm_Horizontal_Fastron_MICC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/70/MICC.pdf?type=Complete-DataSheet&productType=series
   d: 3.3
   ddrill: 0.8
@@ -116,7 +116,7 @@ L7.0mm_D3.3mm_P12.70mm_Horizontal_Fastron_MICC:
 
 
 L7.0mm_D3.3mm_P2.54mm_Vertical_Fastron_MICC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/70/MICC.pdf?type=Complete-DataSheet&productType=series
   d: 3.3
   ddrill: 0.8
@@ -135,7 +135,7 @@ L7.0mm_D3.3mm_P2.54mm_Vertical_Fastron_MICC:
 
 
 L7.0mm_D3.3mm_P5.08mm_Vertical_Fastron_MICC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/70/MICC.pdf?type=Complete-DataSheet&productType=series
   d: 3.3
   ddrill: 0.8
@@ -154,7 +154,7 @@ L7.0mm_D3.3mm_P5.08mm_Vertical_Fastron_MICC:
 
 
 L24.0mm_D7.5mm_P27.94mm_Horizontal_Fastron_MESC:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_MESC.pdf
   d: 7.5
   ddrill: 1.2
@@ -171,7 +171,7 @@ L24.0mm_D7.5mm_P27.94mm_Horizontal_Fastron_MESC:
 
 
 L24.0mm_D7.5mm_P5.08mm_Vertical_Fastron_MESC:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_MESC.pdf
   d: 7.5
   ddrill: 1.2
@@ -190,7 +190,7 @@ L24.0mm_D7.5mm_P5.08mm_Vertical_Fastron_MESC:
 
 
 L24.0mm_D7.5mm_P7.62mm_Vertical_Fastron_MESC:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_MESC.pdf
   d: 7.5
   ddrill: 1.2
@@ -209,7 +209,7 @@ L24.0mm_D7.5mm_P7.62mm_Vertical_Fastron_MESC:
 
 
 L16.0mm_D7.5mm_P20.32mm_Horizontal_Fastron_XHBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/26/XHBCC.pdf?type=Complete-DataSheet&productType=series
   d: 7.5
   ddrill: 1.1
@@ -226,7 +226,7 @@ L16.0mm_D7.5mm_P20.32mm_Horizontal_Fastron_XHBCC:
 
 
 L16.0mm_D7.5mm_P25.40mm_Horizontal_Fastron_XHBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/26/XHBCC.pdf?type=Complete-DataSheet&productType=series
   d: 7.5
   ddrill: 1.1
@@ -243,7 +243,7 @@ L16.0mm_D7.5mm_P25.40mm_Horizontal_Fastron_XHBCC:
 
 
 L16.0mm_D7.5mm_P5.08mm_Vertical_Fastron_XHBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/26/XHBCC.pdf?type=Complete-DataSheet&productType=series
   d: 7.5
   ddrill: 1.1
@@ -262,7 +262,7 @@ L16.0mm_D7.5mm_P5.08mm_Vertical_Fastron_XHBCC:
 
 
 L16.0mm_D7.5mm_P7.62mm_Vertical_Fastron_XHBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/26/XHBCC.pdf?type=Complete-DataSheet&productType=series
   d: 7.5
   ddrill: 1.1
@@ -281,7 +281,7 @@ L16.0mm_D7.5mm_P7.62mm_Vertical_Fastron_XHBCC:
 
 
 L16.0mm_D6.3mm_P20.32mm_Horizontal_Fastron_VHBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/25/VHBCC.pdf?type=Complete-DataSheet&productType=series
   d: 6.3
   ddrill: 1.1
@@ -298,7 +298,7 @@ L16.0mm_D6.3mm_P20.32mm_Horizontal_Fastron_VHBCC:
 
 
 L16.0mm_D6.3mm_P25.40mm_Horizontal_Fastron_VHBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/25/VHBCC.pdf?type=Complete-DataSheet&productType=series
   d: 6.3
   ddrill: 1.1
@@ -315,7 +315,7 @@ L16.0mm_D6.3mm_P25.40mm_Horizontal_Fastron_VHBCC:
 
 
 L16.0mm_D6.3mm_P5.08mm_Vertical_Fastron_VHBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/25/VHBCC.pdf?type=Complete-DataSheet&productType=series
   d: 6.3
   ddrill: 1.1
@@ -334,7 +334,7 @@ L16.0mm_D6.3mm_P5.08mm_Vertical_Fastron_VHBCC:
 
 
 L16.0mm_D6.3mm_P7.62mm_Vertical_Fastron_VHBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/25/VHBCC.pdf?type=Complete-DataSheet&productType=series
   d: 6.3
   ddrill: 1.1
@@ -353,7 +353,7 @@ L16.0mm_D6.3mm_P7.62mm_Vertical_Fastron_VHBCC:
 
 
 L14.5mm_D5.8mm_P20.32mm_Horizontal_Fastron_HBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/18/HBCC.pdf?type=Complete-DataSheet&productType=series
   d: 5.8
   ddrill: 1.1
@@ -370,7 +370,7 @@ L14.5mm_D5.8mm_P20.32mm_Horizontal_Fastron_HBCC:
 
 
 L14.5mm_D5.8mm_P25.40mm_Horizontal_Fastron_HBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/18/HBCC.pdf?type=Complete-DataSheet&productType=series
   d: 5.8
   ddrill: 1.1
@@ -387,7 +387,7 @@ L14.5mm_D5.8mm_P25.40mm_Horizontal_Fastron_HBCC:
 
 
 L14.5mm_D5.8mm_P5.08mm_Vertical_Fastron_HBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/18/HBCC.pdf?type=Complete-DataSheet&productType=series
   d: 5.8
   ddrill: 1.1
@@ -406,7 +406,7 @@ L14.5mm_D5.8mm_P5.08mm_Vertical_Fastron_HBCC:
 
 
 L14.5mm_D5.8mm_P7.62mm_Vertical_Fastron_HBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/18/HBCC.pdf?type=Complete-DataSheet&productType=series
   d: 5.8
   ddrill: 1.1
@@ -425,7 +425,7 @@ L14.5mm_D5.8mm_P7.62mm_Vertical_Fastron_HBCC:
 
 
 L12.8mm_D5.8mm_P20.32mm_Horizontal_Fastron_HBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/18/HBCC.pdf?type=Complete-DataSheet&productType=series
   d: 5.8
   ddrill: 1.1
@@ -442,7 +442,7 @@ L12.8mm_D5.8mm_P20.32mm_Horizontal_Fastron_HBCC:
 
 
 L12.8mm_D5.8mm_P25.40mm_Horizontal_Fastron_HBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/18/HBCC.pdf?type=Complete-DataSheet&productType=series
   d: 5.8
   ddrill: 1.1
@@ -459,7 +459,7 @@ L12.8mm_D5.8mm_P25.40mm_Horizontal_Fastron_HBCC:
 
 
 L12.8mm_D5.8mm_P5.08mm_Vertical_Fastron_HBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/18/HBCC.pdf?type=Complete-DataSheet&productType=series
   d: 5.8
   ddrill: 1.1
@@ -478,7 +478,7 @@ L12.8mm_D5.8mm_P5.08mm_Vertical_Fastron_HBCC:
 
 
 L12.8mm_D5.8mm_P7.62mm_Vertical_Fastron_HBCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/18/HBCC.pdf?type=Complete-DataSheet&productType=series
   d: 5.8
   ddrill: 1.1
@@ -497,7 +497,7 @@ L12.8mm_D5.8mm_P7.62mm_Vertical_Fastron_HBCC:
 
 
 L12.0mm_D5.0mm_P15.24mm_Horizontal_Fastron_MISC:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_MISC.pdf
   d: 5
   ddrill: 1.2
@@ -514,7 +514,7 @@ L12.0mm_D5.0mm_P15.24mm_Horizontal_Fastron_MISC:
 
 
 L12.0mm_D5.0mm_P5.08mm_Vertical_Fastron_MISC:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_MISC.pdf
   d: 5
   ddrill: 1.2
@@ -533,7 +533,7 @@ L12.0mm_D5.0mm_P5.08mm_Vertical_Fastron_MISC:
 
 
 L12.0mm_D5.0mm_P7.62mm_Vertical_Fastron_MISC:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_MISC.pdf
   d: 5
   ddrill: 1.2
@@ -552,7 +552,7 @@ L12.0mm_D5.0mm_P7.62mm_Vertical_Fastron_MISC:
 
 
 L11.0mm_D4.5mm_P15.24mm_Horizontal_Fastron_MECC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/21/MECC.pdf?type=Complete-DataSheet&productType=series
   d: 4.5
   ddrill: 1.0
@@ -569,7 +569,7 @@ L11.0mm_D4.5mm_P15.24mm_Horizontal_Fastron_MECC:
 
 
 L11.0mm_D4.5mm_P5.08mm_Vertical_Fastron_MECC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/21/MECC.pdf?type=Complete-DataSheet&productType=series
   d: 4.5
   ddrill: 1.0
@@ -588,7 +588,7 @@ L11.0mm_D4.5mm_P5.08mm_Vertical_Fastron_MECC:
 
 
 L11.0mm_D4.5mm_P7.62mm_Vertical_Fastron_MECC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/21/MECC.pdf?type=Complete-DataSheet&productType=series
   d: 4.5
   ddrill: 1.0
@@ -607,7 +607,7 @@ L11.0mm_D4.5mm_P7.62mm_Vertical_Fastron_MECC:
 
 
 L13.0mm_D4.5mm_P15.24mm_Horizontal_Fastron_HCCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/19/HCCC.pdf?type=Complete-DataSheet&productType=series
   d: 4.5
   ddrill: 1.2
@@ -624,7 +624,7 @@ L13.0mm_D4.5mm_P15.24mm_Horizontal_Fastron_HCCC:
 
 
 L13.0mm_D4.5mm_P5.08mm_Vertical_Fastron_HCCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/19/HCCC.pdf?type=Complete-DataSheet&productType=series
   d: 4.5
   ddrill: 1.2
@@ -643,7 +643,7 @@ L13.0mm_D4.5mm_P5.08mm_Vertical_Fastron_HCCC:
 
 
 L13.0mm_D4.5mm_P7.62mm_Vertical_Fastron_HCCC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/19/HCCC.pdf?type=Complete-DataSheet&productType=series
   d: 4.5
   ddrill: 1.2
@@ -662,7 +662,7 @@ L13.0mm_D4.5mm_P7.62mm_Vertical_Fastron_HCCC:
 
 
 L14.0mm_D4.5mm_P15.24mm_Horizontal_Fastron_LACC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/20/LACC.pdf?type=Complete-DataSheet&productType=series
   d: 4.5
   ddrill: 1.0
@@ -679,7 +679,7 @@ L14.0mm_D4.5mm_P15.24mm_Horizontal_Fastron_LACC:
 
 
 L14.0mm_D4.5mm_P5.08mm_Vertical_Fastron_LACC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/20/LACC.pdf?type=Complete-DataSheet&productType=series
   d: 4.5
   ddrill: 1.0
@@ -698,7 +698,7 @@ L14.0mm_D4.5mm_P5.08mm_Vertical_Fastron_LACC:
 
 
 L14.0mm_D4.5mm_P7.62mm_Vertical_Fastron_LACC:
-  <<: *base
+  inherit: base
   add_description: http://www.fastrongroup.com/image-show/20/LACC.pdf?type=Complete-DataSheet&productType=series
   d: 4.5
   ddrill: 1.0
@@ -717,7 +717,7 @@ L14.0mm_D4.5mm_P7.62mm_Vertical_Fastron_LACC:
 
 
 L20.0mm_D8.0mm_P25.40mm_Horizontal:
-  <<: *base
+  inherit: base
   add_description: ''
   d: 8
   ddrill: 1.2
@@ -730,7 +730,7 @@ L20.0mm_D8.0mm_P25.40mm_Horizontal:
 
 
 L20.0mm_D8.0mm_P5.08mm_Vertical:
-  <<: *base
+  inherit: base
   add_description: ''
   d: 8
   ddrill: 1.2
@@ -745,7 +745,7 @@ L20.0mm_D8.0mm_P5.08mm_Vertical:
 
 
 L20.0mm_D8.0mm_P7.62mm_Vertical:
-  <<: *base
+  inherit: base
   add_description: ''
   d: 8
   ddrill: 1.2
@@ -760,7 +760,7 @@ L20.0mm_D8.0mm_P7.62mm_Vertical:
 
 
 L30.0mm_D8.0mm_P35.56mm_Horizontal_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 8
   ddrill: 1.4
@@ -777,7 +777,7 @@ L30.0mm_D8.0mm_P35.56mm_Horizontal_Fastron_77A:
 
 
 L30.0mm_D8.0mm_P5.08mm_Vertical_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 8
   ddrill: 1.4
@@ -796,7 +796,7 @@ L30.0mm_D8.0mm_P5.08mm_Vertical_Fastron_77A:
 
 
 L30.0mm_D8.0mm_P7.62mm_Vertical_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 8
   ddrill: 1.4
@@ -815,7 +815,7 @@ L30.0mm_D8.0mm_P7.62mm_Vertical_Fastron_77A:
 
 
 L26.0mm_D9.0mm_P30.48mm_Horizontal_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 9
   ddrill: 1.2
@@ -832,7 +832,7 @@ L26.0mm_D9.0mm_P30.48mm_Horizontal_Fastron_77A:
 
 
 L26.0mm_D9.0mm_P5.08mm_Vertical_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 9
   ddrill: 1.2
@@ -851,7 +851,7 @@ L26.0mm_D9.0mm_P5.08mm_Vertical_Fastron_77A:
 
 
 L26.0mm_D9.0mm_P7.62mm_Vertical_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 9
   ddrill: 1.2
@@ -870,7 +870,7 @@ L26.0mm_D9.0mm_P7.62mm_Vertical_Fastron_77A:
 
 
 L26.0mm_D10.0mm_P30.48mm_Horizontal_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 10
   ddrill: 1.2
@@ -887,7 +887,7 @@ L26.0mm_D10.0mm_P30.48mm_Horizontal_Fastron_77A:
 
 
 L26.0mm_D10.0mm_P5.08mm_Vertical_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 10
   ddrill: 1.2
@@ -906,7 +906,7 @@ L26.0mm_D10.0mm_P5.08mm_Vertical_Fastron_77A:
 
 
 L26.0mm_D10.0mm_P7.62mm_Vertical_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 10
   ddrill: 1.2
@@ -925,7 +925,7 @@ L26.0mm_D10.0mm_P7.62mm_Vertical_Fastron_77A:
 
 
 L26.0mm_D11.0mm_P30.48mm_Horizontal_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 11
   ddrill: 1.2
@@ -942,7 +942,7 @@ L26.0mm_D11.0mm_P30.48mm_Horizontal_Fastron_77A:
 
 
 L26.0mm_D11.0mm_P5.08mm_Vertical_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 11
   ddrill: 1.2
@@ -961,7 +961,7 @@ L26.0mm_D11.0mm_P5.08mm_Vertical_Fastron_77A:
 
 
 L26.0mm_D11.0mm_P7.62mm_Vertical_Fastron_77A:
-  <<: *base
+  inherit: base
   add_description: http://cdn-reichelt.de/documents/datenblatt/B400/DS_77A.pdf
   d: 11
   ddrill: 1.2
@@ -980,7 +980,7 @@ L26.0mm_D11.0mm_P7.62mm_Vertical_Fastron_77A:
 
 
 L5.3mm_D2.2mm_P7.62mm_Horizontal_Vishay_IM-1:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34030/im.pdf
   d: 2.2
   ddrill: 0.8
@@ -997,7 +997,7 @@ L5.3mm_D2.2mm_P7.62mm_Horizontal_Vishay_IM-1:
 
 
 L5.3mm_D2.2mm_P10.16mm_Horizontal_Vishay_IM-1:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34030/im.pdf
   d: 2.2
   ddrill: 0.8
@@ -1014,7 +1014,7 @@ L5.3mm_D2.2mm_P10.16mm_Horizontal_Vishay_IM-1:
 
 
 L5.3mm_D2.2mm_P2.54mm_Vertical_Vishay_IM-1:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34030/im.pdf
   d: 2.2
   ddrill: 0.8
@@ -1033,7 +1033,7 @@ L5.3mm_D2.2mm_P2.54mm_Vertical_Vishay_IM-1:
 
 
 L6.6mm_D2.7mm_P10.16mm_Horizontal_Vishay_IM-2:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34030/im.pdf
   d: 2.7
   ddrill: 0.8
@@ -1050,7 +1050,7 @@ L6.6mm_D2.7mm_P10.16mm_Horizontal_Vishay_IM-2:
 
 
 L6.6mm_D2.7mm_P2.54mm_Vertical_Vishay_IM-2:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34030/im.pdf
   d: 2.7
   ddrill: 0.8
@@ -1069,7 +1069,7 @@ L6.6mm_D2.7mm_P2.54mm_Vertical_Vishay_IM-2:
 
 
 L24.0mm_D7.1mm_P30.48mm_Horizontal_Vishay_IM-10-28:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34035/im10.pdf
   d: 7.1
   ddrill: 1.0
@@ -1086,7 +1086,7 @@ L24.0mm_D7.1mm_P30.48mm_Horizontal_Vishay_IM-10-28:
 
 
 L24.0mm_D7.1mm_P5.08mm_Vertical_Vishay_IM-10-28:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34035/im10.pdf
   d: 7.1
   ddrill: 1.0
@@ -1105,7 +1105,7 @@ L24.0mm_D7.1mm_P5.08mm_Vertical_Vishay_IM-10-28:
 
 
 L16.0mm_D9.5mm_P20.32mm_Horizontal_Vishay_IM-10-37:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34030/im10.pdf
   d: 9.5
   ddrill: 1
@@ -1122,7 +1122,7 @@ L16.0mm_D9.5mm_P20.32mm_Horizontal_Vishay_IM-10-37:
 
 
 L16.0mm_D9.5mm_P5.08mm_Vertical_Vishay_IM-10-37:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34030/im10.pdf
   d: 9.5
   ddrill: 1
@@ -1141,7 +1141,7 @@ L16.0mm_D9.5mm_P5.08mm_Vertical_Vishay_IM-10-37:
 
 
 L17.5mm_D12.0mm_P20.32mm_Horizontal_Vishay_IM-10-46:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34030/im10.pdf
   d: 12
   ddrill: 1
@@ -1158,7 +1158,7 @@ L17.5mm_D12.0mm_P20.32mm_Horizontal_Vishay_IM-10-46:
 
 
 L17.5mm_D12.0mm_P7.62mm_Vertical_Vishay_IM-10-46:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34030/im10.pdf
   d: 12
   ddrill: 1
@@ -1177,7 +1177,7 @@ L17.5mm_D12.0mm_P7.62mm_Vertical_Vishay_IM-10-46:
 
 
 L20.32mm_D12.1mm_P28.50mm_Horizontal_Vishay_IHA-101:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 12.07
   ddrill: 1.2
@@ -1194,7 +1194,7 @@ L20.32mm_D12.1mm_P28.50mm_Horizontal_Vishay_IHA-101:
 
 
 L20.32mm_D12.1mm_P7.62mm_Vertical_Vishay_IHA-101:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 12.07
   ddrill: 1.2
@@ -1213,7 +1213,7 @@ L20.32mm_D12.1mm_P7.62mm_Vertical_Vishay_IHA-101:
 
 
 L26.67mm_D12.1mm_P35.00mm_Horizontal_Vishay_IHA-103:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 12.07
   ddrill: 1.2
@@ -1230,7 +1230,7 @@ L26.67mm_D12.1mm_P35.00mm_Horizontal_Vishay_IHA-103:
 
 
 L26.67mm_D12.1mm_P7.62mm_Vertical_Vishay_IHA-103:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 12.07
   ddrill: 1.2
@@ -1249,7 +1249,7 @@ L26.67mm_D12.1mm_P7.62mm_Vertical_Vishay_IHA-103:
 
 
 L26.67mm_D14.0mm_P35.00mm_Horizontal_Vishay_IHA-104:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 13.97
   ddrill: 1.2
@@ -1266,7 +1266,7 @@ L26.67mm_D14.0mm_P35.00mm_Horizontal_Vishay_IHA-104:
 
 
 L26.67mm_D14.0mm_P7.62mm_Vertical_Vishay_IHA-104:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 13.97
   ddrill: 1.2
@@ -1285,7 +1285,7 @@ L26.67mm_D14.0mm_P7.62mm_Vertical_Vishay_IHA-104:
 
 
 L29.85mm_D14.0mm_P38.00mm_Horizontal_Vishay_IHA-105:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 13.97
   ddrill: 1.2
@@ -1302,7 +1302,7 @@ L29.85mm_D14.0mm_P38.00mm_Horizontal_Vishay_IHA-105:
 
 
 L29.85mm_D14.0mm_P7.62mm_Vertical_Vishay_IHA-105:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 13.97
   ddrill: 1.2
@@ -1321,7 +1321,7 @@ L29.85mm_D14.0mm_P7.62mm_Vertical_Vishay_IHA-105:
 
 
 L23.37mm_D12.7mm_P32.00mm_Horizontal_Vishay_IHA-203:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 12.7
   ddrill: 1.2
@@ -1338,7 +1338,7 @@ L23.37mm_D12.7mm_P32.00mm_Horizontal_Vishay_IHA-203:
 
 
 L23.37mm_D12.7mm_P7.62mm_Vertical_Vishay_IHA-203:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 12.7
   ddrill: 1.2
@@ -1357,7 +1357,7 @@ L23.37mm_D12.7mm_P7.62mm_Vertical_Vishay_IHA-203:
 
 
 L20.32mm_D12.7mm_P25.40mm_Horizontal_Vishay_IHA-201:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 12.7
   ddrill: 1.2
@@ -1374,7 +1374,7 @@ L20.32mm_D12.7mm_P25.40mm_Horizontal_Vishay_IHA-201:
 
 
 L20.32mm_D12.7mm_P7.62mm_Vertical_Vishay_IHA-201:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34014/iha.pdf
   d: 12.7
   ddrill: 1.2

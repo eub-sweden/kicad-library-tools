@@ -1,5 +1,5 @@
 # Base configuration extracted by YAMLCommon (threshold=0.90)
-base: &base
+base:
   R_POW: 0
   classname: L
   func: makeResistorRadial
@@ -20,7 +20,7 @@ base: &base
     - 0
 
 D24.4mm_P23.90mm_Murata_1400series:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_1400.pdf
   ddrill: 2.6
   h: 24.4
@@ -37,7 +37,7 @@ D24.4mm_P23.90mm_Murata_1400series:
 
 
 D24.4mm_P23.70mm_Murata_1400series:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_1400.pdf
   ddrill: 2.1
   h: 24.4
@@ -54,7 +54,7 @@ D24.4mm_P23.70mm_Murata_1400series:
 
 
 D24.4mm_P23.40mm_Murata_1400series:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_1400.pdf
   ddrill: 1.5
   h: 24.4
@@ -71,7 +71,7 @@ D24.4mm_P23.40mm_Murata_1400series:
 
 
 D24.4mm_P23.10mm_Murata_1400series:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_1400.pdf
   ddrill: 1.0
   h: 24.4
@@ -88,7 +88,7 @@ D24.4mm_P23.10mm_Murata_1400series:
 
 
 D24.4mm_P22.90mm_Murata_1400series:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_1400.pdf
   ddrill: 0.8
   h: 24.4
@@ -105,7 +105,7 @@ D24.4mm_P22.90mm_Murata_1400series:
 
 
 D29.8mm_P29.30mm_Murata_1400series:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_1400.pdf
   ddrill: 2.6
   h: 29.8
@@ -122,7 +122,7 @@ D29.8mm_P29.30mm_Murata_1400series:
 
 
 D29.8mm_P29.00mm_Murata_1400series:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_1400.pdf
   ddrill: 2.0
   h: 29.8
@@ -139,7 +139,7 @@ D29.8mm_P29.00mm_Murata_1400series:
 
 
 D29.8mm_P28.80mm_Murata_1400series:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_1400.pdf
   ddrill: 1.5
   h: 29.8
@@ -156,7 +156,7 @@ D29.8mm_P28.80mm_Murata_1400series:
 
 
 D29.8mm_P28.50mm_Murata_1400series:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_1400.pdf
   ddrill: 1
   h: 29.8
@@ -173,7 +173,7 @@ D29.8mm_P28.50mm_Murata_1400series:
 
 
 D29.8mm_P28.30mm_Murata_1400series:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_1400.pdf
   ddrill: 0.8
   h: 29.8
@@ -190,7 +190,7 @@ D29.8mm_P28.30mm_Murata_1400series:
 
 
 D16.8mm_P11.43mm_Vishay_IHB-1:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.4
   h: 16.8
@@ -207,7 +207,7 @@ D16.8mm_P11.43mm_Vishay_IHB-1:
 
 
 D16.8mm_P12.07mm_Vishay_IHB-1:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.0
   h: 16.8
@@ -224,7 +224,7 @@ D16.8mm_P12.07mm_Vishay_IHB-1:
 
 
 D16.8mm_P12.70mm_Vishay_IHB-1:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.0
   h: 16.8
@@ -241,7 +241,7 @@ D16.8mm_P12.70mm_Vishay_IHB-1:
 
 
 D21.0mm_P15.75mm_Vishay_IHB-2:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.6
   h: 21
@@ -258,7 +258,7 @@ D21.0mm_P15.75mm_Vishay_IHB-2:
 
 
 D21.0mm_P14.61mm_Vishay_IHB-2:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.3
   h: 21
@@ -275,7 +275,7 @@ D21.0mm_P14.61mm_Vishay_IHB-2:
 
 
 D21.0mm_P15.24mm_Vishay_IHB-2:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.2
   h: 21
@@ -292,7 +292,7 @@ D21.0mm_P15.24mm_Vishay_IHB-2:
 
 
 D21.0mm_P15.00mm_Vishay_IHB-2:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 0.8
   h: 21
@@ -309,7 +309,7 @@ D21.0mm_P15.00mm_Vishay_IHB-2:
 
 
 D27.9mm_P20.07mm_Vishay_IHB-3:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 2.1
   h: 27.9
@@ -326,7 +326,7 @@ D27.9mm_P20.07mm_Vishay_IHB-3:
 
 
 D27.9mm_P19.05mm_Vishay_IHB-3:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.8
   h: 27.9
@@ -343,7 +343,7 @@ D27.9mm_P19.05mm_Vishay_IHB-3:
 
 
 D27.9mm_P18.29mm_Vishay_IHB-3:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.8
   h: 27.9
@@ -360,7 +360,7 @@ D27.9mm_P18.29mm_Vishay_IHB-3:
 
 
 D40.6mm_P27.94mm_Vishay_IHB-4:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 2.2
   h: 40.64
@@ -377,7 +377,7 @@ D40.6mm_P27.94mm_Vishay_IHB-4:
 
 
 D40.6mm_P27.18mm_Vishay_IHB-4:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1
   h: 40.64
@@ -394,7 +394,7 @@ D40.6mm_P27.18mm_Vishay_IHB-4:
 
 
 D40.6mm_P28.70mm_Vishay_IHB-5:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 2.4
   h: 40.64
@@ -411,7 +411,7 @@ D40.6mm_P28.70mm_Vishay_IHB-5:
 
 
 D40.6mm_P27.94mm_Vishay_IHB-5:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 2.2
   h: 40.64
@@ -428,7 +428,7 @@ D40.6mm_P27.94mm_Vishay_IHB-5:
 
 
 D40.6mm_P26.16mm_Vishay_IHB-5:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.3
   h: 40.64
@@ -445,7 +445,7 @@ D40.6mm_P26.16mm_Vishay_IHB-5:
 
 
 D50.8mm_P36.32mm_Vishay_IHB-6:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 2.9
   h: 50.8
@@ -462,7 +462,7 @@ D50.8mm_P36.32mm_Vishay_IHB-6:
 
 
 D50.8mm_P38.86mm_Vishay_IHB-6:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 2.9
   h: 50.8
@@ -479,7 +479,7 @@ D50.8mm_P38.86mm_Vishay_IHB-6:
 
 
 D50.8mm_P35.81mm_Vishay_IHB-6:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 2.1
   h: 50.8
@@ -496,7 +496,7 @@ D50.8mm_P35.81mm_Vishay_IHB-6:
 
 
 D50.8mm_P34.29mm_Vishay_IHB-6:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.9
   h: 50.8
@@ -513,7 +513,7 @@ D50.8mm_P34.29mm_Vishay_IHB-6:
 
 
 D50.8mm_P33.27mm_Vishay_IHB-6:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34015/ihb.pdf
   ddrill: 1.6
   h: 50.8

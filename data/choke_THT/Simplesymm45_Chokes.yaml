@@ -1,5 +1,5 @@
 # Base configuration extracted by YAMLCommon (threshold=0.90)
-base: &base
+base:
   R_POW: 0
   add_description: http://datasheet.octopart.com/PE-54044NL-Pulse-datasheet-5313493.pdf
   classname: L
@@ -21,7 +21,7 @@ base: &base
     - 0
 
 L9.1mm_W9.1mm_Px6.35mm_Py6.35mm_Pulse_LP-25:
-  <<: *base
+  inherit: base
   h: 9.14
   height3d: 7.87
   name_additions:
@@ -37,7 +37,7 @@ L9.1mm_W9.1mm_Px6.35mm_Py6.35mm_Pulse_LP-25:
 
 
 L10.2mm_W10.2mm_Px7.62mm_Py7.62mm_Pulse_LP-30:
-  <<: *base
+  inherit: base
   h: 10.16
   height3d: 7.62
   name_additions:
@@ -53,7 +53,7 @@ L10.2mm_W10.2mm_Px7.62mm_Py7.62mm_Pulse_LP-30:
 
 
 L12.6mm_W12.6mm_Px9.52mm_Py9.52mm_Pulse_LP-37:
-  <<: *base
+  inherit: base
   h: 12.57
   height3d: 9.52
   name_additions:
@@ -69,7 +69,7 @@ L12.6mm_W12.6mm_Px9.52mm_Py9.52mm_Pulse_LP-37:
 
 
 L16.1mm_W16.1mm_Px7.62mm_Py12.7mm_Pulse_LP-44:
-  <<: *base
+  inherit: base
   h: 16.13
   height3d: 9.27
   name_additions:

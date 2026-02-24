@@ -1,5 +1,5 @@
 # Base configuration extracted by YAMLCommon (threshold=0.90)
-base: &base
+base:
   R_POW: 0
   classname: L_Toroid
   deco: chokewire
@@ -21,7 +21,7 @@ base: &base
     - 0
 
 Horizontal_D40.0mm_P48.26mm:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1.5
   h: 40
@@ -34,7 +34,7 @@ Horizontal_D40.0mm_P48.26mm:
 
 
 Horizontal_D3.2mm_P6.40mm_Diameter3-5mm_Amidon-T12:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1
   h: 3.175
@@ -51,7 +51,7 @@ Horizontal_D3.2mm_P6.40mm_Diameter3-5mm_Amidon-T12:
 
 
 Horizontal_D4.1mm_P8.00mm_Diameter4-5mm_Amidon-T16:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1
   h: 4.064
@@ -68,7 +68,7 @@ Horizontal_D4.1mm_P8.00mm_Diameter4-5mm_Amidon-T16:
 
 
 Horizontal_D5.1mm_P9.00mm_Diameter6-5mm_Amidon-T20:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1
   h: 5.08
@@ -85,7 +85,7 @@ Horizontal_D5.1mm_P9.00mm_Diameter6-5mm_Amidon-T20:
 
 
 Horizontal_D6.5mm_P10.00mm_Diameter7-5mm_Amidon-T25:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1
   h: 6.477
@@ -102,7 +102,7 @@ Horizontal_D6.5mm_P10.00mm_Diameter7-5mm_Amidon-T25:
 
 
 Horizontal_D7.8mm_P13.00mm_Diameter9-5mm_Amidon-T30:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1.2
   h: 7.7978
@@ -119,7 +119,7 @@ Horizontal_D7.8mm_P13.00mm_Diameter9-5mm_Amidon-T30:
 
 
 Horizontal_D9.5mm_P15.00mm_Diameter10-5mm_Amidon-T37:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1.2
   h: 9.525
@@ -136,7 +136,7 @@ Horizontal_D9.5mm_P15.00mm_Diameter10-5mm_Amidon-T37:
 
 
 Horizontal_D11.2mm_P17.00mm_Diameter12-5mm_Amidon-T44:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1.2
   h: 11.176
@@ -153,7 +153,7 @@ Horizontal_D11.2mm_P17.00mm_Diameter12-5mm_Amidon-T44:
 
 
 Horizontal_D12.7mm_P20.00mm_Diameter14-5mm_Amidon-T50:
-  <<: *base
+  inherit: base
   add_description: ''
   ddrill: 1.2
   h: 12.7
@@ -170,7 +170,7 @@ Horizontal_D12.7mm_P20.00mm_Diameter14-5mm_Amidon-T50:
 
 
 Horizontal_D16.8mm_P14.70mm_Vishay-TJ3_BigPads:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.5
   h: 16.8
@@ -189,7 +189,7 @@ Horizontal_D16.8mm_P14.70mm_Vishay-TJ3_BigPads:
 
 
 Horizontal_D16.8mm_P14.70mm_Vishay-TJ3:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.2
   h: 16.8
@@ -206,7 +206,7 @@ Horizontal_D16.8mm_P14.70mm_Vishay-TJ3:
 
 
 Horizontal_D17.3mm_P15.24mm_Bourns-2000:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/2000_series.pdf?sfvrsn=5
   ddrill: 1.8
   h: 17.3
@@ -223,7 +223,7 @@ Horizontal_D17.3mm_P15.24mm_Bourns-2000:
 
 
 Horizontal_D21.8mm_P19.60mm_Bourns-2100:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/2100_series.pdf?sfvrsn=3
   ddrill: 1.8
   h: 21.8
@@ -240,7 +240,7 @@ Horizontal_D21.8mm_P19.60mm_Bourns-2100:
 
 
 Horizontal_D21.8mm_P19.10mm_Bourns-2100:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/2100_series.pdf?sfvrsn=3
   ddrill: 1.8
   h: 21.8
@@ -257,7 +257,7 @@ Horizontal_D21.8mm_P19.10mm_Bourns-2100:
 
 
 Horizontal_D22.4mm_P19.80mm_Vishay-TJ4:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.5
   h: 22.4
@@ -274,7 +274,7 @@ Horizontal_D22.4mm_P19.80mm_Vishay-TJ4:
 
 
 Horizontal_D24.1mm_P21.80mm_Bourns-2200:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/2100_series.pdf?sfvrsn=3
   ddrill: 1.8
   h: 24.1
@@ -291,7 +291,7 @@ Horizontal_D24.1mm_P21.80mm_Bourns-2200:
 
 
 Horizontal_D24.1mm_P23.10mm_Bourns-2200_b:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/2100_series.pdf?sfvrsn=3
   ddrill: 1.8
   h: 24.1
@@ -308,7 +308,7 @@ Horizontal_D24.1mm_P23.10mm_Bourns-2200_b:
 
 
 Horizontal_D25.4mm_P22.90mm_Vishay-TJ5_BigPads:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.5
   h: 25.4
@@ -327,7 +327,7 @@ Horizontal_D25.4mm_P22.90mm_Vishay-TJ5_BigPads:
 
 
 Horizontal_D25.4mm_P22.90mm_Vishay-TJ5:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.2
   h: 25.4
@@ -344,7 +344,7 @@ Horizontal_D25.4mm_P22.90mm_Vishay-TJ5:
 
 
 Horizontal_D28.0mm_P26.67mm_Bourns-2200:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/2100_series.pdf?sfvrsn=3
   ddrill: 1.5
   h: 28
@@ -361,7 +361,7 @@ Horizontal_D28.0mm_P26.67mm_Bourns-2200:
 
 
 Horizontal_D28.0mm_P25.10mm_Bourns-2200:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/2100_series.pdf?sfvrsn=3
   ddrill: 1.3
   h: 28
@@ -378,7 +378,7 @@ Horizontal_D28.0mm_P25.10mm_Bourns-2200:
 
 
 Horizontal_D32.5mm_P30.00mm_Bourns-2300:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/2300_series.pdf?sfvrsn=3
   ddrill: 2
   h: 32.5
@@ -395,7 +395,7 @@ Horizontal_D32.5mm_P30.00mm_Bourns-2300:
 
 
 Horizontal_D32.5mm_P28.90mm_Bourns-2300:
-  <<: *base
+  inherit: base
   add_description: http://www.bourns.com/docs/Product-Datasheets/2300_series.pdf?sfvrsn=3
   ddrill: 1.5
   h: 32.5
@@ -412,7 +412,7 @@ Horizontal_D32.5mm_P28.90mm_Bourns-2300:
 
 
 Horizontal_D35.1mm_P31.00mm_Vishay-TJ6:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.5
   h: 35.1
@@ -429,7 +429,7 @@ Horizontal_D35.1mm_P31.00mm_Vishay-TJ6:
 
 
 Horizontal_D41.9mm_P37.60mm_Vishay-TJ7:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.5
   h: 41.9
@@ -446,7 +446,7 @@ Horizontal_D41.9mm_P37.60mm_Vishay-TJ7:
 
 
 Horizontal_D49.3mm_P44.60mm_Vishay-TJ8:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 1.7
   h: 49.3
@@ -463,7 +463,7 @@ Horizontal_D49.3mm_P44.60mm_Vishay-TJ8:
 
 
 Horizontal_D69.1mm_P63.20mm_Vishay-TJ9:
-  <<: *base
+  inherit: base
   add_description: http://www.vishay.com/docs/34079/tj.pdf
   ddrill: 2
   h: 69.1

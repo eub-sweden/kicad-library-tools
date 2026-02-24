@@ -1,5 +1,5 @@
 # Base configuration extracted by YAMLCommon (threshold=0.90)
-base: &base
+base:
   R_POW: 0
   classname: L
   ddrill: 1.2
@@ -21,7 +21,7 @@ base: &base
     - 0
 
 D12.0mm_P10.00mm_Neosid_SD12k_style1:
-  <<: *base
+  inherit: base
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_Sd12k.pdf
   h: 12.0
   height3d: 13
@@ -39,7 +39,7 @@ D12.0mm_P10.00mm_Neosid_SD12k_style1:
 
 
 D12.0mm_P5.00mm_Neosid_SD12k_style2:
-  <<: *base
+  inherit: base
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_Sd12k.pdf
   h: 12.0
   height3d: 13
@@ -57,7 +57,7 @@ D12.0mm_P5.00mm_Neosid_SD12k_style2:
 
 
 D10.0mm_P5.00mm_Neosid_SD12k_style3:
-  <<: *base
+  inherit: base
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_Sd12k.pdf
   h: 10.0
   height3d: 12.5
@@ -75,7 +75,7 @@ D10.0mm_P5.00mm_Neosid_SD12k_style3:
 
 
 D12.0mm_P10.00mm_Neosid_SD12_style1:
-  <<: *base
+  inherit: base
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_Sd12.pdf
   h: 12.0
   height3d: 20
@@ -93,7 +93,7 @@ D12.0mm_P10.00mm_Neosid_SD12_style1:
 
 
 D12.0mm_P5.00mm_Neosid_SD12_style2:
-  <<: *base
+  inherit: base
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_Sd12.pdf
   h: 12.0
   height3d: 20
@@ -111,7 +111,7 @@ D12.0mm_P5.00mm_Neosid_SD12_style2:
 
 
 D10.0mm_P5.00mm_Neosid_SD12_style3:
-  <<: *base
+  inherit: base
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_Sd12.pdf
   h: 10.0
   height3d: 19.5
@@ -129,7 +129,7 @@ D10.0mm_P5.00mm_Neosid_SD12_style3:
 
 
 D14.2mm_P10.00mm_Neosid_SD14:
-  <<: *base
+  inherit: base
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_Sd14.pdf
   h: 14.2
   height3d: 24.5

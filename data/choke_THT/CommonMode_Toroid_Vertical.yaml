@@ -1,5 +1,5 @@
 # Base configuration extracted by YAMLCommon (threshold=0.90)
-base: &base
+base:
   R_POW: 0
   classname: L_CommonMode_Toroid
   seriesname: Vertical
@@ -22,7 +22,7 @@ base: &base
     - 0
 
 Vertical_L19.3mm_W10.8mm_Px6.35mm_Py15.24mm_Bourns_8100:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/8120-RC-Bourns-datasheet-10228452.pdf
   ddrill: 1.5
   h: 10.795
@@ -41,7 +41,7 @@ Vertical_L19.3mm_W10.8mm_Px6.35mm_Py15.24mm_Bourns_8100:
 
 
 Vertical_L30.5mm_W15.2mm_Px10.16mm_Py20.32mm_Bourns_8100:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/8120-RC-Bourns-datasheet-10228452.pdf
   ddrill: 1.5
   h: 15.239999999999998
@@ -60,7 +60,7 @@ Vertical_L30.5mm_W15.2mm_Px10.16mm_Py20.32mm_Bourns_8100:
 
 
 Vertical_L34.3mm_W20.3mm_Px15.24mm_Py22.86mm_Bourns_8100:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/8120-RC-Bourns-datasheet-10228452.pdf
   ddrill: 1.5
   h: 20.32
@@ -79,7 +79,7 @@ Vertical_L34.3mm_W20.3mm_Px15.24mm_Py22.86mm_Bourns_8100:
 
 
 Vertical_L36.8mm_W20.3mm_Px15.24mm_Py22.86mm_Bourns_8100:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/8120-RC-Bourns-datasheet-10228452.pdf
   ddrill: 1.5
   h: 20.32
@@ -98,7 +98,7 @@ Vertical_L36.8mm_W20.3mm_Px15.24mm_Py22.86mm_Bourns_8100:
 
 
 Vertical_L38.1mm_W20.3mm_Px15.24mm_Py22.86mm_Bourns_8100:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/8120-RC-Bourns-datasheet-10228452.pdf
   ddrill: 1.8
   h: 20.32
@@ -117,7 +117,7 @@ Vertical_L38.1mm_W20.3mm_Px15.24mm_Py22.86mm_Bourns_8100:
 
 
 Vertical_L39.4mm_W20.3mm_Px15.24mm_Py22.86mm_Bourns_8100:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/8120-RC-Bourns-datasheet-10228452.pdf
   ddrill: 1.5
   h: 20.32
@@ -136,7 +136,7 @@ Vertical_L39.4mm_W20.3mm_Px15.24mm_Py22.86mm_Bourns_8100:
 
 
 Vertical_L41.9mm_W20.3mm_Px15.24mm_Py22.86mm_Bourns_8100:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/8120-RC-Bourns-datasheet-10228452.pdf
   ddrill: 1.5
   h: 20.32
@@ -155,7 +155,7 @@ Vertical_L41.9mm_W20.3mm_Px15.24mm_Py22.86mm_Bourns_8100:
 
 
 Vertical_L43.2mm_W22.9mm_Px17.78mm_Py30.48mm_Bourns_8100:
-  <<: *base
+  inherit: base
   add_description: http://datasheet.octopart.com/8120-RC-Bourns-datasheet-10228452.pdf
   ddrill: 2.2
   h: 22.86
@@ -174,7 +174,7 @@ Vertical_L43.2mm_W22.9mm_Px17.78mm_Py30.48mm_Bourns_8100:
 
 
 Vertical_L21.0mm_W10.0mm_Px5.08mm_Py12.7mm_Murata_5100:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_5100.pdf
   ddrill: 1.1
   h: 10
@@ -193,7 +193,7 @@ Vertical_L21.0mm_W10.0mm_Px5.08mm_Py12.7mm_Murata_5100:
 
 
 Vertical_L24.0mm_W16.3mm_Px10.16mm_Py20.32mm_Murata_5200:
-  <<: *base
+  inherit: base
   add_description: http://www.murata-ps.com/data/magnetics/kmp_5200.pdf
   ddrill: 1.1
   h: 16.3
@@ -211,7 +211,7 @@ Vertical_L24.0mm_W16.3mm_Px10.16mm_Py20.32mm_Murata_5200:
   w2: 8.0
 
 PRODTech_1065:
-  <<: *base
+  inherit: base
   add_description: https://www.lcsc.com/datasheet/C5158821.pdf
   ddrill: 1.0
   h: 7.5
@@ -230,8 +230,8 @@ PRODTech_1065:
   w: 13
   w2: 1.5
 
-PRODTech_PDMCAT18107-102ML: &PRODTech_PDMCAT18107
-  <<: *base
+PRODTech_PDMCAT18107-102ML:
+  inherit: base
   add_description: https://www.lcsc.com/datasheet/C2831472.pdf
   ddrill: 1.5 # 1.2+/-0.1 pin dia => 1.3mm
   h: 12
@@ -251,7 +251,7 @@ PRODTech_PDMCAT18107-102ML: &PRODTech_PDMCAT18107
   w2: 1.5
 
 PRODTech_PDMCAT18107-202ML:
-  <<: *PRODTech_PDMCAT18107
+  inherit: PRODTech_PDMCAT18107-102ML
   ddrill: 1.3 # 1.0+/-0.1 pin dia
   name_additions:
     - PRODTech
@@ -261,7 +261,7 @@ PRODTech_PDMCAT18107-202ML:
     - PDMCAT18107-202ML
 
 PRODTech_PDMCAT18107-502ML:
-  <<: *PRODTech_PDMCAT18107
+  inherit: PRODTech_PDMCAT18107-102ML
   ddrill: 1.05 # 0.75+/-0.1 pin dia
   name_additions:
     - PRODTech
@@ -271,7 +271,7 @@ PRODTech_PDMCAT18107-502ML:
     - PDMCAT18107-502ML
 
 PRODTech_PDMCAT18107-103ML:
-  <<: *PRODTech_PDMCAT18107
+  inherit: PRODTech_PDMCAT18107-102ML
   ddrill: 0.9 # 0.6+/-0.1 pin dia
   name_additions:
     - PRODTech
@@ -281,7 +281,7 @@ PRODTech_PDMCAT18107-103ML:
     - PDMCAT18107-103ML
 
 PRODTech_PDMCAT18107-203ML:
-  <<: *PRODTech_PDMCAT18107
+  inherit: PRODTech_PDMCAT18107-102ML
   ddrill: 0.7 # 0.5+/-0.1 pin dia
   name_additions:
     - PRODTech

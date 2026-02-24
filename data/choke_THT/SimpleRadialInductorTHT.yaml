@@ -1,5 +1,5 @@
 # Base configuration extracted by YAMLCommon (threshold=0.90)
-base: &base
+base:
   R_POW: 0
   classname: L
   func: makeResistorRadial
@@ -21,7 +21,7 @@ base: &base
     - 0
 
 D7.5mm_P5.00mm_Neosid_SD75:
-  <<: *base
+  inherit: base
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_Sd75.pdf
   ddrill: 0.8
   h: 4.6
@@ -37,7 +37,7 @@ D7.5mm_P5.00mm_Neosid_SD75:
 
 
 D8.0mm_P5.00mm_Neosid_SD8:
-  <<: *base
+  inherit: base
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_Sd8.pdf
   ddrill: 0.8
   h: 8
@@ -53,7 +53,7 @@ D8.0mm_P5.00mm_Neosid_SD8:
 
 
 D8.0mm_P5.00mm_Neosid_NE-CPB-07E:
-  <<: *base
+  inherit: base
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_NE_CPB07E.pdf
   ddrill: 1.2
   h: 8

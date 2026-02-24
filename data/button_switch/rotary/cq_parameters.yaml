@@ -13,7 +13,7 @@
 #   dial_labels_size:        characters font size
 #   dial_labels_radius:      distance from dial to each character's center
 
-Nidec_Copal_SH-7010A: &Nidec_Copal_SH-7010A
+Nidec_Copal_SH-7010A:
   modelName: Nidec_Copal_SH-7010A
   model_class: rotary
 
@@ -103,8 +103,8 @@ Nidec_Copal_SH-7010A: &Nidec_Copal_SH-7010A
   destination_dir: Button_Switch_SMD.3dshapes
   source: https://www.nidec-components.com/e/catalog/switch/sh-7000.pdf
 
-Nidec_Copal_SH-7010B: &Nidec_Copal_SH-7010B
-  <<: *Nidec_Copal_SH-7010A
+Nidec_Copal_SH-7010B:
+  inherit: Nidec_Copal_SH-7010A
   modelName: Nidec_Copal_SH-7010B
 
   pin_type: gullwing
@@ -125,7 +125,7 @@ Nidec_Copal_SH-7010B: &Nidec_Copal_SH-7010B
   ]
 
 Nidec_Copal_SH-7040B:
-  <<: *Nidec_Copal_SH-7010B
+  inherit: Nidec_Copal_SH-7010B
   modelName: Nidec_Copal_SH-7040B
   pin_width: 0.8
   pins: [
@@ -138,7 +138,7 @@ Nidec_Copal_SH-7040B:
   include_in_qa: True
 
 Nidec_Copal_SH-7010C:
-  <<: *Nidec_Copal_SH-7010A
+  inherit: Nidec_Copal_SH-7010A
   modelName: Nidec_Copal_SH-7010C
   translation: [3.81, -2.54, 0]
 

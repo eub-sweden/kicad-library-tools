@@ -1,5 +1,5 @@
 # Base configuration extracted by YAMLCommon (threshold=0.90)
-base: &base
+base:
   R_POW: 0
   add_description: http://www.neosid.de/produktblaetter/neosid_Festinduktivitaet_NE_CPB11EN.pdf
   classname: L
@@ -26,7 +26,7 @@ base: &base
     - 0
 
 D11.5mm_P6.00mm_Neosid_NE-CPB-11EN_Drill1.8mm:
-  <<: *base
+  inherit: base
   ddrill: 1.8
   name_additions:
     - Neosid
@@ -39,7 +39,7 @@ D11.5mm_P6.00mm_Neosid_NE-CPB-11EN_Drill1.8mm:
 
 
 D11.5mm_P6.00mm_Neosid_NE-CPB-11EN_Drill1.7mm:
-  <<: *base
+  inherit: base
   ddrill: 1.7
   name_additions:
     - Neosid
@@ -52,7 +52,7 @@ D11.5mm_P6.00mm_Neosid_NE-CPB-11EN_Drill1.7mm:
 
 
 D11.5mm_P6.00mm_Neosid_NE-CPB-11EN_Drill1.5mm:
-  <<: *base
+  inherit: base
   ddrill: 1.5
   name_additions:
     - Neosid
@@ -65,7 +65,7 @@ D11.5mm_P6.00mm_Neosid_NE-CPB-11EN_Drill1.5mm:
 
 
 D11.5mm_P6.00mm_Neosid_NE-CPB-11EN_Drill1.3mm:
-  <<: *base
+  inherit: base
   ddrill: 1.3
   name_additions:
     - Neosid
