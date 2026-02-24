@@ -4,7 +4,6 @@ default_parameters:
 
 series_PA4332:
   default_parameters:
-    datasheet: "https://productfinder.pulseelectronics.com/api/open/part-attachments/datasheet/pa4332.222nlt"
     3d:
       type: 2
       bodyColor: black body
@@ -12,21 +11,7 @@ series_PA4332:
     tags:
       - Pulse
       - SMT
-      - PA4332
-  csv: pulse_pa4332.csv
-
-series_PA4340:
-  default_parameters:
-    datasheet: "https://productfinder.pulseelectronics.com/api/open/part-attachments/datasheet/PA4340.183NLT"
-    3d:
-      type: 2
-      bodyColor: black body
-      pinColor: metal grey pins
-    tags:
-      - Pulse
-      - SMT
-      - PA4340
-  csv: pulse_pa4340.csv
+  csv: pulse_pa43xx.csv
 
 PA5402:
   datasheet: "https://productfinder.pulseelectronics.com/api/open/part-attachments/datasheet/PM5402.222NLT"
