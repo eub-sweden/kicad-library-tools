@@ -1452,6 +1452,8 @@ WDFN-8-1EP_6x5mm_P1.27mm_EP3.4x4mm:
   body_size_y:
     nominal: 5.0
     tolerance: 0
+  body_pcb_gap: 0.00 .. 0.05
+  overall_height: 0.70 .. 0.75 .. 0.80
   num_pins_x: 0
   num_pins_y: 4
   pitch: 1.27
