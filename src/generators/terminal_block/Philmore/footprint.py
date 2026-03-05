@@ -27,8 +27,6 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
     Returns:
         The number of footprints generated.
     """
-
-    script_generated_note="script-generated using https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/tree/master/scripts/TerminalBlock_Philmore";
     classname="TerminalBlock_Philmore"
 
     pins=range(2,3+1)
@@ -61,5 +59,5 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     return len(pins)

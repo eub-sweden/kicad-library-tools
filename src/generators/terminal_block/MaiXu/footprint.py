@@ -21,7 +21,6 @@ from generators.tools.footprint.save_footprint import write_footprint
 fplib_name = "TerminalBlock" # Name of the footprint library
 # Series datasheet: https://www.cnmaixu.com/Sites/maixu/static/upload/file/20240108/1704697250343193.pdf
 datasheet = "https://www.lcsc.com/datasheet/lcsc_datasheet_2309150913_MAX-MX126-5-0-03P-GN01-Cu-S-A_C5188435.pdf"
-script_generated_note = f"script-generated using https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/tree/master/scripts/TerminalBlock_MaiXu";
 
 available_pincounts = range(2, 24+1)
 rm = 5.0 # Distance beteen any
@@ -107,7 +106,6 @@ def generateFootprint(pincount: int, generator_name: str):
         classname=classname,
         classname_description=classname_description(pincount),
         webpage=datasheet,
-        script_generated_note=script_generated_note
     )
 
     kicad_mod.add_standard_3d_model_to_footprint(classname, footprint_name)

@@ -91,7 +91,7 @@ def generate_one_footprint(
 
     kicad_mod = Footprint(footprint_name, FootprintType.THT)
     kicad_mod.setDescription(
-        "JST {:s} series connector, {:s} ({:s}), generated with kicad-footprint-generator".format(
+        "JST {:s} series connector, {:s} ({:s})".format(
             series, mpn, datasheet
         )
     )

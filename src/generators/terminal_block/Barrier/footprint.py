@@ -61,7 +61,7 @@ def _generateFootprintVariant(
         f"size {fab_rect.size.x:.3g}x{fab_rect.size.y:.3g}mm, "
         f"drill diameter {cfg.drill_diameter:.3g}mm, pad size {max(cfg.pad_size):.3g}mm, "
         f"{cfg.metadata.datasheet}, "
-        f"{GLOBAL_CONFIG.get_generated_by_description('https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/tree/master/scripts/TerminalBlock_Barrier')}"
+        "https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/tree/master/scripts/TerminalBlock_Barrier"
     )
     tags = ["THT"]
 

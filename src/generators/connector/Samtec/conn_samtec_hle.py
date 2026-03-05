@@ -158,7 +158,7 @@ def generate_one_footprint(generator_name: str, global_config: GC.GlobalConfig, 
     fp_type = FootprintType.SMD if is_smd else FootprintType.THT
 
     kicad_mod = Footprint(footprint_name, fp_type)
-    kicad_mod.setDescription("{manufacturer} {series}, {mpn}{alt_mpn}, {pins_per_row} Pins per row ({datasheet}), generated with kicad-footprint-generator".format(
+    kicad_mod.setDescription("{manufacturer} {series}, {mpn}{alt_mpn}, {pins_per_row} Pins per row ({datasheet})".format(
         manufacturer = manufacturer,
         series = series_long,
         mpn = mpn,

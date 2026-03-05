@@ -79,7 +79,7 @@ def generate_one_footprint(generator_name: str, global_config: GC.GlobalConfig, 
         pitch=pitch, orientation=orientation_str)
 
     kicad_mod = Footprint(footprint_name, FootprintType.THT)
-    kicad_mod.setDescription("Molex {:s}, {:s}{:s}, {:d} Pins ({:s}), generated with kicad-footprint-generator".format(series_long,
+    kicad_mod.setDescription("Molex {:s}, {:s}{:s}, {:d} Pins ({:s})".format(series_long,
         mpn, ", with PCB locator" if boss else '',
         pins, variant_params[variant]['datasheet']))
     kicad_mod.setTags(configuration['keyword_fp_string'].format(series=series,

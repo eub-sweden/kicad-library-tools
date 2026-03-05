@@ -291,7 +291,6 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
         f"{config.num_balls} Ball",
         f"{sdesc}{config.layout_x}x{config.layout_y} Layout",
         f"{pdesc}mm Pitch",
-        f"generated with kicad-footprint-generator ipc_bga_generator.py",  # For zero-diff. Replace with generator_name later.
     ]
 
     if config.metadata.datasheet:

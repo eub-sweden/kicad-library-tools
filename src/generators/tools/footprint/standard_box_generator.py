@@ -186,8 +186,6 @@ def converter(generator_name: str, args: dict[str, Any]) -> int:
     if metadata.datasheet:
         descr.append(metadata.datasheet)
 
-    descr.append(global_cfg.get_generated_by_description("StandardBox_generator.py"))  # For zero-diff. Replace with generator_name later.
-
     f.description = ", ".join(descr)
 
     f.tags = fptag.split() + metadata.compatible_mpns

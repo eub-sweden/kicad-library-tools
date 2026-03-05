@@ -108,7 +108,7 @@ def gen_footprint(generator_name: str, global_config: GC.GlobalConfig, pinnum, m
     footprint_name = footprint_name.replace('__','_')
 
     kicad_mod = Footprint(footprint_name, FootprintType.SMD)
-    kicad_mod.setDescription("{manufacturer} {series}, {mpn}{alt_mpn}, {pins_per_row} Pins per row ({datasheet}), generated with kicad-footprint-generator".format(
+    kicad_mod.setDescription("{manufacturer} {series}, {mpn}{alt_mpn}, {pins_per_row} Pins per row ({datasheet})".format(
         manufacturer = manufacturer,
         series = series_long,
         mpn = manpart,

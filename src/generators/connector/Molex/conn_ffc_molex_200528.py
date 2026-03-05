@@ -58,8 +58,7 @@ def make_module(generator_name: str, global_config: GC.GlobalConfig, pin_count, 
 
     kicad_mod = Footprint(footprint_name, FootprintType.SMD)
     kicad_mod.setDescription(
-        ("Molex {:s}, {:s}, {:d} Circuits ({:s}), " +
-         "generated with kicad-footprint-generator").format(
+        ("Molex {:s}, {:s}, {:d} Circuits ({:s})").format(
         series_long, mpn, pin_count, datasheet))
     kicad_mod.setTags(configuration['keyword_fp_string'].format(
         man=manufacturer,

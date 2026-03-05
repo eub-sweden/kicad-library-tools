@@ -18,7 +18,6 @@ from ..footprint_scripts_terminal_blocks import *
 def generate_all(generator_name: str) -> int:
     num_fps_generated = 0
 
-    script_generated_note="script-generated using https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/tree/master/scripts/TerminalBlock_MetzConnect";
     classname="TerminalBlock_MetzConnect"
 
     block_size=[4,4]
@@ -34,7 +33,7 @@ def generate_all(generator_name: str) -> int:
     footprint_name="TerminalBlock_MetzConnect_{0}_1x01_Horizontal_ScrewM2.6".format(name)
     classname_description="single screw terminal block Metz Connect {0}".format(name)
     makeScrewTerminalSingleStd(generator_name, footprint_name, block_size=block_size, block_offset=block_offset, pins=pins, ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, screw_offset=screw_offset, slit_screw=slit_screw,
-                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage, script_generated_note=script_generated_note)
+                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage)
     num_fps_generated += 1
 
     block_size=[5,4]
@@ -44,7 +43,7 @@ def generate_all(generator_name: str) -> int:
     footprint_name="TerminalBlock_MetzConnect_{0}_1x01_Horizontal_ScrewM2.6_WireProtection".format(name)
     classname_description="single screw terminal block Metz Connect {0}".format(name)
     makeScrewTerminalSingleStd(generator_name, footprint_name, block_size=block_size, block_offset=block_offset, pins=pins, ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, screw_offset=screw_offset, slit_screw=slit_screw,
-                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage, script_generated_note=script_generated_note)
+                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage)
     num_fps_generated += 1
 
     block_size=[5,5]
@@ -60,7 +59,7 @@ def generate_all(generator_name: str) -> int:
     footprint_name="TerminalBlock_MetzConnect_{0}_1x01_Horizontal_ScrewM3.0".format(name)
     classname_description="single screw terminal block Metz Connect {0}".format(name)
     makeScrewTerminalSingleStd(generator_name, footprint_name, block_size=block_size, block_offset=block_offset, pins=pins, ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, screw_offset=screw_offset, slit_screw=slit_screw,
-                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage, script_generated_note=script_generated_note)
+                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage)
     num_fps_generated += 1
 
     name="360381"
@@ -68,7 +67,7 @@ def generate_all(generator_name: str) -> int:
     footprint_name="TerminalBlock_MetzConnect_{0}_1x01_Horizontal_ScrewM3.0".format(name)
     classname_description="single screw terminal block Metz Connect {0}".format(name)
     makeScrewTerminalSingleStd(generator_name, footprint_name, block_size=block_size, block_offset=block_offset, pins=pins, ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, screw_offset=screw_offset, slit_screw=slit_screw,
-                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage, script_generated_note=script_generated_note)
+                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage)
     num_fps_generated += 1
 
     block_size=[6,4]
@@ -78,7 +77,7 @@ def generate_all(generator_name: str) -> int:
     footprint_name="TerminalBlock_MetzConnect_{0}_1x01_Horizontal_ScrewM3.0_WireProtection".format(name)
     classname_description="single screw terminal block Metz Connect {0}".format(name)
     makeScrewTerminalSingleStd(generator_name, footprint_name, block_size=block_size, block_offset=block_offset, pins=pins, ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, screw_offset=screw_offset, slit_screw=slit_screw,
-                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage, script_generated_note=script_generated_note)
+                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage)
     num_fps_generated += 1
 
     block_size=[9, 7.3]
@@ -94,7 +93,7 @@ def generate_all(generator_name: str) -> int:
     footprint_name="TerminalBlock_MetzConnect_{0}_1x01_Horizontal_ScrewM3.0_Boxed".format(name)
     classname_description="single screw terminal block Metz Connect {0}".format(name)
     makeScrewTerminalSingleStd(generator_name, footprint_name, block_size=block_size, block_offset=block_offset, pins=pins, ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, screw_offset=screw_offset, slit_screw=slit_screw,
-                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage, script_generated_note=script_generated_note)
+                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage)
     num_fps_generated += 1
 
     block_size=[9, 7.3]
@@ -110,7 +109,7 @@ def generate_all(generator_name: str) -> int:
     footprint_name="TerminalBlock_MetzConnect_{0}_1x01_Horizontal_ScrewM3.0_Boxed".format(name)
     classname_description="single screw terminal block Metz Connect {0}".format(name)
     makeScrewTerminalSingleStd(generator_name, footprint_name, block_size=block_size, block_offset=block_offset, pins=pins, ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, screw_offset=screw_offset, slit_screw=slit_screw,
-                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage, script_generated_note=script_generated_note)
+                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage)
     num_fps_generated += 1
 
     block_size=[9,9]
@@ -126,7 +125,7 @@ def generate_all(generator_name: str) -> int:
     footprint_name="TerminalBlock_MetzConnect_{0}_1x01_Horizontal_ScrewM4.0_Boxed".format(name)
     classname_description="single screw terminal block Metz Connect {0}".format(name)
     makeScrewTerminalSingleStd(generator_name, footprint_name, block_size=block_size, block_offset=block_offset, pins=pins, ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, screw_offset=screw_offset, slit_screw=slit_screw,
-                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage, script_generated_note=script_generated_note)
+                        tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage)
     num_fps_generated += 1
 
     return num_fps_generated

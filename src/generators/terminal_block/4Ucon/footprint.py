@@ -20,7 +20,6 @@ from generators.tools.footprint.save_footprint import write_footprint
 
 class FourUcon_TerminalBlock:
 
-    script_generated_note = "script-generated using https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/tree/master/scripts/TerminalBlock_4Ucon"
     classname = "TerminalBlock_4Ucon"
 
 
@@ -81,7 +80,6 @@ class FourUcon_H8_3_TerminalBlock(FourUcon_TerminalBlock):
             classname=self.classname,
             classname_description=classname_description,
             webpage=webpage,
-            script_generated_note=self.script_generated_note,
         )
 
         kicad_mod.add_standard_3d_model_to_footprint(self.classname, footprint_name)
@@ -149,7 +147,6 @@ class FourUCon_H7_TerminalBlock(FourUcon_TerminalBlock):
             classname=self.classname,
             classname_description=classname_description,
             webpage=webpage,
-            script_generated_note=self.script_generated_note,
         )
 
         kicad_mod.add_standard_3d_model_to_footprint(self.classname, footprint_name)

@@ -159,7 +159,6 @@ def makeTerminalBlockStd(
     classname="Connectors_Terminal_Blocks",
     classname_description="terminal block",
     webpage="",
-    script_generated_note="",
 ):
     global_config = GC.GLOBAL_CONFIG
 
@@ -209,9 +208,6 @@ def makeTerminalBlockStd(
         f"drill {ddrill:.3g}mm",
         f"pad {max(pad):.3g}mm",
     ]
-
-    if len(script_generated_note) > 0:
-        description = description + ", " + script_generated_note
 
     if len(tags_additional) > 0:
         for t in tags_additional:
@@ -723,7 +719,6 @@ def makeTerminalBlockVertical(
     classname="Connectors_Terminal_Blocks",
     classname_description="terminal block",
     webpage="",
-    script_generated_note="",
 ):
     global_config = GC.GLOBAL_CONFIG
 
@@ -774,9 +769,6 @@ def makeTerminalBlockVertical(
         f"drill {ddrill:.3g}mm",
         f"pad {max(pad):.3g}mm",
     ]
-
-    if len(script_generated_note) > 0:
-        description = description + ", " + script_generated_note
 
     if len(tags_additional) > 0:
         for t in tags_additional:
@@ -1287,7 +1279,6 @@ def makeTerminalBlock45Degree(
     classname="Connectors_Terminal_Blocks",
     classname_description="terminal block",
     webpage="",
-    script_generated_note="",
 ):
     global_config = GC.GLOBAL_CONFIG
 
@@ -1338,9 +1329,6 @@ def makeTerminalBlock45Degree(
         f"drill {ddrill:.3g}mm",
         f"pad {max(pad):.3g}mm",
     ]
-
-    if len(script_generated_note) > 0:
-        description = description + ", " + script_generated_note
 
     if len(tags_additional) > 0:
         for t in tags_additional:
@@ -1929,7 +1917,6 @@ def makeScrewTerminalSingleStd(
     classname="Connectors_Terminal_Blocks",
     classname_description="single screw terminal terminal block",
     webpage="",
-    script_generated_note="",
 ):
     global_config = GC.GLOBAL_CONFIG
 
@@ -1973,9 +1960,6 @@ def makeScrewTerminalSingleStd(
         f"drill {ddrill:.3g}mm",
         f"pad {max(pad):.3g}mm",
     ]
-
-    if len(script_generated_note) > 0:
-        description = description + ", " + script_generated_note
 
     if len(tags_additional) > 0:
         for t in tags_additional:

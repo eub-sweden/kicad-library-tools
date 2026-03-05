@@ -254,8 +254,7 @@ def _create_footprint_variant(
 
     # init kicad footprint
     kicad_mod.setDescription(
-        "{manufacturer} {mpn} {package}, {pincount} Pin ({datasheet}), "
-        "generated with kicad-footprint-generator {scriptname}".format(
+        "{manufacturer} {mpn} {package}, {pincount} Pin ({datasheet})".format(
             manufacturer=device_config.metadata.manufacturer or "",
             package=spec["device_type"],
             mpn=device_config.metadata.part_number or "",

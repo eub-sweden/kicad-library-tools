@@ -84,7 +84,7 @@ def generate_one_footprint(generator_name: str, global_config: GC.GlobalConfig, 
         pitch=pitch, orientation=orientation_str)
 
     kicad_mod = Footprint(footprint_name, FootprintType.THT)
-    kicad_mod.setDescription("JST {:s} series connector, {:s}{:s} ({:s}), generated with kicad-footprint-generator".format(
+    kicad_mod.setDescription("JST {:s} series connector, {:s}{:s} ({:s})".format(
         series, mpn, ', with boss' if boss else '', datasheet))
 
     tags = configuration['keyword_fp_string'].format(series=series,

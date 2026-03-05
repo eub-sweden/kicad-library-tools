@@ -56,7 +56,7 @@ def generate_all(generator_name: str, global_config: GC.GlobalConfig) -> int:
         # init kicad footprint
         footprint_name = "Stocko_MKS_16{}-6-0-{}{:02d}_1x{}_P2.50mm_Vertical".format(50 + itr, pin_count, pin_count, pin_count)
         kicad_mod = Footprint(footprint_name, FootprintType.THT)
-        kicad_mod.setDescription("Stocko MKS 16xx series connector, (https://www.stocko-contact.com/downloads/steckverbindersystem-raster-2,5-mm.pdf#page=15), generated with kicad-footprint-generator")
+        kicad_mod.setDescription("Stocko MKS 16xx series connector, (https://www.stocko-contact.com/downloads/steckverbindersystem-raster-2,5-mm.pdf#page=15)")
         kicad_mod.setTags("Stocko RFK MKS 16xx")
 
         # CREATE PIN

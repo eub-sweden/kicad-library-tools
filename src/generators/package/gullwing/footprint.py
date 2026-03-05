@@ -246,8 +246,6 @@ def _create_footprint_variant(
     if gwc.metadata.datasheet:
         description += f" ({gwc.metadata.datasheet})"
 
-    description += f", generated with kicad-footprint-generator ipc_gullwing_generator.py"  # For zero-diff. Replace with generator_name later.
-
     kicad_mod.description = description
 
     kicad_mod.tags = (

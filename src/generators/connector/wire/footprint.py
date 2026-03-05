@@ -76,8 +76,7 @@ def description_gen(wire_def, fp_type, pincount, pitch):
         '{} insulation, '
         'conductor diameter {:g}mm, outer diameter {:g}mm, '
         'size source {}, '
-        'bend radius 3 times outer diameter, '
-        'generated with kicad-footprint-generator'
+        'bend radius 3 times outer diameter'
         .format(
                 fp_type, d1.format(count=pincount, size=size_code),
                 wire_def['insulation'],

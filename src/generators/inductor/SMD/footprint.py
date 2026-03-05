@@ -55,7 +55,6 @@ def create_footprints(spec: SmdInductorSpec, generator_name: str) -> int:
     desc += [
         f"{part_dimension.x}x{part_dimension.y}x{part_dimension.z}mm",
         f"({spec.datasheet})",
-        GLOBAL_CONFIG.get_generated_by_description("gen_inductor.py"),  # For zero-diff. Replace with generator_name later.
     ]
 
     kicad_mod.description = ", ".join(desc)

@@ -68,7 +68,7 @@ def generate_one_footprint(generator_name: str, global_config: GC.GlobalConfig, 
         pitch=pitch, orientation=orientation_str)
 
     kicad_mod = Footprint(footprint_name, FootprintType.THT)
-    desc_format_str = "Molex {:s}, {:s}, {:d} Pins per row ({:s}), generated with kicad-footprint-generator"
+    desc_format_str = "Molex {:s}, {:s}, {:d} Pins per row ({:s})"
     kicad_mod.setDescription(desc_format_str.format(series_long, mpn, pins, params['datasheet']))
     kicad_mod.setTags(configuration['keyword_fp_string'].format(series=series,
         orientation=orientation_str, man=manufacturer,

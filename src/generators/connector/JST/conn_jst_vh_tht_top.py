@@ -66,7 +66,7 @@ def generate_one_footprint(
         pitch=pitch_effective, orientation=orientation_str)
 
     kicad_mod = Footprint(footprint_name, FootprintType.THT)
-    kicad_mod.setDescription("JST {:s} series connector, {:s} ({:s}), generated with kicad-footprint-generator".format(series_params[2], mpn, datasheet))
+    kicad_mod.setDescription("JST {:s} series connector, {:s} ({:s})".format(series_params[2], mpn, datasheet))
     kicad_mod.setTags(configuration['keyword_fp_string'].format(series=series,
         orientation=orientation_str, man=manufacturer,
         entry=configuration['entry_direction'][orientation]))

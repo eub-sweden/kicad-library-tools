@@ -19,7 +19,6 @@ from ..footprint_scripts_terminal_blocks import (
 from generators.tools.spec.base_spec import BaseSpec
 
 
-script_generated_note = "generated with kicad-footprint-generator TerminalBlock_Altech"
 classname = "TerminalBlock_Altech"
 
 
@@ -61,7 +60,6 @@ def gen_ak100(generator_name: str) -> int:
             classname=classname,
             classname_description=classname_description,
             webpage=webpage,
-            script_generated_note=script_generated_note,
         )
     return len(pins)
 
@@ -109,7 +107,6 @@ def gen_ak300(generator_name: str) -> int:
             classname=classname,
             classname_description=classname_description,
             webpage=webpage,
-            script_generated_note=script_generated_note,
         )
     return len(pins)
 

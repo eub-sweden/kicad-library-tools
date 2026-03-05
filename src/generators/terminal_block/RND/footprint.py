@@ -28,7 +28,6 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
         The number of footprints generated.
     """
     num_fps_generated = 0
-    script_generated_note="script-generated using https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/tree/master/scripts/TerminalBlock_RND";
     classname="TerminalBlock_RND"
 
     pins=range(2,12+1)
@@ -57,7 +56,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 opening=opening, opening_yoffset=opening_yoffset,
                                 bevel_height=bevel_height, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize,nibblePos=nibblePos, fabref_offset=fabref_offset,
-                                tags_additional=[], lib_name="TerminalBlock_RND", classname="TerminalBlock_RND", classname_description="terminal block RND 205-{0:05}".format(76+p), webpage="http://cdn-reichelt.de/documents/datenblatt/C151/RND_205-00276_DB_EN.pdf", script_generated_note=script_generated_note)
+                                tags_additional=[], lib_name="TerminalBlock_RND", classname="TerminalBlock_RND", classname_description="terminal block RND 205-{0:05}".format(76+p), webpage="http://cdn-reichelt.de/documents/datenblatt/C151/RND_205-00276_DB_EN.pdf")
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -90,7 +89,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -123,7 +122,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -169,7 +168,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 secondDrillDiameter=secondDrillDiameter,secondDrillOffset=secondDrillOffset,secondDrillPad=secondDrillPad,
                                 secondEllipseSize=secondEllipseSize,secondEllipseOffset=secondEllipseOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
-                                tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage, script_generated_note=script_generated_note)
+                                tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description, webpage=webpage)
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -202,7 +201,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -235,7 +234,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -268,7 +267,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -301,7 +300,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -334,7 +333,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -367,7 +366,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -400,7 +399,7 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     num_fps_generated += len(pins)
 
     pins=range(2,12+1)
@@ -433,6 +432,6 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
                                 ddrill=ddrill, pad=pad, screw_diameter=screw_diameter, bevel_height=bevel_height, slit_screw=slit_screw, screw_pin_offset=screw_pin_offset, secondHoleDiameter=secondHoleDiameter, secondHoleOffset=secondHoleOffset, thirdHoleDiameter=thirdHoleDiameter, thirdHoleOffset=thirdHoleOffset, fourthHoleDiameter=fourthHoleDiameter, fourthHoleOffset=fourthHoleOffset,
                                 nibbleSize=nibbleSize, nibblePos=nibblePos, fabref_offset=fabref_offset,
                                 tags_additional=[], lib_name=classname, classname=classname, classname_description=classname_description,
-                                webpage=webpage, script_generated_note=script_generated_note)
+                                webpage=webpage)
     num_fps_generated += len(pins)
     return num_fps_generated

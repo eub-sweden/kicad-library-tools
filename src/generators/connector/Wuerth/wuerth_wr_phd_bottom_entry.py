@@ -35,7 +35,7 @@ def generate_footprint(generator_name: str, global_config: GC.GlobalConfig, para
         kicad_mod = Footprint(fp_name, FootprintType.THT)
 
     # Description
-    kicad_mod.setDescription("Connector Wuerth, WR-PHD {pitch}mm Dual Socket Header Bottom Entry {type}, Wuerth electronics {mpn} ({datasheet}), generated with kicad-footprint-generator".format(
+    kicad_mod.setDescription("Connector Wuerth, WR-PHD {pitch}mm Dual Socket Header Bottom Entry {type}, Wuerth electronics {mpn} ({datasheet})".format(
         pitch=params['pitch'], type=params['type'], mpn=mpn, datasheet=part_params['datasheet']))
 
     # Keywords

@@ -303,8 +303,6 @@ def makeSMDCrystal(
     if handsoldering:
         desc.append("hand-soldering")
 
-    desc.append(GLOBAL_CONFIG.get_generated_by_description("make_crystal.py"))
-
     if datasheet:
         desc.append(datasheet)
 

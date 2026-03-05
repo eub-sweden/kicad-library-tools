@@ -271,12 +271,11 @@ def generate_one_footprint(
     fp_evaluator = ast_evaluator.ASTevaluator(symbols=fp_symbols)
 
     kicad_mod = Footprint(footprint_name, FootprintType.SMD)
-    kicad_mod.description = "{:s} {:s} series connector, {:s} ({:s}), {:s}".format(
+    kicad_mod.description = "{:s} {:s} series connector, {:s} ({:s})".format(
         series_props.manufacturer,
         series_props.series,
         mpn,
         series_props.datasheet or "",
-        global_config.get_generated_by_description(),
     )
     kicad_mod.tags = conn_config.keyword_fp_string.format(
         series=series_props.series,

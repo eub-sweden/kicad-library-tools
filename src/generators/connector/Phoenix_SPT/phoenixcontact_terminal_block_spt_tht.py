@@ -32,7 +32,7 @@ def generate_footprint(generator_name: str, global_config: GC.GlobalConfig, para
     kicad_mod = Footprint(fp_name, FootprintType.THT)
 
     # Description
-    kicad_mod.setDescription("Connector Phoenix Contact, {series_prefix}{pins}-{orientation_short}-{pitch}{series_sufix} Terminal Block, {mpn} (https://www.phoenixcontact.com/online/portal/gb/?uri=pxc-oc-itemdetail:pid={mpn}), generated with kicad-footprint-generator".format(
+    kicad_mod.setDescription("Connector Phoenix Contact, {series_prefix}{pins}-{orientation_short}-{pitch}{series_sufix} Terminal Block, {mpn} (https://www.phoenixcontact.com/online/portal/gb/?uri=pxc-oc-itemdetail:pid={mpn})".format(
         series_prefix=params['series_prefix'], series_sufix=(params['series_sufix'] if params['series_sufix'] is not None else ''), pins=part_params['pins'], pitch=params['pitch']['x'], orientation_short=params['orientation'][:1], mpn=mpn))
 
     # Keywords

@@ -11,8 +11,9 @@
 #
 # (C) The KiCad Librarian Team
 
-from KicadModTree import Footprint, KicadFileHandler
 from generators.tools.cli_args import CLI_ARGS
+from KicadModTree import Footprint, KicadFileHandler, Property
+from kilibs.config.global_config import GLOBAL_CONFIG as GC
 
 
 def write_footprint(
@@ -34,6 +35,16 @@ def write_footprint(
     else:
         path = CLI_ARGS.output_dir_footprints / library_name
     path.mkdir(parents=True, exist_ok=True)
+
+    # Add the fields:
+    generator_field = Property(
+        name=GC.metadata.generator.name,
+        text=GC.metadata.generator.value.format(name=generator_name),
+        at=(0, 0),
+        hide=True,
+    )
+
+    kicad_mod.append(generator_field)
 
     # Delegate to the s-expression serialiser
     file_handler = KicadFileHandler(kicad_mod)

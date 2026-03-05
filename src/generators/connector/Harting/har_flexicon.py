@@ -52,7 +52,7 @@ def generate_all(generator_name: str, global_config: GC.GlobalConfig, spec_file_
                 + series["name_suffix"]
                 + " ("
                 + series["datasheet"]
-                + "), generated with kicad-footprint-generator"
+                + ")"
             )
             kicad_mod.setTags(
                 "connector Harting har-flexicon "

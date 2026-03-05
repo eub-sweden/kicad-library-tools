@@ -169,7 +169,6 @@ class RectangularToSpec(CommonToSpec):
             description += ", " + tag
         if self.metadata.datasheet:
             description += ", see " + self.metadata.datasheet
-        description += f", generated with kicad-footprint-generator TO_SOT_THT_generate.py"  # For zero-diff. Replace with generator_name later.
 
         # Footprint name
         if staggered_type > 0:
@@ -277,8 +276,6 @@ class RoundToSpec(CommonToSpec):
             description += ", " + t
         if self.metadata.datasheet:
             description += ", see " + self.metadata.datasheet
-
-        description += f", generated with kicad-footprint-generator TO_SOT_THT_generate.py"  # For zero-diff. Replace with generator_name later.
 
         return description, tags, name
 

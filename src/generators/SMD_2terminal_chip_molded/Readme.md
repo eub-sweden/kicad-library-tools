@@ -35,7 +35,7 @@ resistor:
     size_definitions: ['resistor_chip.yaml', 'resistor_chip_smaller_0603.yaml', 'resistor_chip_wide_body.yaml']  # YAML definitions file
     ipc_reference: "ipc_spec_larger_or_equal_0603"  # IPC rules to use when creating the footprint
     prefix: 'R' 
-    description: 'Resistor SMD {code_imperial:s} ({code_metric:s} Metric), square (rectangular) end terminal, IPC-7351 nominal, {size_info:s}, generated with kicad-footprint-generator' # Description format for all the series. Each {variable} will be replaced by its specified value.
+    description: 'Resistor SMD {code_imperial:s} ({code_metric:s} Metric), square (rectangular) end terminal, IPC-7351 nominal, {size_info:s}' # Description format for all the series. Each {variable} will be replaced by its specified value.
     keywords: 'resistor'
     ipc_density: 'nominal'
     pad_length_addition: 0

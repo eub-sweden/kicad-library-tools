@@ -212,10 +212,6 @@ def create_footprints(spec: PlccSpec, generator_name: str) -> int:
     if device_config.metadata.datasheet:
         description += f" ({device_config.metadata.datasheet})"
 
-    description += ", " + GLOBAL_CONFIG.get_generated_by_description(
-        "ipc_plcc_jLead_generator.py"  # For zero-diff. Replace with generator_name later.
-    )
-
     kicad_mod.description = description
 
     kicad_mod.tags = (

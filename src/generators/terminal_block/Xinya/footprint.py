@@ -27,7 +27,6 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
     Returns:
         The number of footprints generated.
     """
-    script_generated_note = "script-generated using https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/tree/master/scripts/TerminalBlock_Xinya"
     classname = "TerminalBlock"
 
     pins = range(2, 24)
@@ -92,6 +91,5 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
             classname=classname,
             classname_description=classname_description,
             webpage=webpage,
-            script_generated_note=script_generated_note,
         )
     return len(pins)

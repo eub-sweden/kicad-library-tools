@@ -2909,7 +2909,7 @@ Bosch_LGA-8_2x2.5mm_P0.65mm_ClockwisePinNumbering:
   EP_chamfer: 0.25
 
 Bosch_LGA-8_3x3mm_P0.8mm_ClockwisePinNumbering:
-  size_source: 'https://web.archive.org/web/20180829083223if_/http://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME680-DS001-00.pdf#page=44, generated with kicad-footprint-generator ipc_lga_layoutBorder_generator.py'
+  size_source: 'https://web.archive.org/web/20180829083223if_/http://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME680-DS001-00.pdf#page=44'
   library: Package_LGA
   body_size_x: 3.0
   body_size_y: 3.0
@@ -2960,7 +2960,7 @@ Linear_LGA-133_15.0x15.0_Layout12x12_P1.27mm:
   EP_chamfer: 0.25
 
 Texas_SIL0010A_MicroSiP-10-1EP_3.8x3mm_P0.6mm_EP0.7x2.9mm:
-  size_source: 'http://www.ti.com/lit/ml/mpds579b/mpds579b.pdf, generated with kicad-footprint-generator ipc_lga_layoutBorder_generator.py'
+  size_source: 'http://www.ti.com/lit/ml/mpds579b/mpds579b.pdf'
   library: Package_LGA
   body_size_x: 3.8
   body_size_y: 3.0
@@ -2996,7 +2996,7 @@ Infineon_MLPQ-16-14-1EP_4x4mm_P0.5mm:
   EP_chamfer: 0.25
 
 Texas_RVE0028A_VQFN-28-1EP_3.5x4.5mm_P0.4mm_EP2.1x3.1mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/tps51363.pdf, generated with kicad-footprint-generator ipc_dfn_qfn_generator.py'
+  size_source: 'http://www.ti.com/lit/ds/symlink/tps51363.pdf'
   library: Package_DFN_QFN
   body_size_x: 3.5
   body_size_y: 4.5
@@ -3014,7 +3014,7 @@ Texas_RVE0028A_VQFN-28-1EP_3.5x4.5mm_P0.4mm_EP2.1x3.1mm:
   EP_chamfer: 0.25
 
 Texas_RGY_R-PVQFN-N24_EP2.05x3.1mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/bq24133.pdf#page=40, generated with kicad-footprint-generator ipc_dfn_qfn_generator.py'
+  size_source: 'https://www.ti.com/lit/ds/symlink/bq24133.pdf#page=40'
   library: Package_DFN_QFN
   body_size_x: 3.5
   body_size_y: 5.5
@@ -3033,7 +3033,7 @@ Texas_RGY_R-PVQFN-N24_EP2.05x3.1mm:
   EP_chamfer: 0.25
 
 Texas_RGY_R-PVQFN-N20_EP2.05x3.05mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/txb0108.pdf#page=33, generated with kicad-footprint-generator ipc_dfn_qfn_generator.py'
+  size_source: 'https://www.ti.com/lit/ds/symlink/txb0108.pdf#page=33'
   library: Package_DFN_QFN
   body_size_x: 3.5
   body_size_y: 4.5
@@ -3068,7 +3068,7 @@ QFN-20-1EP_4x4mm_P0.5mm:
   EP_chamfer: 0.25
 
 Texas_RHB0032E_VQFN-32-1EP_5x5mm_P0.5mm_EP3.45x3.45mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/msp430f1122.pdf, generated with kicad-footprint-generator ipc_dfn_qfn_generator.py'
+  size_source: 'http://www.ti.com/lit/ds/symlink/msp430f1122.pdf'
   library: Package_DFN_QFN
   body_size_x: 5.0
   body_size_y: 5.0

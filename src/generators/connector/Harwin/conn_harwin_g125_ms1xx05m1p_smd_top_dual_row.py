@@ -64,7 +64,7 @@ def generate_footprint(generator_name: str, global_config: GC.GlobalConfig, pins
         pitch=pitch, orientation=orientation_str)
 
     kicad_mod = Footprint(footprint_name, FootprintType.SMD)
-    kicad_mod.description = "Harwin {:s}, {:s}, {:d} Pins per row ({:s}), generated with kicad-footprint-generator".format(
+    kicad_mod.description = "Harwin {:s}, {:s}, {:d} Pins per row ({:s})".format(
         series_long, mpn, pins_per_row, datasheet
     )
     kicad_mod.tags = configuration['keyword_fp_string'].format(series=series,

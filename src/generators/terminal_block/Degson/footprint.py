@@ -28,7 +28,6 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
         The number of footprints generated.
     """
 
-    script_generated_note = "generated with kicad-footprint-generator TerminalBlock_Degson"
     classname = "TerminalBlock_Degson"
     # from manufacturer homepage, not all stores list all the poles
     pins = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 18, 19, 20, 24, 44, 45]
@@ -74,6 +73,5 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
             classname=classname,
             classname_description=classname_description,
             webpage=webpage,
-            script_generated_note=script_generated_note,
         )
     return len(pins)

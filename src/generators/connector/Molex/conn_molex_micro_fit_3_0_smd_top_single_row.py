@@ -81,7 +81,7 @@ def generate_one_footprint(generator_name: str, global_config: GC.GlobalConfig, 
 
     kicad_mod = Footprint(footprint_name, FootprintType.SMD)
     kicad_mod.setDescription(
-        "Molex {:s}, {:s} (compatible alternatives: {:s}), {:d} Pins per row ({:s}), generated with kicad-footprint-generator".format(
+        "Molex {:s}, {:s} (compatible alternatives: {:s}), {:d} Pins per row ({:s})".format(
             series_long,
             mpn,
             ", ".join(alt_mpn),
