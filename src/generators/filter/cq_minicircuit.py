@@ -216,7 +216,7 @@ class cq_minicircuit:
             case = (
                 cq.Workplane("XY")
                 .workplane(centerOption="CenterOfMass", offset=C - 0.1)
-                .moveTo(0.0 - (((A / 2.0) - D) - 0.3), 0.0)
+                .moveTo(0.0 + (((A / 2.0) - D) - 0.3), 0.0)
                 .rect(0.6, 0.4)
                 .extrude(0.1)
             )
@@ -530,7 +530,7 @@ class cq_minicircuit:
             case1 = (
                 cq.Workplane("XY")
                 .workplane(centerOption="CenterOfMass", offset=C - 0.1)
-                .moveTo(0.0 - (((A / 2.0) - D) - 0.3), 0.0)
+                .moveTo(0.0 + (((A / 2.0) - D) - 0.3), 0.0)
                 .rect(0.6, 0.4)
                 .extrude(0.1)
             )
