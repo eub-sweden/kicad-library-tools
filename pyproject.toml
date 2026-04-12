@@ -96,7 +96,6 @@ exclude = [
     "src/kilibs/declarative_defs",
     "src/generators",
     "KicadModTree/nodes/specialized/PolygonLine\\.py",
-    "KicadModTree/nodes/specialized/ChamferedNativePad\\.py",
     "KicadModTree/nodes/specialized/ChamferedRect\\.py",
     "KicadModTree/examples",
     "KicadModTree/tests",

@@ -19,7 +19,6 @@ from KicadModTree.KicadFileHandler import KicadFileHandler
 from KicadModTree.ModArgparser import ModArgparser
 from KicadModTree.nodes import (
     Arc,
-    ChamferedNativePad,
     ChamferedPad,
     ChamferedPadGrid,
     ChamferedRectangle,
@@ -72,7 +71,6 @@ __all__ = [
     "Arc",
     "ChamferedRectangle",
     "ChamferSelPadGrid",
-    "ChamferedNativePad",
     "ChamferedPad",
     "ChamferedPadGrid",
     "ChamferSizeHandler",

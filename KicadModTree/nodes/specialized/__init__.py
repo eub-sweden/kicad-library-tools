@@ -13,7 +13,6 @@
 
 """Specialized nodes."""
 
-from .ChamferedNativePad import ChamferedNativePad
 from .ChamferedPad import ChamferedPad
 from .ChamferedPadGrid import ChamferedPadGrid, ChamferSelPadGrid
 from .ChamferedRectangle import ChamferedRectangle
@@ -30,7 +29,6 @@ from .Translation import Translation
 from .Trapezoid import Trapezoid
 
 __all__ = [
-    "ChamferedNativePad",
     "ChamferedPad",
     "ChamferedPadGrid",
     "ChamferedRectangle",
