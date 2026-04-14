@@ -71,6 +71,30 @@ Texas_VQFN-28_RVE0028A:
     paste_via_clearance: 0.05
     paste_avoid_via: False
 
+WQFN-28-1EP_3.5x5.5mm_P0.5mm_EP2.05x4.05mm:
+  size_source: 'https://mds.analog.com/api/public/content/tqfn-cu_21-0184.pdf'
+  device_type: 'WQFN'
+  compatible_mpns:
+    - "Maxim_T283555+1"
+    - "Maxim_T283555+1C"
+    - "Maxim_T283A5+2F"
+  ipc_class: 'qfn'
+  body_size_x: 3.4 .. 3.5 .. 3.6
+  body_size_y: 5.4 .. 5.5 .. 5.6
+  overall_height: 0.7 .. 0.75 .. 0.8
+  num_pins_x: 4
+  num_pins_y: 10
+  pitch: 0.5
+  lead_width: 0.2 .. 0.25 .. 0.3
+  lead_len: 0.3 .. 0.4 .. 0.5
+  lead_height: 0.2
+  EP_size_x: 1.95 .. 2.05 .. 2.15
+  EP_size_y: 3.95 .. 4.05 .. 4.15
+  EP_num_paste_pads: [1, 3]
+  thermal_vias:
+    count: [2, 4]
+    drill: 0.2
+
 QFN-28-1EP_4x4mm_P0.4mm_EP2.3x2.3mm:
   size_source: 'http://www.issi.com/WW/pdf/31FL3731.pdf#page=21'
   device_type: 'QFN'
