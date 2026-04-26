@@ -9,6 +9,31 @@
 default_parameters:
   library: Package_DFN_QFN
 
+VQFN-52-1EP_6x6mm_P0.4mm_EP4.7x4.7mm:
+  size_source: 'Nordic QFN52 (QGAA), https://docs-be.nordicsemi.com/bundle/ps_nrf54L15/page/pdf/nRF54L15_nRF54L10_nRF54L05_Datasheet_v1.0.pdf#page=888'
+  device_type: 'VQFN'
+  ipc_class: 'qfn'
+  body_size_x: 6.00
+  body_size_y: 6.00
+  body_pcb_gap: 0.00 .. 0.035 .. 0.05
+  overall_height: 0.80 .. 0.85 .. 0.90
+  num_pins_x: 13
+  num_pins_y: 13
+  pitch: 0.4
+  lead_width: 0.15 .. 0.20 .. 0.25
+  lead_len: 0.25 .. 0.35 .. 0.45
+  lead_height:
+    nominal: 0.203
+  chamfer_edge_pins: 0.10 # educated guess, with 0.15 we get 0.318 mm clearance between corner pads; with 0.10 we get 0.247mm clearance
+  EP_size_x: 4.60 .. 4.70 .. 4.80
+  EP_size_y: 4.60 .. 4.70 .. 4.80
+  EP_num_paste_pads: [4, 4]
+  thermal_vias:
+    count: [5, 5]
+    drill: 0.2
+    # EP_paste_coverage: 0.6
+    # paste_via_clearance: 0.1
+
 QFN-52-1EP_7x8mm_P0.5mm_EP5.41x6.45mm:
   size_source: 'https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/ltc-legacy-qfn/QFN_52_05-08-1729.pdf'
   device_type: 'QFN'
