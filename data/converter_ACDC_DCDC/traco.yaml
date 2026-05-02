@@ -799,6 +799,30 @@ Converter_DCDC_TRACO_TMR4-xxxxWI_THT:
     ["tht", "8", 17.78, 0, 1.5, 1.5, 1]
   ]
 
+Converter_DCDC_TRACO_TMR8-xxxxWI_THT:
+  library_name: 'Converter_DCDC'
+  description: "DCDC-Converter, TRACO, TMR8-xxxxWI, 8W, Rev. September 30. 2025"
+  datasheet: "https://www.tracopower.com/products/tmr8wi.pdf"
+  tags: "DCDC-Converter TRACO THT SIP-8 8W TMR8WI"
+  compatible_mpns:
+    # https://www.tracopower.com/products/tmr10wi.pdf
+    - TMR10WI
+  extratexts: []
+  at: [-2, 2.7]
+  size: [21.8, 9.6]
+  body_position_tolerance: [0.5, 0.5]
+  # For future use
+  height: 12
+  pins: [
+    ["thtr", "1", 0, 0, 1.9, 1.9, 1.1],
+    ["tht", "2", 2.54, 0, 1.9, 1.9, 1.1],
+    ["tht", "3", 5.08, 0, 1.9, 1.9, 1.1],
+    ["tht", "5", 10.16, 0, 1.9, 1.9, 1.1],
+    ["tht", "6", 12.7, 0, 1.9, 1.9, 1.1],
+    ["tht", "7", 15.24, 0, 1.9, 1.9, 1.1],
+    ["tht", "8", 17.78, 0, 1.9, 1.9, 1.1]
+  ]
+
 Converter_DCDC_TRACO_TMR10-24xxWIR_48xxWIR_72xxWIR_THT:
   library_name: 'Converter_DCDC'
   description: "DCDC-Converter, TRACO, TMR 10-24xxWIR, TMR 10-48xxWIR, TMR 10-72xxWIR, 10W, Rev. April 29. 2025"
