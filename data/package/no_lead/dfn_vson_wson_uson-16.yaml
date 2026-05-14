@@ -59,3 +59,38 @@ OnSemi_UDFN-16-1EP_3.3x1.35mm_P0.4mm_EP2.8x0.4mm:
   EP_size_x: 0.30 .. 0.50
   EP_size_y: 2.70 .. 2.90
   EP_num_paste_pads: [1, 3]
+
+NXP_LSON-16-1EP_3.5x4.5mm_P0.5mm_EP2x3.8mm:
+# NON JEDEC, size 3.5x4.5mm does not match MO-229 and others, so we are considering this 'manufacturer-specific', i.e. using 'manufacturer' parameter
+  size_source: 'NXP SOT1992-1(DD), https://www.nxp.com/docs/en/package-information/SOT1992-1_DD.pdf'
+  compatible_mpns:
+    - 'NXP_HLSON16'
+  device_type: 'LSON'
+  manufacturer: 'NXP'
+  # part_number: 'SOT1992-1(DD)'
+  ipc_class: 'qfn'
+  body_size_x:
+    nominal: 3.5
+  body_size_y:
+    nominal: 4.5
+  overall_height:
+    minimum: 1.4
+    maximum: 1.5
+  num_pins_x: 0
+  num_pins_y: 8
+  pitch: 0.5
+  lead_width:
+    nominal: 0.27
+  lead_len:
+    minimum: 0.4
+    maximum: 0.5
+  lead_height:
+    nominal: 0.2
+  EP_size_x:
+    minimum: 1.95
+    maximum: 2.05
+  EP_size_y:
+    minimum: 3.75
+    maximum: 3.85
+  # EP_chamfer: 0.25
+  EP_num_paste_pads: [2, 3]
