@@ -540,6 +540,47 @@ QFN-40-1EP_6x6mm_P0.5mm_EP4.6x4.6mm:
     EP_paste_coverage: 0.6
     paste_via_clearance: 0.1
 
+Texas_WQFN-40-1EP_3x6mm_P0.4mm_EP1.7x4.5mm:
+  size_source: 'Texas RET0040A, https://www.ti.com/lit/ml/mpqf725/mpqf725.pdf'
+  device_type: 'WQFN'
+  manufacturer: 'Texas'
+  ipc_class: 'qfn'
+  body_size_x:
+    minimum: 2.9
+    maximum: 3.1
+  body_size_y:
+    minimum: 5.9
+    maximum: 6.1
+  num_pins_x: 6
+  num_pins_y: 14
+  pitch: 0.4
+  lead_width:
+    minimum: 0.15
+    maximum: 0.25
+  lead_len:
+    minimum: 0.15
+    maximum: 0.35
+  pad_center_to_center_x: 2.95 # land pattern example, page 2
+  pad_center_to_center_y: 5.95 # page 2
+  pad_length: 0.45 # page 2
+  pad_width: 0.20 # page 2
+  overall_height:
+    minimum: 0.70
+    maximum: 0.80
+  EP_size_x:
+    nominal: 1.7
+    tolerance: 0.1
+  EP_size_y:
+    nominal: 4.5
+    tolerance: 0.1
+  EP_num_paste_pads: [1, 4]
+  EP_paste_coverage: 0.76 # page 3
+  paste_maximum_radius: 0.05 # hack, parameter not implemented yet in no_lead/*.py scripts
+  thermal_vias:
+    count: [3, 3] # should be [3, 5], but the spacing differs on 'isolated' vias, 2 - 1.14 = 0.86 mm
+    grid: [0.6, 1.14]
+    drill: 0.2
+
 Texas_RHA_VQFN-40-1EP_6x6mm_P0.5mm_EP4.6x4.6mm:
   size_source: 'http://www.ti.com/lit/ds/symlink/dac7750.pdf#page=49'
   device_type: 'VQFN'
