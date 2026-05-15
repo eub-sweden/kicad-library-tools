@@ -1094,8 +1094,10 @@ VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm:
     paste_between_vias: 2
 
 WQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/tlv9064.pdf#page=44'
+  size_source: 'Texas RTE0016C, https://www.ti.com/lit/ml/qfnd525b/qfnd525b.pdf, https://www.ti.com/lit/ds/symlink/tlv9064.pdf#page=49'
   device_type: 'WQFN'
+  compatible_mpns:
+    - 'Texas_RTE0016C'
   ipc_class: 'qfn'
   body_size_x:
     minimum: 2.9
