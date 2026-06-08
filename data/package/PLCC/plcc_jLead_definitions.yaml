@@ -1,16 +1,26 @@
-PLCC_20:
+PLCC-20_9.0x9.0mm_P1.27mm:
+# should be PLCC-20_8.966x8.966mm_P1.27mm, 350 mil package (8.89mm minimum)
+# JEDEC MS-018 and MO-047 are close, lead center to center distance differs little in minimum and maximum value
   device_type: 'PLCC'
   units: 'inch'
-  size_source: 'http://www.nxp.com/docs/en/package-information/SOT380-1.pdf'
-  overall_size_x: 0.385 .. 0.39 .. 0.395
-  overall_size_y: 0.385 .. 0.39 .. 0.395
-  body_size_x: 0.35 .. 0.353 .. 0.356
-  body_size_y: 0.35 .. 0.353 .. 0.356
-  body_chamfer: 0.045
-  lead_width: 0.013 .. 0.021
-  lead_inside_x: 0.29 .. 0.31 .. 0.33
-  lead_inside_y: 0.29 .. 0.31 .. 0.33
-  pitch: 0.05
+  size_source: 'JEDEC MS-018 (variation AA), JEDEC MO-047 (variation AA), http://www.nxp.com/docs/en/package-information/SOT380-1.pdf, https://www.jedec.org/standards-documents/'
+  compatible_mpns:
+    - 'NXP_SOT380-1'
+    - 'Renesas_N20.35' # https://www.renesas.com/en/document/psc/package-drawing-plcc-20pin-n2035
+    - 'Texas_FN0020A' # https://www.ti.com/lit/ml/mpqc018a/mpqc018a.pdf#page=2
+    - 'PLCC-20_8.966x8.966mm_P1.27mm' # for symbol filter
+  overall_size_x: 0.385 .. 0.390 .. 0.395 # NXP HD; JEDEC D
+  overall_size_y: 0.385 .. 0.390 .. 0.395 # NXP HE; JEDEC E
+  body_size_x: 0.350 .. 0.353 .. 0.356 # NXP D; JEDEC D1
+  body_size_y: 0.350 .. 0.353 .. 0.356 # NXP E; JEDEC E1
+  body_chamfer: 0.045 # NXP k
+  lead_width: 0.013 .. 0.021 # NXP bp
+  lead_length: 0.040 .. 0.057 # NXP Lp = 1.016 .. 1.448 mm; JEDEC not provided
+  # lead_center_distance_x: 0.282 .. 0.310 .. 0.338 # using bigger tolerance from JEDEC MS-018: 2 * D2; ~ NXP eD (close, equal to JEDEC MO-047: D2)
+  # lead_center_distance_y: 0.282 .. 0.310 .. 0.338 # JEDEC MS-018: 2 * E2; ~ NXP eE
+  lead_inside_x: 0.29 .. 0.31 .. 0.33 # NXP eD; lead_center_distance_x is generating small pads and their distance do not match NXP eD
+  lead_inside_y: 0.29 .. 0.31 .. 0.33 # NXP eE
+  pitch: 0.05 # NXP e
   num_pins_x: 5
   num_pins_y: 5
 
