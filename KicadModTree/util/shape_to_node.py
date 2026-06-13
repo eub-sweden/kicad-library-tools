@@ -51,7 +51,7 @@ from kilibs.geom import (
     GeomTrapezoid,
 )
 
-map_geomshape_node = {}
+map_geomshape_node: dict[type, type] = {}
 """Mapping between all the GeomShape types and their corresponding Shape types."""
 
 
