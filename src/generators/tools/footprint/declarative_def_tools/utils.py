@@ -60,7 +60,7 @@ class DotDict(dict):
                 self[key] = value
 
     def __deepcopy__(self, memo):
-        return DotDict(copy.deepcopy(super(DotDict, self), memo))
+        return DotDict(copy.deepcopy(dict(self), memo))
 
     def dump(self, prefix: str = ""):
         for key, value in self.items():
