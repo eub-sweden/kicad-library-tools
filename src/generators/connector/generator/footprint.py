@@ -304,6 +304,7 @@ class FPconfiguration():
     num_rows: int = 1
     gap_pos: int = 0
     gap_size: int = 0
+    hidden_pins: list[int] = None
     pad_properties: PadProperties = None
     pad1_properties: PadProperties = None
     skipped_positions: list = None
@@ -416,6 +417,13 @@ class FPconfiguration():
             gap_pos = self.gap_pos,
             gap_size = self.gap_size,
         )
+
+        if "hidden_pins" in self.spec:
+            if type(self.spec["hidden_pins"]) is int:
+                self.spec["hidden_pins"] = [self.spec["hidden_pins"]]
+            self.hidden_pins = self.spec["hidden_pins"]
+        else:
+            self.hidden_pins = []
 
         ## check if there are mount pads
         self.num_mount_pads = len({ep["name"] for ep in self.spec.get("mount_pads", {}).values() if "name" in ep})
@@ -648,6 +656,9 @@ def generate_one_footprint(
 
         pad_pos = fp_config.pad_layout.get_pad_pos(pad_index)
         pad_name = fp_config.pad_layout.get_pad_name(pad_index)
+
+        if int(pad_name) in fp_config.hidden_pins:
+            continue
 
         pad_props = (
             fp_config.pad1_properties
