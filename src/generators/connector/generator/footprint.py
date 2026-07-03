@@ -131,6 +131,7 @@ class PadGridLayout(PadLayout):
 
 
     def __init__(self, pad_pitch: float, row_pitch: float, pads_per_row: int, num_rows: int, pin1_at_top: bool,
+                 row_x_offset: float,
                  y_stagger_length: int, y_stagger_offset: float,
                  numbering_axis: NumberingAxis, gap_pos: int, gap_size: int):
         self.pad_pitch = pad_pitch
@@ -139,6 +140,7 @@ class PadGridLayout(PadLayout):
         self.num_rows = num_rows
         self.pin1_at_top = pin1_at_top
 
+        self.row_x_offset = row_x_offset
         self.y_stagger_length = y_stagger_length
         self.y_stagger_offset = y_stagger_offset
 
@@ -168,6 +170,8 @@ class PadGridLayout(PadLayout):
         """
         row, col = self._row_col(index)
 
+        x_off = self.row_x_offset if row != 0 else 0.0
+
         # Step over the gap
         if self.gap_size and col >= self.gap_pos:
             col += self.gap_size
@@ -183,7 +187,7 @@ class PadGridLayout(PadLayout):
                 self._y_stagger_span / 2
             )
 
-        pos = Vector2D(col * self.pad_pitch, row * self.row_pitch + y_off)
+        pos = Vector2D(col * self.pad_pitch + x_off, row * self.row_pitch + y_off)
 
         return pos + Vector2D(
             -0.5 * self.x_span,
@@ -400,6 +404,7 @@ class FPconfiguration():
             self.row_pitch,
             self.num_pos,
             self.num_rows,
+            row_x_offset=self.row_x_offset,
             y_stagger_length=pin_y_stagger_cycle,
             y_stagger_offset=pin_y_stagger_offset,
             pin1_at_top=self.pin1_pos == "top",
@@ -485,7 +490,7 @@ class FPconfiguration():
             pin1_offset = Vector2D(*pin1_offset)
         pin1_offset.y += self.pin1_marker_size
 
-        self.pin1_marker_pos = Vector2D(-0.5 * (self.pad_pos_range.x + self.row_x_offset) + self.pad_center_offset.x,
+        self.pin1_marker_pos = Vector2D(-0.5 * self.pad_pos_range.x + self.pad_center_offset.x,
                                         self.body_edges[self.pin1_pos]) + pin1_offset * Vector2D(1, self.scale_y)
         self.draw_pin1_marker_on_fab = first_pin_spec.get("marker", { }).get("fab", True)
 
@@ -621,8 +626,7 @@ def generate_one_footprint(
                       pad_pos_range=fp_config.pad_pos_range,
                       pad_spec=pad_spec,
                       pad_center_offset=fp_config.pad_center_offset,
-                      default_paste=fp_config.pad_properties.paste,
-                      row_x_offset=fp_config.row_x_offset)
+                      default_paste=fp_config.pad_properties.paste)
 
     ## collect information from body_shape spec
     body_spec = fp_config.spec.get("body_shape", DotDict())
@@ -790,7 +794,7 @@ def make_pin1_fab_marker_points(fp_config: FPconfiguration, global_config: GC.Gl
     # pin 1 on Fab is a triangle
 
     # location of the tip in x
-    tip_x = -0.5 * (fp_config.pad_pos_range.x + fp_config.row_x_offset) + fp_config.pad_center_offset.x
+    tip_x = -0.5 * fp_config.pad_pos_range.x + fp_config.pad_center_offset.x
 
     # width and height of the triangle
     dx = min(fp_config.pad_pitch, global_config.fab_pin1_marker_length)
@@ -890,8 +894,8 @@ def build_body_shape(body_spec: dict, *, fp_config: FPconfiguration):
     return body_shape_nodes
 
 
-def add_mount_pad(kicad_mod, global_config, pad_pos_range, pad_spec, pad_center_offset, default_paste, row_x_offset):
-    center_to_center = _get_dim("center", spec=pad_spec, dim="x", base=pad_pos_range.x, mult=2) + row_x_offset
+def add_mount_pad(kicad_mod, global_config, pad_pos_range, pad_spec, pad_center_offset, default_paste):
+    center_to_center = _get_dim("center", spec=pad_spec, dim="x", base=pad_pos_range.x, mult=2)
     pad_pos_y = utils.as_list(_get_dim("center", spec=pad_spec, dim="y"))
     pad_props = PadProperties(pad_spec, global_config, default_paste=default_paste)
     pad_nums = utils.as_list(pad_spec.get('name', [""]))
