@@ -1932,6 +1932,26 @@ HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.46x2.31mm:
     grid: [1, 1.2]
     EP_num_paste_pads: [2, 1]
 
+
+HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.78x3.37mm:
+  inherit: HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.46x2.31mm
+  size_source: 'Texas Instruments PWP0016M, 1.00mm body thickness, https://www.ti.com/lit/ml/pptd352a/pptd352a.pdf'
+  compatible_mpns:
+    - 'Texas_PWP0016M Texas_PowerPAD-TSSOP'
+    - 'JEDEC_MO-153-variation-ABT'
+  # Note: General dimensions (except for EP) based on JEDEC MO-153 variation ABT,
+  # In the PWP0016M datasheet it just says "Reference JEDEC registration MO-153."
+  # ... but there is no JEDEC package with 2.78x3.37mm EP.
+  EP_size_x: 2.20 .. 2.78 # Exposed Pad from Texas package, not including "corner fins"
+  EP_size_y: 2.48 .. 3.37 #  Exposed Pad from Texas package, not including "top fin"
+  EP_num_paste_pads: [2, 2]
+  EP_mask_x: 2.78 # sizes based on Texas Land Pattern example
+  EP_mask_y: 3.37 # sizes based on Texas Land Pattern example
+  # NOTE: EP_size_x_overwrite and EP_size_y_overwrite same as in PWP0016C
+  thermal_vias:
+    grid: [1.2, 1.2]
+    EP_num_paste_pads: [2, 2]
+
 HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm:
   size_source: 'http://www.ti.com/lit/ds/symlink/tps2660.pdf#page=48'
   compatible_mpns:
