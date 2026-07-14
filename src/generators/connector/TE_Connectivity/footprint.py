@@ -44,9 +44,12 @@ def create_footprints(spec: BaseSpec, generator_name: str) -> int:
     
     import generators.connector.TE_Connectivity.conn_te_micro_match_215079 as con6
     num_fps_generated += con6.generate_all(generator_name, GLOBAL_CONFIG, CONNECTOR_CONFIG)
-    
-    import generators.connector.TE_Connectivity.conn_ffc_te_84952_84953 as con7
+
+    import generators.connector.TE_Connectivity.conn_te_micro_match_188275 as con7
     num_fps_generated += con7.generate_all(generator_name, GLOBAL_CONFIG, CONNECTOR_CONFIG)
+
+    import generators.connector.TE_Connectivity.conn_ffc_te_84952_84953 as con8
+    num_fps_generated += con8.generate_all(generator_name, GLOBAL_CONFIG, CONNECTOR_CONFIG)
 
     return num_fps_generated
 
