@@ -22,6 +22,26 @@ ASPI-0425:
     - shielded
     - low-profile
 
+ASPI-0628:
+  datasheet: "https://abracon.com/Magnetics/new/ASPI-0628.pdf"
+  PartNumber: ASPI-0628
+  widthX: 6.0 # A
+  lengthY: 6.0 # B
+  height: 2.8 # C
+  landingX: 2.0 # From catalog, datasheet says 1.6
+  landingOutsideX: 6.3
+  landingY: 5.7
+  # pad sizes not given in datasheet
+  3d:
+    type: 1
+    bodyColor: dark grey body
+    pinColor: metal grey pins
+    padThickness: 0.05
+  tags:
+    - power
+    - shielded
+    - low-profile
+
 ASPIAIG-F4020:
   datasheet: "https://abracon.com/Magnetics/power/ASPIAIG-F4020.pdf"
   PartNumber: ASPIAIG-F4020
