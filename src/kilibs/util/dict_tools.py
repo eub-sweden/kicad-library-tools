@@ -114,13 +114,14 @@ def dict_inherit(d: dict[Any, Any]) -> None:
     def dict_inherit(
         d: dict[Any, Any], child: dict[Any, Any], parent: dict[Any, Any]
     ) -> None:
-        if "inherit" not in parent:
-            del child["inherit"]
-            dict_merge(parent, child)
-        elif d[parent["inherit"]] is child:
-            raise RecursionError
-        else:
-            dict_inherit(d, parent, d[parent["inherit"]])
+        if "inherit" in parent:
+            if d[parent["inherit"]] is child:
+                raise RecursionError
+            else:
+                dict_inherit(d, parent, d[parent["inherit"]])
+
+        del child["inherit"]
+        dict_merge(parent, child)
 
     for v in d.values():
         if isinstance(v, dict) and "inherit" in v:
