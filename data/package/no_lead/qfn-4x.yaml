@@ -238,6 +238,7 @@ Texas_RNQ0040A_WQFN-40-1EP_6x4mm_P0.4mm_EP4.7x2.7mm:
     maximum: 4.1
   overall_height:
     maximum: 0.8
+  body_pcb_gap: 0.05
   num_pins_x: 12
   num_pins_y: 8
   pitch: 0.4
