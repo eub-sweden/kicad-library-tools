@@ -1820,6 +1820,19 @@ Texas_HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3.155x3.255mm:
     EP_num_paste_pads: [2, 2]
     paste_between_vias: 1
 
+Texas_HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.94x3.34mm:
+  inherit: Texas_HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3.155x3.255mm
+  size_source: 'Texas Instruments PWP0014J, https://www.ti.com/lit/ml/pptd381/pptd381.pdf, https://www.ti.com/lit/ds/symlink/tps1htc100-q1.pdf#page=40'
+  EP_size_x: 2.28 .. 2.94
+  EP_size_y: 2.68 .. 3.34
+  EP_mask_x: 2.94
+  EP_mask_y: 3.34
+  thermal_vias:
+    count: [3, 5]
+    drill: 0.2
+    grid: [1.1, 1.1]
+    paste_between_vias: 1
+
 TSSOP-16_4.4x5mm_P0.65mm:
   size_source: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
   compatible_mpns:
