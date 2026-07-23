@@ -4,6 +4,7 @@
 # and this could be done just before the lines which make use of it.
 
 import argparse
+import logging
 import re
 import signal
 import sys
@@ -88,7 +89,6 @@ class StepDiffResult:
 class DiffConfig:
     """All the configuration options for the diff process."""
 
-    ignore_missing: bool
     epsilon: float
     output_path: Path | None
     output_as_file: bool
@@ -116,26 +116,42 @@ def load_step_file(path: Path) -> "cq.Workplane":
         raise _LoadStepFileError(path)
 
 
-def get_step_diff(old_path: Path, new_path: Path) -> StepDiffResult:
+def get_step_diff(
+    old_path: Path | None, new_path: Path | None
+) -> StepDiffResult:
+    """Compute the difference between two STEP files.
 
-    old_model = load_step_file(old_path)
-    new_model = load_step_file(new_path)
+    Either *old_path* or *new_path* may be ``None``, meaning that side
+    is absent (the file was created or deleted).
+    """
 
-    old_volume = old_model.val().Volume()
-    new_volume = new_model.val().Volume()
+    old_model = load_step_file(old_path) if old_path is not None else None
+    new_model = load_step_file(new_path) if new_path is not None else None
 
-    if old_volume == 0 or new_volume == 0:
-        model_added = new_model
-        model_removed = old_model
-    else:
+    old_volume = old_model.val().Volume() if old_model is not None else 0.0
+    new_volume = new_model.val().Volume() if new_model is not None else 0.0
+
+    if (
+        old_model is not None
+        and new_model is not None
+        and old_volume > 0
+        and new_volume > 0
+    ):
         model_added = new_model.cut(old_model)
         model_removed = old_model.cut(new_model)
+    else:
+        model_added = new_model
+        model_removed = old_model
 
-    added_volume = model_added.val().Volume()
-    removed_volume = model_removed.val().Volume()
+    added_volume = model_added.val().Volume() if model_added is not None else 0.0
+    removed_volume = (
+        model_removed.val().Volume() if model_removed is not None else 0.0
+    )
+
+    model_name = old_path.stem if old_path is not None else new_path.stem
 
     return StepDiffResult(
-        model_name=old_path.stem,
+        model_name=model_name,
         old_model=old_model,
         new_model=new_model,
         model_added=model_added,
@@ -202,44 +218,47 @@ def process_file_pair(
 ) -> DiffProcessResult:
     """
     Process a pair of files and return the result.
-    This function is designed to be run in parallel for multiple file pairs.
+
+    Either *file1* or *file2* may be ``None``, meaning the file was
+    absent on that side of the diff (created or deleted).
+
+    This function is designed to be run in parallel for multiple file
+    pairs.
     """
 
-    old_file = Path(pair.file1)
-    new_file = Path(pair.file2)
+    old_file = pair.file1
+    new_file = pair.file2
 
-    process_result = DiffProcessResult()
-
-    if not old_file.exists() or not new_file.exists():
-        if not config.ignore_missing:
-            process_result.error = f"{pair.name}: MISSING"
-
-        return process_result
-
-    process_result.files_checked = True
+    result = DiffProcessResult()
+    result.files_checked = True
 
     try:
         step_diff = get_step_diff(old_file, new_file)
-        process_result.step_diff_stats = step_diff.stats
     except _LoadStepFileError as e:
-        process_result.error = f"WARNING: {e.message}"
-        return process_result
+        result.error = f"WARNING: {e.message}"
+        return result
 
-    if step_diff.stats.changed_volume_proportion > config.epsilon:
-        process_result.error = (
+    result.step_diff_stats = step_diff.stats
+
+    if old_file is None:
+        result.error = f"CREATED ({step_diff.stats.new_volume:.2f} mm^3)"
+    elif new_file is None:
+        result.error = f"DELETED ({step_diff.stats.old_volume:.2f} mm^3)"
+    elif step_diff.stats.changed_volume_proportion > config.epsilon:
+        result.error = (
             f"CHANGED ({step_diff.stats.changed_volume_proportion * 100:.2f}%)"
         )
 
-        if config.output_path:
-            assert isinstance(config.output_path, Path)
-            if config.output_as_file:
-                diff_file = config.output_path
-            else:
-                diff_file = config.output_path / pair.name
+    # Diff output (modified files only)
+    if config.output_path and old_file is not None and new_file is not None:
+        diff_file = (
+            config.output_path
+            if config.output_as_file
+            else config.output_path / pair.name
+        )
+        save_step_diff(step_diff, diff_file, config.colors)
 
-            save_step_diff(step_diff, diff_file, config.colors)
-
-    return process_result
+    return result
 
 
 def color(arg) -> tuple[float, float, float, float]:
@@ -277,27 +296,55 @@ def _worker_init():
 
 def main():
     parser = argparse.ArgumentParser(
-        description=(
-            "Check STEP files for changes. You can provide two files, "
-            "two directories, or a local Git repository. "
-        )
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=("""
+Check STEP files for changes.
+
+You can provide one or two paths to compare. The paths can be:
+
+* File path of a single STEP file:
+    * File-to-file mode:             [file1] [file2]
+    * Single file (show stats):      [file]
+
+* Directory path containing STEP files:
+    * Directory-to-directory mode:   [dir1] [dir2]
+    * Single directory (show stats): [dir]
+
+If you set --repo, then the paths are interpreted as Git commits
+(e.g. commit hash, branch name, or tag name) in that repo:
+
+    * Commit-to-commit               [commit1] [commit2]
+    * Commit-to-working-copy:        [commit1]
+    * HEAD-to-working-copy:          []
+"""),
     )
     parser.add_argument(
-        "path1", type=Path, help="STEP file, directory, or local Git repo."
+        "path1",
+        type=str,
+        nargs="?",
+        help="STEP file, directory, or local Git commit (depending on --repo).",
     )
     parser.add_argument(
-        "path2", type=Path, nargs="?", help="Second STEP file, or directory."
+        "path2", type=str, nargs="?", help="Second STEP file, directory, or commit."
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="count",
+        default=0,
+        help="Increase verbosity (can be specified multiple times).",
+    )
+    parser.add_argument(
+        "-r",
+        "--repo",
+        type=Path,
+        help="Path to a local Git repository, implies that the paths are Git commits or branches.",
     )
     parser.add_argument(
         "-g",
         "--glob",
         action="append",
         help="Filter files with a GLOB expression.",
-    )
-    parser.add_argument(
-        "--ignore-missing",
-        action="store_true",
-        help="Ignore missing files when comparing two directories or a repo.",
     )
     parser.add_argument(
         "-e",
@@ -347,6 +394,11 @@ def main():
 
     args = parser.parse_args()
 
+    if args.verbose >= 2:
+        logging.basicConfig(level=logging.DEBUG)
+    elif args.verbose == 1:
+        logging.basicConfig(level=logging.INFO)
+
     def filter_files(path: Path) -> bool:
         path = Path(path)
 
@@ -360,10 +412,11 @@ def main():
 
     errors_count = 0
     files_checked = 0
-    resolver = file_resolver.get_resolver(args.path1, args.path2, filter_files)
+    resolver = file_resolver.get_resolver(
+        args.path1, args.path2, repo=args.repo, file_filter=filter_files
+    )
 
     config = DiffConfig(
-        ignore_missing=args.ignore_missing,
         epsilon=args.epsilon,
         output_path=args.diff_output,
         output_as_file=args.diff_output.is_file() if args.diff_output else False,

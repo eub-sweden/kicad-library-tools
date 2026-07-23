@@ -1,7 +1,7 @@
 """ "
-This is a module to perform a common action in CI workflows: find a list of`
-corresponding files in two directories, or (soon) in different git commits, and
-present them in a way that can be used by other tools (e.g. a diff tool).
+This is a module to perform a common action in CI workflows: find a list of
+corresponding files in two directories or in different git commits and
+present them as pairs that can be used by other tools (e.g. a diff tool).
 """
 
 import abc
@@ -9,18 +9,24 @@ import logging
 import os
 from pathlib import Path
 
+LOGGER = logging.getLogger(__name__)
+
 
 class ResolvedFilePair:
     """
     Represents a pair of files that are to be compared.
     There is no guarantee that either of those files exists.
     The user should call .exists() on them before accessing them.
+
+    If either file is None, it means that there is not a corresponding
+    file on that side (e.g. the file was created or deleted, though the
+    exact implication of that is up to the user).
     """
 
-    # File A
-    file1: Path
-    # File B
-    file2: Path
+    # File A (the old side of a diff)
+    file1: Path | None
+    # File B (the new side of a diff)
+    file2: Path | None
     # The name of the pair (hopefully unique), but stripped of any
     # prefix such that "re-rooting" it in the other file's 'context'
     # would find a counterpart (if it exists).
@@ -38,8 +44,8 @@ class ResolvedFilePair:
     name: Path
 
     def __init__(self, file1, file2, name):
-        self.file1 = Path(file1)
-        self.file2 = Path(file2)
+        self.file1 = Path(file1) if file1 is not None else None
+        self.file2 = Path(file2) if file2 is not None else None
         self.name = Path(name)
 
     def __repr__(self):
@@ -59,24 +65,51 @@ class FileResolver(abc.ABC):
 
 class DirectFileResolver(FileResolver):
     """
-    This is the obvious one that takes two (lists of) files and yields
-    them as pairs.
+    Takes two files or lists of files and yields them as pairs.
+
+    Either *path1* or *path2* may be None, in which case every
+    pair will have that side set to None (meaning the file was
+    created or deleted relative to the other side).
     """
 
-    def __init__(self, path1, path2, file_filter=None):
-        if not isinstance(path1, list):
+    def __init__(
+        self,
+        path1: Path | list[Path] | None,
+        path2: Path | list[Path] | None,
+        file_filter=None,
+    ):
+        self._files: list[ResolvedFilePair]
+
+        if path1 is not None and not isinstance(path1, list):
             path1 = [path1]
-        if not isinstance(path2, list):
+        if path2 is not None and not isinstance(path2, list):
             path2 = [path2]
+
+        if path1 is None and path2 is not None:
+            path1 = [None] * len(path2)
+        if path2 is None and path1 is not None:
+            path2 = [None] * len(path1)
+        if path1 is None and path2 is None:
+            raise ValueError("At least one path is required")
 
         if len(path1) != len(path2):
             raise ValueError("The two lists must have the same length")
 
-        if file_filter is not None:
-            path1 = [f for f in path1 if file_filter(f)]
-            path2 = [f for f in path2 if file_filter(f)]
+        self._files = []
+        for a, b in zip(path1, path2):
+            # None on both sides is meaningless
+            if a is None and b is None:
+                continue
 
-        self._files = [ResolvedFilePair(p[0], p[1], p[1]) for p in zip(path1, path2)]
+            # The filter is applied to both sides, so if either side is
+            # if filtered out, the pair is skipped.
+            if file_filter is not None:
+                if a is not None and not file_filter(a):
+                    continue
+                if b is not None and not file_filter(b):
+                    continue
+            resolved = ResolvedFilePair(a, b, a or b)
+            self._files.append(resolved)
 
     @property
     def files(self) -> list[ResolvedFilePair]:
@@ -85,16 +118,16 @@ class DirectFileResolver(FileResolver):
 
 class DirectoryFileResolver(FileResolver):
     """
-    This is a class that takes two directories and finds all files in
-    them and yields them as pairs.
+    Takes two directories and yields every file found in either as a
+    pair.
+
+    Either *path1* or *path2* may be None, in which case every
+    file from the non-None side is paired with None on the
+    other side (meaning all files were created or deleted).
     """
 
     def __init__(self, path1, path2, recursive=True, file_filter=None):
 
-        if not os.path.isdir(path1) or not os.path.isdir(path2):
-            raise ValueError("Both paths must be directories")
-
-        # Iterate over the files in some directory
         def list_files(path):
             if not recursive:
                 for file in os.listdir(path):
@@ -104,30 +137,21 @@ class DirectoryFileResolver(FileResolver):
                     for file in files:
                         yield os.path.join(root, file)
 
-        # for files yielded from a directory, get the relative path
-        def get_relative_path(path):
+        def get_relative_paths(path):
             for f in list_files(path):
                 rel_path = os.path.relpath(f, path)
                 if file_filter is None or file_filter(rel_path):
                     yield rel_path
 
-        rel_paths = set()
+        # Collect relative paths from each side
+        paths1 = set(get_relative_paths(path1)) if path1 is not None else set()
+        paths2 = set(get_relative_paths(path2)) if path2 is not None else set()
 
-        for file in get_relative_path(path1):
-            rel_paths.add(file)
-
-        for file in get_relative_path(path2):
-            rel_paths.add(file)
-
-        # now we have the list of the files in either directory,
-        # we can construct the counterparts in the other directories.
-        # Note that some of these on either side may well NOT exist
-        # (that would be file additions or deletions).
-
-        self._files = []
-        for rel_path in rel_paths:
-            file1 = os.path.join(path1, rel_path)
-            file2 = os.path.join(path2, rel_path)
+        # Build the pairs
+        self._files: list[ResolvedFilePair] = []
+        for rel_path in sorted(paths1 | paths2):
+            file1 = os.path.join(path1, rel_path) if path1 is not None else None
+            file2 = os.path.join(path2, rel_path) if path2 is not None else None
             self._files.append(ResolvedFilePair(file1, file2, rel_path))
 
     @property
@@ -135,165 +159,210 @@ class DirectoryFileResolver(FileResolver):
         return self._files
 
 
-class GitIndexResolver(FileResolver):
+class GitDiffResolver(FileResolver):
     """
-    This is a class that resolves files changed (but not yet committed)
-    in a Git repository
+    Resolves only the files that changed between two git tree-ish
+    references (commits, branches, or tags) in the same repository.
+
+    Each side of the diff is materialised as a directory tree in a
+    temporary location.  Files that exist on a side are checked out
+    there; files that do not exist on a side are represented by a path
+    inside the tree that is simply never created (so exists()
+    returns False for that side).
+
+    When *new_ref* is None the "new" side is the working tree,
+    so the diff shows uncommitted changes relative to *old_ref*.
     """
 
-    def __init__(self, repo, file_filter=None):
-        self.repo = repo
-
+    def __init__(
+        self,
+        repo_path: Path,
+        old_ref: str,
+        new_ref: str | None = None,
+        file_filter=None,
+    ):
         import tempfile
 
-        # Note: The git module is imported here and not at the top
-        # level for this module, because it's an external library, and
-        # this module could be used without it too.
         import git
 
-        self.repo = git.Repo(repo)
-        self.repo_diffs = self.repo.index.diff(None)  # get the uncommitted changes
-        self.file_filter = file_filter
-        self.index = self.repo.index
+        self._repo = git.Repo(str(repo_path))
 
-        # Lives until the resolver is deleted
+        old_commit = self._repo.commit(old_ref)
+
+        def sanitize_ref(ref: str) -> str:
+            # Git allows slashes in branch names, but we can't use those in
+            # temp directory names.  Replace them with underscores.
+            return ref.replace("/", "_")
+
+        # Note - tempdirs live until the resolver is deleted
         # TODO: it does not get deleted, because we are not using this as a context
         #       we need to implement the __enter__ and __exit__ method
-        self.temp_dir = Path(
-            tempfile.TemporaryDirectory(prefix="kicad-library-utils-").name
+
+        # Side A (old): always checked out to a temp directory.
+        self._old_temp_dir = tempfile.TemporaryDirectory(
+            prefix=f"git-old-{sanitize_ref(old_ref)}-"
         )
+        old_root = Path(self._old_temp_dir.name)
 
-    @property
-    def files(self):
+        if new_ref is not None:
+            # Two-commit mode: check out the new side as well.
+            new_commit = self._repo.commit(new_ref)
+            diffs = old_commit.diff(new_commit)
+            self._new_temp_dir = tempfile.TemporaryDirectory(
+                prefix=f"git-new-{sanitize_ref(new_ref)}-"
+            )
+            new_root = Path(self._new_temp_dir.name)
+        else:
+            # Working-tree mode: new side is the working directory on disk, so
+            # we don't need to check it out to a temp directory.
+            diffs = old_commit.diff(None)
+            new_root = Path(self._repo.working_tree_dir)
+            self._new_temp_dir = None  # No cleanup needed.
 
-        files = []
+        self._files: list[ResolvedFilePair] = []
 
-        for diff in self.repo_diffs:
-            # default file paths and names
-            rel_path = (
-                diff.a_path
-            )  # this is the 'old' filename, relative to the git root directory
-            curr_file = Path(self.repo.working_tree_dir).joinpath(rel_path)
-            prev_file = Path(
-                "does_not_exist"
-            )  # this is a workaround because we cannot create Path(None)
+        for diff in diffs:
 
-            # skip this change if we want to filter it out
-            if self.file_filter is not None:
-                if not self.file_filter(Path(rel_path)):
-                    continue
+            # The path to the file in the repository, relative to the root of the repo.
+            # Prefer the new path if it exists, otherwise use the old path, so that
+            # filters apply to the new path for renames.
+            rel_path = diff.b_path or diff.a_path
 
-            # depending on the change type (addition, deletion, move, ...) we
-            # need to perform different actions
+            if file_filter is not None and not file_filter(rel_path):
+                continue
+
+            file1 = old_root / rel_path
+            file2 = new_root / rel_path
+
             match diff.change_type:
-                case "D":
-                    # Deleted file, that means the current file is none
-                    curr_file = Path("does_not_exist")
-                    # we need to checkout the old file, use empty string as marker that
-                    # the prev_file needs to be fetched from git
-                    prev_file = ""
-                    logging.debug(f"File {rel_path} was deleted.")
                 case "A":
-                    # File was added there is no prev_file
-                    prev_file = Path("does_not_exist")
-                    logging.debug(f"File {rel_path} was added.")
+                    # Added: only the new side has content.
+                    # file1 is deliberately left unwritten.
+                    file1 = None
+
+                    file2.parent.mkdir(parents=True, exist_ok=True)
+                    if new_ref is not None:
+                        file2.write_bytes(diff.b_blob.data_stream.read())
+                    # else: working tree: file2 already on disk.
+
+                case "D":
+                    # Deleted: only the old side has content.
+                    file1.parent.mkdir(parents=True, exist_ok=True)
+                    file1.write_bytes(diff.a_blob.data_stream.read())
+
+                    file2 = None
+
                 case "M":
-                    # Modified file, the old and new name are the same
-                    # they exists in both trees
-                    # mark prev_file so we fetch it from git
-                    prev_file = ""
-                    logging.debug(f"File {rel_path} was modified.")
+                    # Modified: both sides have content.
+                    file1.parent.mkdir(parents=True, exist_ok=True)
+                    file1.write_bytes(diff.a_blob.data_stream.read())
+                    file2.parent.mkdir(parents=True, exist_ok=True)
+                    if new_ref is not None:
+                        file2.write_bytes(diff.b_blob.data_stream.read())
+                    # else: working tree: file2 already on disk.
+
                 case "R":
-                    # currently we don't track renames
-                    # We could extend ResolvedFilePair have a 'renamed' property
-                    continue
-                case "C":
-                    # file was copied, to nothing
-                    # one could argue that this should be handled like an addition...
-                    continue
+                    # Rename: file1 lives at the old path, file2 at the new.
+                    file1 = old_root / diff.a_path
+                    file2 = new_root / diff.b_path
+                    rel_path = diff.b_path
+
+                    file1.parent.mkdir(parents=True, exist_ok=True)
+                    file1.write_bytes(diff.a_blob.data_stream.read())
+
+                    file2.parent.mkdir(parents=True, exist_ok=True)
+                    if new_ref is not None:
+                        file2.write_bytes(diff.b_blob.data_stream.read())
+                    # else: working tree: file2 already on disk at its new location.
+
                 case _:
-                    # Unknown change type, don't to anything but warn
-                    # This could be
-                    logging.warn(
-                        f"Change-type {diff.change_type} of file {rel_path} ignored"
+                    LOGGER.warning(
+                        "Unknown change type %s for %s, skipping",
+                        diff.change_type,
+                        rel_path,
                     )
                     continue
 
-            # we want to pull the contents of the previous version from git
-            if prev_file == "":
-                # the file we want to check out might be in a subdir,
-                # we need to create it
-                prev_file = self.temp_dir.joinpath(rel_path)
-                prev_file.parent.mkdir(parents=True, exist_ok=True)
+            self._files.append(ResolvedFilePair(file1, file2, rel_path))
 
-                # create a new file, write the blob contents to it
-                with open(prev_file, "wb") as checkout_file:
-                    diff.a_blob.stream_data(checkout_file)
+        # Untracked files (working-tree mode only)
+        # commit.diff(None) only covers tracked changes. New files that
+        # have not been staged yet must be picked up separately.
+        if new_ref is None:
+            for untracked in self._repo.untracked_files:
+                if file_filter is not None and not file_filter(untracked):
+                    continue
+                file1 = None
+                file2 = new_root / untracked
+                # file1 deliberately left unwritten (absent in old commit).
+                # file2 already exists on disk in the working tree.
+                self._files.append(ResolvedFilePair(file1, file2, untracked))
 
-            # we set all required variables (some might be None), add this to the list of changed files
-            files.append(ResolvedFilePair(prev_file, curr_file, rel_path))
-
-        return files
-
-
-class GitHistoryResolver(GitIndexResolver):
-    """
-    This is a class that resolves files changed between two commits
-    in a Git repository
-    """
-
-    def __init__(self, repo, commit_id, file_filter=None):
-        # do the same initial setup as the GitIndexResolver
-        super().__init__(repo, file_filter)
-
-        try:
-            # select the first commit that matches the passed commit_id
-            commit_iterator = self.repo.iter_commits(all=True)
-            self.commit = list(
-                filter(lambda commit: str(commit) == commit_id, commit_iterator)
-            )[0]
-        except IndexError:
-            raise ValueError(f"Could not resolve commit with id {commit_id}")
-
-        # point the index we use to checkout file to the commit
-        self.index = self.commit.repo.index
-        # now build the diff based on the commit we just extracted
-        head = self.repo.commit()
-        self.repo_diffs = self.commit.diff(head)
+    @property
+    def files(self) -> list[ResolvedFilePair]:
+        return self._files
 
 
-def get_resolver(path1: Path, path2=None, file_filter=None):
+def get_resolver(
+    arg1: str | None = None,
+    arg2: str | None = None,
+    repo: Path | None = None,
+    file_filter=None,
+) -> FileResolver:
     """
     Construct a resolver based on the paths given.
+
+    Without --repo (file / directory mode):
+      Both *arg1* and *arg2* must be provided.
+      * Two files        -> use `DirectFileResolver`
+      * Two directories  -> use `DirectoryFileResolver`
+
+    With --repo (git mode):
+      *arg1* and *arg2* are git tree-ish references (commits, branches,
+      or tags) resolved against *repo*.
+      * Two refs        -> diff between the two commits.
+      * One ref         -> diff between that commit and the working tree.
+      * No refs         -> diff between HEAD and the working tree.
     """
+    if repo is not None:
+        if arg1 is not None and arg2 is not None:
+            LOGGER.debug("Git diff: %s .. %s in %s", arg1, arg2, repo)
+            return GitDiffResolver(repo, arg1, arg2, file_filter)
+        elif arg1 is not None:
+            LOGGER.debug("Git diff: %s .. working tree in %s", arg1, repo)
+            return GitDiffResolver(repo, arg1, None, file_filter)
+        else:
+            LOGGER.debug("Git diff: HEAD .. working tree in %s", repo)
+            return GitDiffResolver(repo, "HEAD", None, file_filter)
 
-    path1 = Path(path1)
+    # File / directory mode
+    if arg1 is None:
+        raise ValueError("At least one path is required when not using --repo.")
 
-    if not path1.exists():
-        raise ValueError(f"Path doesn't exist: {path1}")
+    # Single path: treat as creation (all files are new).
+    if arg2 is None:
+        p = Path(arg1)
+        if p.is_file():
+            LOGGER.debug("Single file: %s", p)
+            return DirectFileResolver(None, p, file_filter)
+        elif p.is_dir():
+            LOGGER.debug("Single directory: %s", p)
+            return DirectoryFileResolver(None, p, file_filter=file_filter)
+        else:
+            raise ValueError(f"Path does not exist: {arg1}")
 
-    if path2 is not None:
-        path2 = Path(path2)
+    # Two paths: compare them.
+    p1 = Path(arg1)
+    p2 = Path(arg2)
 
-        if not path2.exists():
-            # path2 could be a git revision-id
-            if len(path2.name) == 40 and path1.is_dir() and (path1 / ".git").is_dir():
-                return GitHistoryResolver(
-                    repo=path1, commit_id=path2.name, file_filter=file_filter
-                )
-            else:
-                raise ValueError(f"Path doesn't exist: {path2}")
-
-        if path1.is_dir() and path2.is_dir():
-            return DirectoryFileResolver(path1, path2, file_filter=file_filter)
-
-        if path1.is_file() and path2.is_file():
-            return DirectFileResolver(path1, path2, file_filter=file_filter)
+    if p1.is_file() and p2.is_file():
+        LOGGER.debug("File diff: %s vs %s", p1, p2)
+        return DirectFileResolver(p1, p2, file_filter)
+    elif p1.is_dir() and p2.is_dir():
+        LOGGER.debug("Directory diff: %s vs %s", p1, p2)
+        return DirectoryFileResolver(p1, p2, file_filter=file_filter)
     else:
-        if path1.is_dir() and (path1 / ".git").is_dir():
-            return GitIndexResolver(path1, file_filter=file_filter)
-
-    raise ValueError(
-        f"Two directories, two files, or a local git repository must be provided: {path1}"
-        + ("" if path2 is None else f", {path2}")
-    )
+        raise ValueError(
+            f"Cannot compare {arg1} and {arg2}: "
+            "both must be files or both must be directories"
+        )
