@@ -1141,9 +1141,11 @@ def getStandardSilkArrowSize(
     # reduces intrusion of arrows into other footprints' spaces
     standard_arrow_aspect_ratio = 0.7
 
-    # allows for 0.01mm grid-snap on each side of the apex
-    width = round_to_grid_down(size.value - silk_line_width, 0.02)
-    length = round_to_grid_down(width * standard_arrow_aspect_ratio, 0.01)
+    # TODO: when GlobalConfig is global, can get this from silk_grid
+    silk_grid = 0.01
+    # Allows for 0.01mm grid-snap on each side of the apex
+    width = round_to_grid_down(size.value - silk_line_width, silk_grid * 2)
+    length = round_to_grid_down(width * standard_arrow_aspect_ratio, silk_grid)
 
     return width, length
 

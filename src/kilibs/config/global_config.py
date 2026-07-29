@@ -210,6 +210,8 @@ class GlobalConfig:
         """The minimum distance between the centers of lines on silk and fab."""
         self.silk_line_length_min: float
         """The minimum length of a line on the silk screen."""
+        self.silk_grid: float
+        """The grid of the silk screen."""
         self.fab_line_width: float
         """The width of lines on the fab layer."""
         self.fab_bevel_size_absolute: float
@@ -276,6 +278,7 @@ class GlobalConfig:
         self.silk_pad_clearance = float(data["silk_pad_clearance"])
         self.silk_fab_offset = float(data["silk_fab_offset"])
         self.silk_line_length_min = float(data["silk_line_length_min"])
+        self.silk_grid = float(data["silk_grid"])
 
         self.fab_line_width = float(data["fab_line_width"])
         self.fab_bevel_size_absolute = float(data["fab_bevel_size_absolute"])
