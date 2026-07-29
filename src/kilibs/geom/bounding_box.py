@@ -74,6 +74,31 @@ class BoundingBox:
         bbox.max = max
         return bbox
 
+    @classmethod
+    def by_center_and_size(
+        cls,
+        center: Vec2DCompatible,
+        size: Vec2DCompatible,
+    ) -> BoundingBox:
+        """Initialize a bounding box from the given center and size.
+
+        Args:
+            center: Center of the bounding box.
+            size: Size of the bounding box.
+        """
+        center = Vector2D(center)
+        size = Vector2D(size)
+
+        min = Vector2D.from_floats(
+            center.x - size.x / 2,
+            center.y - size.y / 2,
+        )
+        max = Vector2D.from_floats(
+            center.x + size.x / 2,
+            center.y + size.y / 2,
+        )
+        return BoundingBox.from_vector2d(min=min, max=max)
+
     def copy(self) -> BoundingBox:
         """Create a copy of the bounding box."""
         bbox = BoundingBox()

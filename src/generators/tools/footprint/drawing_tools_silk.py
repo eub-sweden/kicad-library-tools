@@ -18,7 +18,8 @@ from generators.tools.footprint.drawing_tools import (
 from generators.tools.footprint.nodes import pin1_arrow
 from KicadModTree import Pad
 from kilibs.config.global_config import GlobalConfig
-from kilibs.geom import Direction, Vector2D, GeomRectangle
+from kilibs.geom import BoundingBox, Direction, Vector2D, GeomRectangle
+from kilibs.geom.operations import rounding
 
 
 def draw_silk_triangle_for_pad(
@@ -377,3 +378,138 @@ def auto_silk_triangle_for_pad_and_box(
         )
 
     return arrow
+
+
+def draw_silk_triangle_in_corner(
+    global_config: GlobalConfig,
+    corner_pos: Vector2D,
+    arrow_direction: Direction,
+    arrow_size: SilkArrowSize,
+    pad_bbox_h: BoundingBox | None,
+    pad_bbox_v: BoundingBox | None,
+) -> pin1_arrow.Pin1SilkscreenArrow:
+    r"""
+    Draw an arrow at a corner position, but keeping clear of up to two
+    bounding boxes of pads.
+
+    No bboxes:
+
+        Just place the arrow at the requested position:
+
+    .. aafig::
+       +---+
+        \ /
+         o <------ nominal corner_pos
+
+    Two bboxes:
+
+        Bump the arrow outwards in two axes such that the arrow is clear of
+        the bounding boxes.
+
+    .. aafig::
+                       |<->|--- clearance
+                       |   |
+                   +---+   +-----
+                    \ /    |  bbox_h
+                ---  x     +-----
+    clearance ->|        o <--------- nominal corner_pos
+                --  +----+
+                    |    |
+                    +----+
+                     bbox_v
+
+    Note: the corner that is defined depends on the relative position of
+    `bbox_h` and `bbox_v` to the corner position. For the most common case of
+    the north-west corner, the corner would be west of `bbox_h` and north of
+    `bbox_v`.
+
+    Note: the arrow clears the bounding boxes as if they extend infinitely
+    outwards. I.e. this function doesn't try to nestle the arrow in closer by
+    exploiting the diagonal sides. This is 1) because that's quite hard and
+    tricky to define in 2 axes, and 2) because this way leaves the space
+    directly in front of the pin completely clear which may be better for
+    placement.
+
+    Args:
+        global_config: Global configuration object
+        corner_pos: The nominal corner position. If there are no boxes to be
+            clear of, the arrow will be here
+        arrow_direction: which way the arrow points
+        arrow_size: a named arrow size
+        pad_bbox_h: a box to keep clear of the left/right side of
+        pad_bbox_v: a box to keep clear of the top/bottom side of
+    """
+
+    # This assumes a cardinal arrow (we could do 45 degree too, but it needs
+    # a bit more complexity
+    assert arrow_direction.is_cardinal()
+
+    ROUND_GRID = 0.01
+
+    apex_x = corner_pos.x
+    apex_y = corner_pos.y
+    line_width = global_config.silk_line_width
+    clearance_to_keepout = global_config.silk_pad_clearance
+
+    # Get the size for this arrow
+    arrow_w, arrow_l = getStandardSilkArrowSize(arrow_size, line_width)
+
+    # Now, we need to shove the arrow away from the horizontal bbox
+    if pad_bbox_h is not None and pad_bbox_h.is_defined():
+
+        # Which side of the arrow is the box
+        box_to_east = pad_bbox_h.center.x > apex_x
+
+        if arrow_direction.is_north_south():
+            arrow_extent_past_apex = arrow_w / 2
+        elif arrow_direction == Direction.EAST:
+            arrow_extent_past_apex = 0 if box_to_east else arrow_l
+        else:
+            arrow_extent_past_apex = arrow_l if box_to_east else 0
+
+        arrow_extent_past_apex += line_width / 2
+
+        if box_to_east:
+            apex_x = min(
+                apex_x, pad_bbox_h.left - clearance_to_keepout - arrow_extent_past_apex
+            )
+        else:
+            apex_x = max(
+                apex_x, pad_bbox_h.right + clearance_to_keepout + arrow_extent_past_apex
+            )
+
+    # now shove away from the vertical bbox
+    if pad_bbox_v is not None and pad_bbox_v.is_defined():
+
+        box_to_south = pad_bbox_v.center.y > apex_y
+
+        if arrow_direction.is_east_west():
+            arrow_extent_past_apex = arrow_w / 2
+        elif arrow_direction == Direction.SOUTH:
+            arrow_extent_past_apex = 0 if box_to_south else arrow_l
+        else:
+            arrow_extent_past_apex = arrow_l if box_to_south else 0
+
+        arrow_extent_past_apex += line_width / 2
+
+        if box_to_south:
+            apex_y = min(
+                apex_y, pad_bbox_v.top - clearance_to_keepout - arrow_extent_past_apex
+            )
+        else:
+            apex_y = max(
+                apex_y,
+                pad_bbox_v.bottom + clearance_to_keepout + arrow_extent_past_apex,
+            )
+
+    apex_y =  rounding.round_to_grid_e(apex_y, ROUND_GRID)
+    apex_x =  rounding.round_to_grid_e(apex_x, ROUND_GRID)
+
+    return pin1_arrow.Pin1SilkscreenArrow(
+        Vector2D(apex_x, apex_y),
+        arrow_direction,
+        arrow_w,
+        arrow_l,
+        "F.SilkS",
+        line_width,
+    )

@@ -9,8 +9,9 @@ from generators.tools.footprint.ipc_pad_size_calculators import (
     ipc_body_edge_inside_pull_back,
     ipc_pad_center_plus_size,
 )
-from generators.tools.footprint.nodes.layouts.dual_and_quad_pad_array_layout import (
-    DualAndQuadPadArrayLayout,
+from generators.tools.footprint.nodes.layouts import (
+    dual_and_quad_pad_array_layout,
+    qfn_layout,
 )
 from generators.tools.footprint.quad_dual_pad_border import (
     create_dual_or_quad_pad_border,  # type: ignore
@@ -350,15 +351,33 @@ def _create_footprint_variant(
 
     size_x = device_config.body_size_x.nominal
     size_y = device_config.body_size_y.nominal
-    layout = DualAndQuadPadArrayLayout(
-        global_config=GLOBAL_CONFIG,
-        courtyard_offset_body=ipc_offsets.courtyard,
-        courtyard_offset_pads=ipc_offsets.courtyard,
-        pad_arrays=pad_arrays,
-        exposed_pad=exposed_pad,
-        body_size=Vector2D.from_floats(size_x, size_y),
-        footprint_name=kicad_mod.name,
-    )
+
+    is_qfn = spec["num_pins_x"] > 0 and spec["num_pins_y"] > 0
+    body_size = Vector2D.from_floats(size_x, size_y)
+
+    if is_qfn:
+        # QFNs have a dedicated layout
+        layout = qfn_layout.QfnLayout(
+            global_config=GLOBAL_CONFIG,
+            courtyard_offset_body=ipc_offsets.courtyard,
+            courtyard_offset_pads=ipc_offsets.courtyard,
+            pad_arrays=pad_arrays,
+            exposed_pad=exposed_pad,
+            body_size=body_size,
+            footprint_name=kicad_mod.name,
+        )
+    else:
+        # DFN: use the gullwing layout which also handles this
+        layout = dual_and_quad_pad_array_layout.DualAndQuadPadArrayLayout(
+            global_config=GLOBAL_CONFIG,
+            courtyard_offset_body=ipc_offsets.courtyard,
+            courtyard_offset_pads=ipc_offsets.courtyard,
+            pad_arrays=pad_arrays,
+            exposed_pad=exposed_pad,
+            body_size=body_size,
+            footprint_name=kicad_mod.name,
+        )
+
     kicad_mod += layout
 
     ###  3D Model  #################################################################

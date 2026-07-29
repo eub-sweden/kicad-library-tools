@@ -13,6 +13,8 @@
 
 """Definitions for directions."""
 
+from __future__ import annotations
+
 import enum
 
 
@@ -36,10 +38,56 @@ class Direction(enum.Enum):
     SOUTHWEST = 225
     """Down-left."""
 
+    @classmethod
+    def nearest_cardinal(cls, angle: float | Direction) -> Direction:
+        """
+        Return the closest of NSEW from an angle/heading.
+
+        Rounds anticlockwise: 45 is North.
+        """
+
+        if isinstance(angle, Direction):
+            angle = angle.value
+
+        # Normalise to 0..360
+        while angle < 0:
+            angle += 360
+        while angle > 360:
+            angle -= 360
+
+        if angle < 45 or angle >= 315:
+            return Direction.EAST
+        if angle < 135:
+            return Direction.NORTH
+        if angle < 225:
+            return Direction.WEST
+
+        return Direction.SOUTH
+
     def is_cardinal(self) -> bool:
         return self in [
             Direction.NORTH,
             Direction.SOUTH,
+            Direction.EAST,
+            Direction.WEST,
+        ]
+
+    def is_diagonal(self) -> bool:
+        return self in [
+            Direction.NORTHEAST,
+            Direction.NORTHWEST,
+            Direction.SOUTHEAST,
+            Direction.SOUTHWEST,
+        ]
+
+    def is_north_south(self) -> bool:
+        return self in [
+            Direction.NORTH,
+            Direction.SOUTH,
+        ]
+
+    def is_east_west(self) -> bool:
+        return self in [
             Direction.EAST,
             Direction.WEST,
         ]
