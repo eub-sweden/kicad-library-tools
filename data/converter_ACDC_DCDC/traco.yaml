@@ -485,9 +485,12 @@ Converter_DCDC_TRACO_THN10-xxxxUIR_THT:
 
 Converter_DCDC_TRACO_THR40-72xxWI_THT:
   library_name: 'Converter_DCDC'
-  description: "DCDC-Converter, TRACO, THR40-72xxWI, THR40-72xxxWI, 40W, Rev. November 4. 2024"
+  description: "DCDC-Converter, TRACO, THR40-72xxWI, THR40-72xxxWI, 40W, Rev. August 3. 2026"
   datasheet: "https://www.tracopower.com/products/thr40wi.pdf"
-  tags: "DCDC-Converter TRACO THR40WI THT 2\"x1\" 40W"
+  tags: "DCDC-Converter TRACO THT 2\"x1\" 40W THR40WI"
+  compatible_mpns:
+    # https://www.tracopower.com/products/ten80wi.pdf
+    - TEN80WI
   extratexts: []
   at: [-5.1, 2.54]
   size: [25.4, 50.8]
