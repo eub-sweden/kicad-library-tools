@@ -166,7 +166,7 @@ class SMDSingleRowPlusMPProperties:
             + self.mounting_pad_size.x / 2.0
         )
 
-        self.text_inside_pos = series_def.get("text_inside_pos", "center")
+        self.text_inside_pos = series_def["text_inside_pos"]
 
         self.pin1_fab_marker_y = (
             EDs.EvaluableScalar(series_def["pin1_fab_marker_y"])
