@@ -58,7 +58,7 @@ def create_footprints(spec: GridArraySpec, generator_name: str) -> int:
     if "pad_diameter" in spec.spec:
         pad_diameter = spec.spec["pad_diameter"]
         logging.debug(
-            f"Pad size of {id} is set by the footprint definition. "
+            f"Pad size of {spec.id} is set by the footprint definition. "
             "This should only be done for manufacturer-specific footprints."
         )
     elif "ball_type" in spec.spec and "ball_diameter" in spec.spec:
@@ -77,12 +77,12 @@ def create_footprints(spec: GridArraySpec, generator_name: str) -> int:
             ball_diameter=ball_diameter,
         )
     elif "ball_type" in spec.spec and "ball_diameter" not in spec.spec:
-        raise KeyError(f"{id}: Ball diameter is missing. Aborting.")
+        raise KeyError(f"{spec.id}: Ball diameter is missing. Aborting.")
     elif "ball_diameter" in spec.spec and "ball_type" not in spec.spec:
-        raise KeyError(f"{id}: Ball type is missing. Aborting.")
+        raise KeyError(f"{spec.id}: Ball type is missing. Aborting.")
     else:
         raise KeyError(
-            f"{id}: The config file must include 'ball_type' and "
+            f"{spec.id}: The config file must include 'ball_type' and "
             "'ball_diameter' or 'pad_diameter'. Aborting."
         )
     spec.spec["pad_size"] = [pad_diameter, pad_diameter]
