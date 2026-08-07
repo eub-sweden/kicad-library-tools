@@ -15,6 +15,7 @@ import math
 from typing import Any, Literal, NamedTuple
 import itertools
 
+from kilibs.config import ipc_rules
 from kilibs.geom import Vector2D
 from generators.tools.footprint.declarative_def_tools import (
     common_metadata,
@@ -75,6 +76,8 @@ class GridArraySpec(PackageSpec):
 
         # Instance attributes for pad details:
         self.layout_data_list: list[LayoutData]
+        self.ipc_density: ipc_rules.IpcDensity
+        """The IPC density rules."""
 
         # Instance attributes related to the dimensions of the package:
         self.body_size_x: float
@@ -158,6 +161,10 @@ class GridArraySpec(PackageSpec):
         self.body_size_y = self.spec["body_size_y"]
 
     def _extract_pinning_data(self) -> None:
+        self.ipc_density = ipc_rules.IpcDensity.from_str(
+            self.spec.get("ipc_density", "nominal")
+        )
+
         if "pitch" in self.spec:
             self.pitch = Vector2D(self.spec["pitch"], self.spec["pitch"])
         elif "pitch_x" in self.spec and "pitch_y" in self.spec:
@@ -174,6 +181,18 @@ class GridArraySpec(PackageSpec):
         self.num_balls = 0
         for layout in layouts:
             self.num_balls += self._calculate_pad_names_and_positions_in_layout(layout)
+
+    def _ball_type_from_str(self, string: str) -> ipc_rules.BallType:
+        """Convert a ball type string from the device YAML to a `BallType`.
+        """
+        if string == "collapsible":
+            return ipc_rules.BallType.COLLAPSIBLE
+        elif string == "non-collapsible":
+            return ipc_rules.BallType.NON_COLLAPSIBLE
+
+        raise KeyError(
+            f"'{string}' is an invalid ball type."
+        )
 
     def _extract_3d_data(self) -> None:
         self.has_3d_data = True

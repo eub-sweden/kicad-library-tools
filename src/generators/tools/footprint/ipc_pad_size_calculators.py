@@ -167,3 +167,31 @@ def ipc_pad_center_plus_size(
     Xmax = roundToBase(Xmax, ipc_round_base.side)
 
     return Gmin, Zmax, Xmax
+
+
+def ipc_ball_get_pad_size(
+    ball_rules: ipc_rules.IpcBallRules,
+    density: ipc_rules.IpcDensity,
+    ball_type: ipc_rules.BallType,
+    ball_diameter: float,
+) -> float:
+    """Calculate the pad diameter for a BGA ball.
+
+    Based on IPC-7352 Table 3-11.
+
+    Args:
+        ball_rules: The IPC ball-rules provider.
+        density: The IPC density.
+        ball_type: The type of the ball in question.
+        ball_diameter: The diameter of the ball in mm.
+
+    Returns:
+        The pad diameter in mm.
+    """
+    pad_data = ball_rules.get_pad_data(density)
+    if ball_type is ipc_rules.BallType.COLLAPSIBLE:
+        ratio = pad_data.collapsible_ratio
+    else:
+        ratio = pad_data.non_collapsible_ratio
+
+    return roundToBase((1 + ratio) * ball_diameter, pad_data.roundoff)

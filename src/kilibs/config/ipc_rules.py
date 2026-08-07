@@ -102,7 +102,10 @@ class DeviceClass:
 
 
 class IpcRules:
-    """A class for IPC rules."""
+    """A class for IPC rules.
+
+    Applies to parts with toe/heel/side offsets and roundoff values for different IPC densities.
+    """
 
     classes: dict[str, DeviceClass]
     _data: dict[str, Any]
@@ -238,6 +241,93 @@ class IpcRules:
         return self._data
 
 
+class BallType(enum.Enum):
+    """The type of a BGA ball for the purpose of calculating the pad size
+    by automatic calculation."""
+
+    COLLAPSIBLE = "collapsible"
+    """Ball that collapses on reflow (e.g. a BGA solder ball)."""
+    NON_COLLAPSIBLE = "non-collapsible"
+    """Ball that does not collapse on reflow (e.g. a column or LGA land)."""
+
+
+@dataclasses.dataclass
+class IpcBallPadData:
+    """Class representing a single ball-pad size definition, which is
+    probably representing a given density level (e.g. Median)."""
+
+    collapsible_ratio: float
+    """Ratio of the ball diameter to the pad diameter for collapsible balls."""
+    non_collapsible_ratio: float
+    """Ratio of the ball diameter to the pad diameter for non-collapsible balls."""
+    roundoff: float
+    """Roundoff value for the pad size"""
+
+
+class IpcBallRules:
+    """A class for IPC ball-pad rules, indexed by IPC density."""
+
+    def __init__(self, data: dict[str, Any]) -> None:
+        """Initialize the IpcBallRules class with the given data.
+
+        Args:
+            data: Dictionary containing IPC ball-pad rules. Probably this comes from
+                the YAML file in the package, but you can provide your own.
+        """
+
+        self._pad_data: dict[IpcDensity, IpcBallPadData] = {}
+        """The pad data for the different IPC densities."""
+        self._data: dict[str, Any] = data
+        """The raw data from the YAML file."""
+
+        for key in ["most", "nominal", "least"]:
+            ball_data = data[key]
+            density = IpcDensity.from_str(key)
+            self._pad_data[density] = IpcBallPadData(
+                collapsible_ratio=ball_data["collapsible_ratio"],
+                non_collapsible_ratio=ball_data["non_collapsible_ratio"],
+                roundoff=ball_data["round_base"],
+            )
+
+    def get_pad_data(self, density: IpcDensity) -> IpcBallPadData:
+        """Get the pad data for the given IPC density.
+
+        Args:
+            density: The IPC density.
+
+        Returns:
+            The `IpcBallPadData` of the given IPC density.
+        """
+        return self._pad_data[density]
+
+    @classmethod
+    def from_file(cls, file_name: str = "ipc7352_ball") -> IpcBallRules:
+        """Load the rules from the package data.
+
+        Args:
+            file_name: The file name.
+
+        If the filename is a path (with a YAML extension), use it directly,
+        otherwise use the package data with that name.
+        """
+
+        def get_data(path: Path | str) -> IpcBallRules:
+            with open(path, "r") as file:
+                data = yaml.safe_load(file)
+                # The ball rules YAML holds the densities under a single class key
+                # (e.g. "ipc_spec_ball_7352").
+                return cls(data["ball_size_data"])
+
+        if file_name.endswith(".yaml"):
+            return get_data(file_name)
+        else:
+            resource = resources.files("kilibs.config.ipc_configs").joinpath(
+                file_name + ".yaml"
+            )
+            with resources.as_file(resource) as res_path:
+                return get_data(res_path)
+
+
 @dataclasses.dataclass
 class ManufacturingTolerance:
     """Manufacturing tolerance for IPC rules (F and P)."""
@@ -256,3 +346,6 @@ def init(rules_file: str = "ipc_7351b") -> None:
 
 DEFAULT_IPC_RULES = IpcRules.from_file()
 """The default IPC rules singleton."""
+
+DEFAULT_IPC_BALL_RULES = IpcBallRules.from_file()
+"""The default IPC ball-pad rules singleton."""

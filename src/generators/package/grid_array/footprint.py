@@ -30,11 +30,15 @@ from .spec import (
     LayoutData,
 )
 from kilibs.geom import Direction, Vector2D
+
+from generators.tools.footprint.ipc_pad_size_calculators import ipc_ball_get_pad_size
 from generators.tools.footprint.declarative_def_tools import (
     ast_evaluator,
     fp_additional_drawing,
 )
 from generators.tools.footprint.save_footprint import write_footprint
+
+from kilibs.config import ipc_rules
 from kilibs.config import global_config as GC
 from generators.tools.footprint.nodes import pin1_arrow
 
@@ -58,19 +62,20 @@ def create_footprints(spec: GridArraySpec, generator_name: str) -> int:
             "This should only be done for manufacturer-specific footprints."
         )
     elif "ball_type" in spec.spec and "ball_diameter" in spec.spec:
-        ball_diameter = spec.spec["ball_diameter"]
-        ball_type = spec.spec["ball_type"]
-        # IPC-7352 Table 3-11 Median (Nominal) Material Level B
-        if ball_type == "collapsible":
-            pad_diameter = round(0.8 * ball_diameter, 2)
-        elif ball_type == "non-collapsible":
-            pad_diameter = round(1.1 * ball_diameter, 2)
-        else:
-            raise KeyError(
-                f"{id}: '{ball_type}' is an invalid ball type. Only "
-                "'collapsible' and 'non-collapsible' are accepted values. "
-                "Aborting."
-            )
+        # IPC calculation mode
+        ball_diameter = float(spec.spec["ball_diameter"])
+        ball_type = str(spec.spec["ball_type"])
+
+        ball_type = spec._ball_type_from_str(ball_type)
+
+        ball_rules = ipc_rules.DEFAULT_IPC_BALL_RULES
+
+        pad_diameter = ipc_ball_get_pad_size(
+            ball_rules=ball_rules,
+            density=spec.ipc_density,
+            ball_type=ball_type,
+            ball_diameter=ball_diameter,
+        )
     elif "ball_type" in spec.spec and "ball_diameter" not in spec.spec:
         raise KeyError(f"{id}: Ball diameter is missing. Aborting.")
     elif "ball_diameter" in spec.spec and "ball_type" not in spec.spec:
