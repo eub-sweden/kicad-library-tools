@@ -88,6 +88,7 @@ packages = [
     "generators.package.grid_array",
     "generators.package.gullwing",
     "generators.tools.footprint.nodes",
+    "generators.tools.pad_factory",
     "kilibs",
     "KicadModTree",
 ]

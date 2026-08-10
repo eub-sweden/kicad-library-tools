@@ -11,36 +11,29 @@
 #
 # (C) The KiCad Librarian Team
 
-import logging
 import math
 
 from KicadModTree import (
     Footprint,
     FootprintType,
-    Pad,
     PolygonLine,
     Property,
     Rectangle,
-    ReferencedPad,
-    RoundRadiusHandler,
     Text,
 )
-from .spec import (
-    GridArraySpec,
-    LayoutData,
-)
+from kilibs.config import global_config as GC
 from kilibs.geom import Direction, Vector2D
 
-from generators.tools.footprint.ipc_pad_size_calculators import ipc_ball_get_pad_size
 from generators.tools.footprint.declarative_def_tools import (
     ast_evaluator,
     fp_additional_drawing,
 )
-from generators.tools.footprint.save_footprint import write_footprint
-
-from kilibs.config import ipc_rules
-from kilibs.config import global_config as GC
 from generators.tools.footprint.nodes import pin1_arrow
+from generators.tools.footprint.save_footprint import write_footprint
+from generators.tools.pad_factory import pad_info_to_pads
+
+from .pad_factory import make_pad_factory
+from .spec import GridArraySpec
 
 
 def create_footprints(spec: GridArraySpec, generator_name: str) -> int:
@@ -55,43 +48,15 @@ def create_footprints(spec: GridArraySpec, generator_name: str) -> int:
     if not spec.has_fp_data:
         return 0
 
-    if "pad_diameter" in spec.spec:
-        pad_diameter = spec.spec["pad_diameter"]
-        logging.debug(
-            f"Pad size of {spec.id} is set by the footprint definition. "
-            "This should only be done for manufacturer-specific footprints."
-        )
-    elif "ball_type" in spec.spec and "ball_diameter" in spec.spec:
-        # IPC calculation mode
-        ball_diameter = float(spec.spec["ball_diameter"])
-        ball_type = str(spec.spec["ball_type"])
-
-        ball_type = spec._ball_type_from_str(ball_type)
-
-        ball_rules = ipc_rules.DEFAULT_IPC_BALL_RULES
-
-        pad_diameter = ipc_ball_get_pad_size(
-            ball_rules=ball_rules,
-            density=spec.ipc_density,
-            ball_type=ball_type,
-            ball_diameter=ball_diameter,
-        )
-    elif "ball_type" in spec.spec and "ball_diameter" not in spec.spec:
-        raise KeyError(f"{spec.id}: Ball diameter is missing. Aborting.")
-    elif "ball_diameter" in spec.spec and "ball_type" not in spec.spec:
-        raise KeyError(f"{spec.id}: Ball type is missing. Aborting.")
-    else:
-        raise KeyError(
-            f"{spec.id}: The config file must include 'ball_type' and "
-            "'ball_diameter' or 'pad_diameter'. Aborting."
-        )
-    spec.spec["pad_size"] = [pad_diameter, pad_diameter]
     _create_footprint_variant(spec, generator_name)
     return 1
+
 
 def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> None:
     # Pull out the old-style parameter dictionary
     spec = config.spec
+
+    pad_factory = make_pad_factory(config)
 
     evaluator_params = {"pitch": config.pitch}
 
@@ -162,8 +127,8 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
     wSilkS = GC.GLOBAL_CONFIG.silk_line_width
 
     # silkOffset should comply with pad clearance as well
-    yPadTopEdge = yPadTop - spec["pad_size"][1] / 2.0
-    xPadLeftEdge = xPadLeft - spec["pad_size"][0] / 2.0
+    yPadTopEdge = yPadTop - pad_factory.default_pad_size.y / 2.0
+    xPadLeftEdge = xPadLeft - pad_factory.default_pad_size.x / 2.0
 
     xSilkOffset = max(
         GC.GLOBAL_CONFIG.silk_fab_offset,
@@ -272,11 +237,9 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
         )
     )
 
-    # Pads
-    for layout_data in config.layout_data_list:
-        _make_pad_grid(
-            f, layout_data, config, x_center=xCenter, y_center=yCenter
-        )
+    # Collect pads from the factory and append
+    for pad_info in pad_factory.pads():
+        f.extend(pad_info_to_pads(pad_info))
 
     dwg_nodes = fp_additional_drawing.create_additional_drawings(  # pyright: ignore
         config.additional_drawings, GC.GLOBAL_CONFIG, fp_evaluator
@@ -310,106 +273,3 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
     # #################### Output and 3d model ############################
     f.add_standard_3d_model_to_footprint(config.lib_name, config.name)
     write_footprint(f, config.lib_name, generator_name)
-
-def _make_pad_grid(
-    f: Footprint,
-    layout_info: LayoutData,
-    config: GridArraySpec,
-    x_center: float = 0.0,
-    y_center: float = 0.0,
-) -> None:
-    layout_dict = layout_info.layout_dict
-    spec = config.spec
-    pad_data_list = layout_info.pad_data_list
-
-    pad_shape = layout_dict.get("pad_shape", spec.get("pad_shape", "circle"))
-    paste_shape = layout_dict.get("paste_shape", spec.get("paste_shape"))
-
-    if paste_shape and paste_shape != pad_shape:
-        layers = ["F.Cu", "F.Mask"]
-    else:
-        layers = Pad.LAYERS_SMT
-
-    ref_pad = Pad(
-        number=pad_data_list[0].name,
-        type=Pad.TYPE_SMT,
-        fab_property=Pad.FabProperty.BGA,
-        shape=pad_shape,
-        at=pad_data_list[0].position,
-        size=layout_dict.get("pad_size") or spec["pad_size"],
-        layers=layers,
-        radius_ratio=GC.GLOBAL_CONFIG.roundrect_radius_handler,  # type: ignore
-    )
-    f.append(ref_pad)
-
-    ref_paste_pad: Pad | None = None
-
-    if paste_shape and paste_shape != pad_shape:
-        # Footgun warning: When pcbnew renders a paste-only pad like this, it actually
-        # ignores all paste `margin settings both of the pad and of the footprint, and
-        # creates a stencil opening of exactly the size of the pad. Thus, we have to
-        # pre-compute paste margin here. Note that KiCad implements paste margin with an
-        # actual geometric offset, i.e. yielding a rounded rect for square pads. Thus,
-        # we have to implement similar offsetting logic here to stay consistent.
-
-        pasteMargin = layout_dict.get("paste_margin", spec.get("paste_margin", 0))
-        size = list(layout_dict.get("pad_size") or spec["pad_size"])
-        corner_ratio = GC.GLOBAL_CONFIG.roundrect_radius_handler.radius_ratio
-
-        if paste_shape == "circle":
-            size[0] += 2 * pasteMargin
-            size[1] += 2 * pasteMargin
-
-        elif paste_shape == "rect":
-            if pasteMargin <= 0:
-                size[0] += 2 * pasteMargin
-                size[1] += 2 * pasteMargin
-
-            else:
-                corner_ratio = pasteMargin / min(size)
-                size[0] += 2 * pasteMargin
-                size[1] += 2 * pasteMargin
-                paste_shape = "roundrect"
-
-        elif paste_shape == "roundrect":
-            corner_radius = min(size) * corner_ratio
-            size[0] += 2 * pasteMargin
-            size[1] += 2 * pasteMargin
-            corner_radius += pasteMargin
-
-            if corner_radius < 0:
-                paste_shape = "rect"
-            else:
-                corner_ratio = corner_radius / min(size)
-
-        paste_radius_handler = RoundRadiusHandler(
-            radius_ratio=corner_ratio,
-        )
-
-        ref_paste_pad = Pad(
-            number="",
-            type=Pad.TYPE_SMT,
-            shape=paste_shape,
-            at=pad_data_list[0].position,
-            size=size,  # type: ignore
-            layers=["F.Paste"],
-            round_radius_handler=paste_radius_handler,
-        )
-        f.append(ref_paste_pad)
-
-    for i in range(1, len(pad_data_list)):
-        f.append(
-            ReferencedPad(
-                reference_pad=ref_pad,
-                number=pad_data_list[i].name,
-                at=pad_data_list[i].position,
-            )
-        )
-        if ref_paste_pad is not None:
-            f.append(
-                ReferencedPad(
-                    reference_pad=ref_paste_pad,
-                    number="",
-                    at=pad_data_list[i].position,
-                )
-            )
