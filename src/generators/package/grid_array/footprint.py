@@ -58,6 +58,9 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
     spec = config.spec
 
     pad_factory = make_pad_factory(config)
+    # Resolve the pads once: they are used for the silk clearance below and are
+    # then appended to the footprint at the end.
+    pads = list(pad_factory.pads())
 
     evaluator_params = {"pitch": config.pitch}
 
@@ -109,7 +112,6 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
     xLeftFab = xCenter - pkg_x / 2.0
     xRightFab = xCenter + pkg_x / 2.0
     xChamferFab = xLeftFab + chamfer
-    xPadLeft = xCenter - pitchX * ((config.layout_x - 1) / 2.0)
     xLeftCrtYd = crt_round(xCenter - (pkg_x / 2.0 + crtYdOffset))
     xRightCrtYd = crt_round(xCenter + (pkg_x / 2.0 + crtYdOffset))
 
@@ -117,7 +119,6 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
     yTopFab = yCenter - pkg_y / 2.0
     yBottomFab = yCenter + pkg_y / 2.0
     yChamferFab = yTopFab + chamfer
-    yPadTop = yCenter - pitchY * ((config.layout_y - 1) / 2.0)
     yTopCrtYd = crt_round(yCenter - (pkg_y / 2.0 + crtYdOffset))
     yBottomCrtYd = crt_round(yCenter + (pkg_y / 2.0 + crtYdOffset))
     yRef = yTopFab - 1.0
@@ -127,17 +128,24 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
     wCrtYd = GC.GLOBAL_CONFIG.courtyard_line_width
     wSilkS = GC.GLOBAL_CONFIG.silk_line_width
 
-    # silkOffset should comply with pad clearance as well
-    yPadTopEdge = yPadTop - pad_factory.default_pad_size.y / 2.0
-    xPadLeftEdge = xPadLeft - pad_factory.default_pad_size.x / 2.0
+    # The silk offset must comply with the pad clearance. Rather than relying on
+    # the default pad size at the nominal grid edge, compute the true outer pad
+    # edges from the factory so that per-layout pad-size overrides and offsets
+    # are honored.
+    xPadLeftEdge = min(p.position.x - p.size.x / 2.0 for p in pads)
+    xPadRightEdge = max(p.position.x + p.size.x / 2.0 for p in pads)
+    yPadTopEdge = min(p.position.y - p.size.y / 2.0 for p in pads)
+    yPadBottomEdge = max(p.position.y + p.size.y / 2.0 for p in pads)
 
     xSilkOffset = max(
         GC.GLOBAL_CONFIG.silk_fab_offset,
         xLeftFab + GC.GLOBAL_CONFIG.silk_pad_offset - xPadLeftEdge,
+        xPadRightEdge + GC.GLOBAL_CONFIG.silk_pad_offset - xRightFab,
     )
     ySilkOffset = max(
         GC.GLOBAL_CONFIG.silk_fab_offset,
         yTopFab + GC.GLOBAL_CONFIG.silk_pad_offset - yPadTopEdge,
+        yPadBottomEdge + GC.GLOBAL_CONFIG.silk_pad_offset - yBottomFab,
     )
 
     silkSizeX = pkg_x + 2 * (xSilkOffset - GC.GLOBAL_CONFIG.silk_fab_offset)
@@ -238,8 +246,8 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
         )
     )
 
-    # Collect pads from the factory and append
-    for pad_info in pad_factory.pads():
+    # Append the pads
+    for pad_info in pads:
         f.extend(pad_info_to_pads(pad_info))
 
     dwg_nodes = fp_additional_drawing.create_additional_drawings(  # pyright: ignore

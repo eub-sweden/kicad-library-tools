@@ -210,11 +210,6 @@ class BgaGridPadFactory(PadFactory):
             for layout in spec.layouts
         ]
 
-    @property
-    def default_pad_size(self) -> Vector2D:
-        """The part's default pad size in mm."""
-        return self._default_style.size
-
     def pads(self) -> Iterator[PadInfo]:
         """Yield the resolved `PadInfo` of every pad of the part."""
         for layout in self._layout_data_list:
