@@ -13,7 +13,7 @@
 
 import sys
 
-from collections.abc import Generator
+from collections.abc import Iterable, Iterator, Sequence
 from typing import Any
 
 from KicadModTree import Footprint, FootprintType, ModArgparser, Pad, Model, Node, Text
@@ -22,59 +22,76 @@ from generators.tools.footprint.drawing_tools_silk import SilkArrowSize
 from kilibs.config import global_config
 from generators.tools.footprint.declarative_def_tools import common_metadata
 from generators.tools.footprint.save_footprint import write_footprint
+from generators.tools.pad_factory import DevicePadType, PadFactory, PadInfo
 
 from generators.tools.footprint.nodes.layouts.n_pad_box_layout import NPadBoxLayout
 from generators.tools.footprint.nodes.layouts.footprint_layout import SilkStyle
 
 
-def make_pad_from_data(
-    global_config: global_config.GlobalConfig, n: list[str | float]
-) -> Pad:
+class TablePadFactory(PadFactory):
+    """A pad factory that takes its pads from a data table.
+
+    Each row describes one pad as:
+
+        [pad_type, number, x, y, size_x, size_y, drill]
+
+    where `pad_type` is one of "smd", "tht", "thtr" or "npth". `drill` is only
+    used for through-hole pads.
     """
-    Convert a list of pad data into a Pad object.
 
-    Data format:
-    [pad_type, number, x, y, width, height, drill]
+    def __init__(self, rows: Iterable[Sequence[str | float]]) -> None:
+        self._rows = list(rows)
 
-    e.g. ['tht', '1', 0.0, 0.0, 1.0, 1.0, 0.5]
-    """
+    def _pad_size_from_row(self, row: Sequence[str | float]) -> Vector2D:
+        """Extract the pad size from a table row.
 
-    pad_type = str(n[0])
-    number = str(n[1])
-    dh = n[6]
+        A zero `size_y` means a square/round pad, so `size_x` is used for both
+        directions.
+        """
+        size_x = float(row[4])
+        size_y = float(row[5])
+        if size_y == 0.0:
+            return Vector2D.from_floats(size_x, size_x)
+        return Vector2D.from_floats(size_x, size_y)
 
-    at = Vector2D.from_floats(float(n[2]), -float(n[3]))
+    def _pad_info_from_row(self, row: Sequence[str | float]) -> PadInfo:
+        """Convert one table row into a `PadInfo`."""
+        pad_type = str(row[0])
+        number = str(row[1])
+        position = Vector2D.from_floats(float(row[2]), -float(row[3]))
+        size = self._pad_size_from_row(row)
 
-    if float(n[5]) == 0.0:
-        size = Vector2D.from_floats(float(n[4]), float(n[4]))  # Square/round pad
-    else:
-        size = Vector2D.from_floats(float(n[4]), float(n[5]))
+        if pad_type == "smd":
+            fp_pad_type = Pad.TYPE_SMT
+            device_pad_type = DevicePadType.SMD_LAND
+            shape = Pad.SHAPE_ROUNDRECT
+            drill = None
+        elif pad_type in ("tht", "thtr"):
+            fp_pad_type = Pad.TYPE_THT
+            device_pad_type = DevicePadType.THT_PIN
+            shape = Pad.SHAPE_ROUNDRECT if pad_type == "thtr" else Pad.SHAPE_OVAL
+            drill = float(row[6])
+        elif pad_type == "npth":
+            fp_pad_type = Pad.TYPE_NPTH
+            device_pad_type = DevicePadType.MECH_PIN
+            shape = Pad.SHAPE_OVAL
+            drill = float(row[6])
+        else:
+            raise ValueError(f"Unknown pad type: {pad_type}")
 
-    if pad_type == "smd":
-        shape = Pad.SHAPE_ROUNDRECT
-        pad_type = Pad.TYPE_SMT
-        layers = Pad.LAYERS_SMT
-    elif pad_type in ["tht", "thtr"]:
-        shape = Pad.SHAPE_ROUNDRECT if pad_type == "thtr" else Pad.SHAPE_OVAL
-        pad_type = Pad.TYPE_THT
-        layers = Pad.LAYERS_THT
-    elif pad_type == "npth":
-        shape = Pad.SHAPE_OVAL
-        pad_type = Pad.TYPE_NPTH
-        layers = Pad.LAYERS_NPTH
-    else:
-        raise ValueError(f"Unknown pad type: {pad_type}")
+        return PadInfo(
+            name=number,
+            position=position,
+            size=size,
+            shape=shape,
+            fp_pad_type=fp_pad_type,
+            device_pad_type=device_pad_type,
+            drill=drill,
+        )
 
-    return Pad(
-        drill=dh,
-        at=at,
-        size=size,
-        layers=layers,
-        number=number,
-        type=pad_type,
-        shape=shape,
-        round_radius_handler=global_config.roundrect_radius_handler,
-    )
+    def pads(self) -> Iterator[PadInfo]:
+        for row in self._rows:
+            yield self._pad_info_from_row(row)
 
 
 def build_extra_texts(text_data: list[list[str | float]]) -> list[Node]:
@@ -190,12 +207,7 @@ def converter(generator_name: str, args: dict[str, Any]) -> int:
 
     f.tags = fptag.split() + metadata.compatible_mpns
 
-    def pad_factory() -> Generator[Pad, Any, None]:
-        """A factory function that returns an iterator of pads, using the "standard box"
-        pad data format provided in the `pins` argument."""
-        for pin in pins:
-            pad = make_pad_from_data(global_cfg, pin)
-            yield pad
+    table_factory = TablePadFactory(pins)
 
     offset = size / 2 + Vector2D(at.x, -at.y)
 
@@ -213,7 +225,7 @@ def converter(generator_name: str, args: dict[str, Any]) -> int:
         global_config=global_cfg,
         body_size=size,
         body_offset=offset,
-        pad_factory=pad_factory,
+        pad_factory=table_factory,
         silk_style=SilkStyle.TIGHT,
         is_polarized=automatic_pin1_mark,
         footprint_name=f.name,
@@ -261,6 +273,7 @@ def main(generator_name: str, args: list[str] | None = None) -> int:
 
     # now run our script which handles the whole part of parsing the files
     return parser.run(generator_name, args)
+
 
 if __name__ == '__main__':
     import sys

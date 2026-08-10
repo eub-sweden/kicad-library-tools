@@ -58,6 +58,8 @@ class PadInfo:
         shape: The pad shape (one of the `Pad.SHAPE_*` strings).
         pad_type: The pad type (one of the `Pad.TYPE_*` strings).
         fab_property: The pad fabrication property, or `None` for none.
+        drill: The drill size in mm for through-hole pads, or `None` for
+            surface-mount pads.
         paste_shape: The solder-paste opening shape, or `None` to use `shape`
             (in which case no separate paste pad is created).
         paste_margin: The solder-paste margin in mm applied when a separate
@@ -73,6 +75,8 @@ class PadInfo:
     device_pad_type: DevicePadType
     """The pad type on the device side"""
     fab_property: Pad.FabProperty | None = None
+    drill: Vector2D | float | None = None
+    """The drill size in mm for through-hole pads, or `None` for SMD pads."""
     paste_shape: str | None = None
     paste_margin: float = 0.0
 
@@ -116,26 +120,42 @@ def pad_info_to_pads(pad_info: PadInfo) -> list[Pad]:
     """
     pad_shape = pad_info.shape
     paste_shape = pad_info.paste_shape
+    pad_type = pad_info.fp_pad_type
 
-    if paste_shape and paste_shape != pad_shape:
-        layers = ["F.Cu", "F.Mask"]
-    else:
-        layers = Pad.LAYERS_SMT
+    if pad_type == Pad.TYPE_SMT:
+        if paste_shape and paste_shape != pad_shape:
+            layers = ["F.Cu", "F.Mask"]
+        else:
+            layers = Pad.LAYERS_SMT
+    elif pad_type == Pad.TYPE_THT:
+        layers = Pad.LAYERS_THT
+    elif pad_type == Pad.TYPE_NPTH:
+        layers = Pad.LAYERS_NPTH
+    else:  # Pad.TYPE_CONNECT
+        layers = Pad.LAYERS_CONNECT_FRONT
+
+    # Round-rect pads need a radius handler, all other shapes ignore it.
+    round_radius_handler = (
+        GC.GLOBAL_CONFIG.roundrect_radius_handler
+        if pad_shape == Pad.SHAPE_ROUNDRECT
+        else None
+    )
 
     pads = [
         Pad(
             number=pad_info.name,
-            type=pad_info.fp_pad_type,
+            type=pad_type,
             fab_property=pad_info.fab_property,
             shape=pad_shape,
             at=pad_info.position,
             size=pad_info.size,
             layers=layers,
-            radius_ratio=GC.GLOBAL_CONFIG.roundrect_radius_handler,  # type: ignore
+            drill=pad_info.drill,
+            round_radius_handler=round_radius_handler,
         )
     ]
 
-    if paste_shape and paste_shape != pad_shape:
+    if pad_type == Pad.TYPE_SMT and paste_shape and paste_shape != pad_shape:
         # Footgun warning: When pcbnew renders a paste-only pad like this, it actually
         # ignores all paste margin settings both of the pad and of the footprint, and
         # creates a stencil opening of exactly the size of the pad. Thus, we have to

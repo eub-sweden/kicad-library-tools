@@ -11,12 +11,17 @@
 #
 # (C) The KiCad Librarian Team
 
-from collections.abc import Callable, Generator, Iterator
-from typing import Any, TypeAlias
+from collections.abc import Iterator
 
 from generators.tools.footprint.drawing_tools import SilkArrowSize
 from generators.tools.footprint.drawing_tools_silk import (
     auto_silk_triangle_for_pad_and_box,
+)
+from generators.tools.pad_factory import (
+    DevicePadType,
+    PadFactory,
+    PadInfo,
+    pad_info_to_pads,
 )
 from KicadModTree import Pad
 from KicadModTree.util import courtyard_builder
@@ -52,13 +57,10 @@ class NPadBoxLayout(FootprintLayout[GeomRectangle, Pad]):
     be configured to be tight to the body, or to extend around the pads.
     """
 
-    PadFactoryType: TypeAlias = Callable[[], Iterator[Pad]]
-    """A pad factory is a callable that returns an iterator of pads."""
-
     def __init__(
         self,
         global_config: GC.GlobalConfig,
-        pad_factory: PadFactoryType,
+        pad_factory: PadFactory,
         body_size: Vector2D,
         body_offset: Vector2D,
         silk_style: SilkStyle,
@@ -76,7 +78,7 @@ class NPadBoxLayout(FootprintLayout[GeomRectangle, Pad]):
 
         Args:
             global_config: The global config object.
-            pad_factory: A pad factory.
+            pad_factory: The pad factory that produces the pads.
             body_size: The nominal size of the body, in mm.
             body_offset: The offset (center position) of the body rectangle.
             silk_style: The style of the silk rectangle to draw around the body.
@@ -99,10 +101,16 @@ class NPadBoxLayout(FootprintLayout[GeomRectangle, Pad]):
         self.silk_arrow_direction_if_inside = silk_arrow_direction_if_inside
         self.silk_arrow_size = silk_arrow_size
 
+        pads: list[Pad] = []
+
+        # Collect pads from the factory and append
+        for pad_info in pad_factory.pads():
+            pads.extend(pad_info_to_pads(pad_info))
+
         super().__init__(
             global_config=global_config,
             body_shape=GeomRectangle(center=body_offset, size=body_size),
-            pads=list(pad_factory()),
+            pads=pads,
         )
 
         fab_style = FabStyle.CHAMFER_RECT if is_polarized else FabStyle.BODY_SHAPE
@@ -163,6 +171,38 @@ class NPadBoxLayout(FootprintLayout[GeomRectangle, Pad]):
         self.append(self.courtyard)
 
 
+class TwoPadSmdPadFactory(PadFactory):
+    """A pad factory for the two SMD pads of a two-pad layout.
+
+    The pads are simple round-rectangle SMD pads whose geometry is described by
+    a `TwoPadDimensions`.
+    """
+
+    def __init__(self, pad_dims: TwoPadDimensions) -> None:
+        self._pad_size = Vector2D.from_floats(
+            pad_dims.size_inline, pad_dims.size_crosswise
+        )
+        self._positions = [
+            Vector2D.from_floats(
+                -pad_dims.spacing_centre / 2, -pad_dims.offset_crosswise / 2
+            ),
+            Vector2D.from_floats(
+                pad_dims.spacing_centre / 2, pad_dims.offset_crosswise / 2
+            ),
+        ]
+
+    def pads(self) -> Iterator[PadInfo]:
+        for i, position in enumerate(self._positions):
+            yield PadInfo(
+                name=f"{i + 1}",
+                position=position,
+                size=self._pad_size,
+                shape=Pad.SHAPE_ROUNDRECT,
+                fp_pad_type=Pad.TYPE_SMT,
+                device_pad_type=DevicePadType.SMD_LAND,
+            )
+
+
 def make_layout_for_smd_two_pad_dimensions(
     global_config: GC.GlobalConfig,
     pad_dims: TwoPadDimensions,
@@ -197,37 +237,11 @@ def make_layout_for_smd_two_pad_dimensions(
         The layout Node.
     """
 
-    pos_positions = [
-        Vector2D.from_floats(
-            -pad_dims.spacing_centre / 2, -pad_dims.offset_crosswise / 2
-        ),
-        Vector2D.from_floats(
-            pad_dims.spacing_centre / 2, pad_dims.offset_crosswise / 2
-        ),
-    ]
-    pad_size = Vector2D.from_floats(pad_dims.size_inline, pad_dims.size_crosswise)
-
-    def smd_pad_factory() -> Generator[Pad, Any, None]:
-
-        pad_prototype = Pad(
-            at=Vector2D.zero(),
-            size=pad_size,
-            number="",
-            type=Pad.TYPE_SMT,
-            shape=Pad.SHAPE_ROUNDRECT,
-            layers=Pad.LAYERS_SMT,
-            round_radius_handler=global_config.roundrect_radius_handler,
-        )
-
-        for i, pos in enumerate(pos_positions):
-            yield pad_prototype.copy_with(
-                at=pos,
-                number=f"{i + 1}",
-            )
+    pad_factory = TwoPadSmdPadFactory(pad_dims)
 
     return NPadBoxLayout(
         global_config=global_config,
-        pad_factory=smd_pad_factory,
+        pad_factory=pad_factory,
         body_size=body_size,
         body_offset=Vector2D.zero(),
         silk_style=silk_style,
