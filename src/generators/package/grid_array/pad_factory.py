@@ -35,7 +35,7 @@ from generators.tools.pad_factory import PadFactory, PadInfo, DevicePadType
 from .config import GridStagger
 
 if TYPE_CHECKING:
-    from .spec import GridArraySpec, GridLayout
+    from .spec import GridArraySpec, GridLayout, PinTableEntry
 
 
 class _GridLayoutPadStyle(NamedTuple):
@@ -324,12 +324,48 @@ class BgaGridPadFactory(PadFactory):
         return Vector2D(pad_diameter, pad_diameter)
 
 
-def make_pad_factory(spec: GridArraySpec) -> BgaGridPadFactory:
+class PadTableFactory(PadFactory):
+    """A pad factory that takes its pads from an explicit pin table.
+
+    Each pad carries its full geometry (position, size and solder-mask
+    aperture) in the table, in contrast to the grid-based `BgaGridPadFactory`
+    which derives them from some declarative layout definition.
+    """
+
+    def __init__(self, spec: GridArraySpec) -> None:
+        assert spec.pin_table is not None, "Pin table must be present for PadTableFactory"
+
+        self._pin_table = spec.pin_table
+        self._flip_x = spec.pin_position_flip_x
+        self._flip_y = spec.pin_position_flip_y
+
+    def pads(self) -> Iterator[PadInfo]:
+        for entry in self._pin_table:
+
+            pos = entry.position
+
+            if self._flip_x:
+                pos = Vector2D(-pos.x, pos.y)
+            if self._flip_y:
+                pos = Vector2D(pos.x, -pos.y)
+
+            yield PadInfo(
+                name=entry.name,
+                position=pos,
+                size=entry.size,
+                shape=Pad.SHAPE_CIRCLE,
+                mask_size=entry.mask_size,
+                fp_pad_type=Pad.TYPE_SMT,
+                device_pad_type=DevicePadType.SMD_BALL,
+                fab_property=Pad.FabProperty.BGA,
+            )
+
+
+def make_pad_factory(spec: GridArraySpec) -> PadFactory:
     """Create the pad factory matching the part's pad definition style.
 
-    Today only the grid-based factory exists. When explicit pad tables are
-    supported, this is the single place to select a table-driven factory for
-    parts that carry a pad table.
+    Parts with an explicit pin table use `PadTableFactory`. All other parts use
+    the grid-based `BgaGridPadFactory`.
 
     Args:
         spec: The grid array specification.
@@ -337,4 +373,7 @@ def make_pad_factory(spec: GridArraySpec) -> BgaGridPadFactory:
     Returns:
         A pad factory suitable for the spec.
     """
+    if spec.pin_table is not None:
+        return PadTableFactory(spec)
+
     return BgaGridPadFactory(spec)

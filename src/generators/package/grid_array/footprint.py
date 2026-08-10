@@ -62,7 +62,11 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
     # then appended to the footprint at the end.
     pads = list(pad_factory.pads())
 
-    evaluator_params = {"pitch": config.pitch}
+    # Grid parts define a pitch symbol for evaluator expressions. Pin-table
+    # parts have no pitch to inject.
+    evaluator_params = {}
+    if config.pitch is not None:
+        evaluator_params["pitch"] = config.pitch
 
     fp_evaluator = ast_evaluator.ASTevaluator(symbols=evaluator_params)  # pyright: ignore
 
@@ -105,8 +109,6 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
         if neg:
             x = -x
         return x
-
-    pitchX, pitchY, staggered = calculate_stagger(config.layouts[0])
 
     xCenter = 0.0
     xLeftFab = xCenter - pkg_x / 2.0
@@ -255,27 +257,42 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
     )
     f.extend(dwg_nodes)
 
-    if staggered is not GridStagger.NONE:
-        pdesc = str(spec.get("pitch")) if "pitch" in spec else f"{pitchX}x{pitchY}"
-        sdesc = f"{staggered.name}-staggered "
+    if config.pitch is not None:
+        # Grid-based part: derive the pitch and layout for the description.
+        pitchX, pitchY, staggered = calculate_stagger(config.layouts[0])
+        if staggered is not GridStagger.NONE:
+            pdesc = str(spec.get("pitch")) if "pitch" in spec else f"{pitchX}x{pitchY}"
+            sdesc = f"{staggered.name}-staggered "
+        else:
+            pdesc = str(pitchX) if pitchX == pitchY else f"{pitchX}x{pitchY}"
+            sdesc = ""
+        layout_text = f"{sdesc}{config.layout_x}x{config.layout_y} Layout"
+        pitch_text = f"{pdesc}mm Pitch"
     else:
-        pdesc = str(pitchX) if pitchX == pitchY else f"{pitchX}x{pitchY}"
-        sdesc = ""
+        # Pin-table part that adds no documentary grid pitch or layout data.
+        pdesc = ""
+        layout_text = ""
+        pitch_text = ""
 
     description_parts = [
         config.metadata.description if config.metadata.description else "",
         f"{pkg_x}x{pkg_y}mm",
         f"{config.num_balls} Ball",
-        f"{sdesc}{config.layout_x}x{config.layout_y} Layout",
-        f"{pdesc}mm Pitch",
     ]
+    # The layout and pitch text only exist for grid-based parts.
+    if layout_text:
+        description_parts.append(layout_text)
+    if pitch_text:
+        description_parts.append(pitch_text)
 
     if config.metadata.datasheet:
         description_parts.append(config.metadata.datasheet)
 
     f.description = ", ".join(description_parts)
 
-    f.tags = [config.package_type, str(config.num_balls), pdesc]
+    f.tags = [config.package_type, str(config.num_balls)]
+    if pdesc:
+        f.tags.append(pdesc)
     f.tags += config.metadata.compatible_mpns
     f.tags += config.metadata.additional_tags
 

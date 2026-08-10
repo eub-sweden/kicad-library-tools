@@ -11,8 +11,10 @@
 #
 # (C) The KiCad Librarian Team
 
+import csv
+from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, NamedTuple
 
 from kilibs.config import ipc_rules
 from kilibs.geom import Vector2D
@@ -132,6 +134,19 @@ class GridLayout:
         )
 
 
+class PinTableEntry(NamedTuple):
+    """A single pad of an explicit pin table (e.g. loaded from a CSV).
+
+    In contrast to grid-based layouts, a pin table carries the full pad
+    geometry per pad: position, size and solder-mask aperture.
+    """
+
+    name: str
+    position: Vector2D
+    size: Vector2D
+    mask_size: Vector2D
+
+
 @register_spec
 class GridArraySpec(PackageSpec):
     """
@@ -177,10 +192,12 @@ class GridArraySpec(PackageSpec):
         """The default solder-paste margin in mm."""
         self.pad_diameter: float | None
         """The explicit PCB-side pad diameter, or `None` for IPC calculation."""
+
         self.ball_type: ipc_rules.BallType
         """The ball type."""
         self.ball_diameter: float
         """The ball diameter."""
+
         # Instance attributes related to the dimensions of the package:
         self.body_size_x: float
         """Size of the package body in x direction."""
@@ -190,12 +207,22 @@ class GridArraySpec(PackageSpec):
         # Instance attributes for the pinning data:
         self.num_balls: int
         """Number of balls in the package."""
-        self.layout_x: int
-        """Number of balls in x direction."""
-        self.layout_y: int
-        """Number of balls in y direction."""
+        self.pitch: Vector2D | None
+        """The pad pitch, or `None` for pin-table parts."""
+        self.layout_x: int | None
+        """Number of balls in x direction, or `None` for pin-table parts."""
+        self.layout_y: int | None
+        """Number of balls in y direction, or `None` for pin-table parts."""
         self.layouts: list[GridLayout]
         """The type-safe grid layouts (main and any secondary layouts)."""
+
+        self.pin_table: list[PinTableEntry] | None
+        """The explicit pin table (e.g. from a CSV), or `None` for grid parts."""
+
+        self.pin_position_flip_x: bool
+        """Whether the pin positions are flipped in x direction when reading the pin table."""
+        self.pin_position_flip_y: bool
+        """Whether the pin positions are flipped in y direction when reading the pin table."""
 
         # Instance attributes for the 3D model:
         self.body_pcb_gap: float
@@ -234,6 +261,7 @@ class GridArraySpec(PackageSpec):
         """Name of the library."""
 
         super().__init__(id, spec, file_name)
+        self.file_name = file_name
 
         if file_name.endswith("cq_parameters_obsolete.yaml"):
             self.has_fp_data = False
@@ -269,12 +297,39 @@ class GridArraySpec(PackageSpec):
             self.spec.get("ipc_density", "nominal")
         )
 
+        if "pin_table" in self.spec:
+            # The pads are defined explicitly by a pin table (e.g. from a CSV),
+            # not by a grid layout, so there is no pitch or layout to derive.
+
+            self.pin_table = self._load_pin_table()
+            self.num_balls = len(self.pin_table)
+
+            # These parameters can be used for name construction, but they don't affect the pad positions.
+            self.pitch = self.spec.get("pitch", None)
+            self.layout_x = self.spec.get("layout_x", None)
+            self.layout_y = self.spec.get("layout_y", None)
+
+            self.pin_position_flip_x = self.spec.get("pin_position_flip_x", False)
+            self.pin_position_flip_y = self.spec.get("pin_position_flip_y", False)
+            return
+
+        self.pin_table = None
+
         if "pitch" in self.spec:
             self.pitch = Vector2D(self.spec["pitch"], self.spec["pitch"])
         elif "pitch_x" in self.spec and "pitch_y" in self.spec:
             self.pitch = Vector2D(self.spec["pitch_x"], self.spec["pitch_y"])
         else:
             raise KeyError("Either pitch or both pitch_x and pitch_y must be given.")
+
+        # These don't make sense for non-table parts
+        if "pin_position_flip_x" in self.spec or "pin_position_flip_y" in self.spec:
+            raise KeyError(
+                "pin_position_flip_x and pin_position_flip_y are only valid for "
+                "parts with an explicit pin table."
+            )
+        self.pin_position_flip_x = False
+        self.pin_position_flip_y = False
 
         self.layout_x = self.spec["layout_x"]
         self.layout_y = self.spec["layout_y"]
@@ -302,6 +357,33 @@ class GridArraySpec(PackageSpec):
 
         self.ball_diameter = self.spec.get("ball_diameter")
 
+    def _load_pin_table(self) -> list[PinTableEntry]:
+        """Load the explicit pin table from the CSV referenced by the spec.
+
+        The table is resolved relative to the directory of the spec's YAML file.
+
+        Returns:
+            The parsed pin table.
+        """
+        pin_table_file = Path(self.file_name).parent / str(self.spec["pin_table"])
+        entries: list[PinTableEntry] = []
+        with open(pin_table_file, newline="", encoding="utf-8") as stream:
+            reader = csv.DictReader(stream)
+            for row in reader:
+                diameter = float(row["fp_pad_diameter"])
+                mask_diameter = float(row["mask_diameter"])
+                entries.append(
+                    PinTableEntry(
+                        name=row["pin_number"],
+                        position=Vector2D.from_floats(
+                            float(row["position_x"]), float(row["position_y"])
+                        ),
+                        size=Vector2D.from_floats(diameter, diameter),
+                        mask_size=Vector2D.from_floats(mask_diameter, mask_diameter),
+                    )
+                )
+        return entries
+
     def _ball_type_from_str(self, string: str) -> ipc_rules.BallType:
         """Convert a ball type string from the device YAML to a `BallType`.
         """
@@ -311,7 +393,7 @@ class GridArraySpec(PackageSpec):
             return ipc_rules.BallType.NON_COLLAPSIBLE
 
         raise KeyError(
-            f"'{string}' is an invalid ball type."
+            f"'{string}' qis an invalid ball type."
         )
 
     def _read_dimension(self, name: str) -> float:

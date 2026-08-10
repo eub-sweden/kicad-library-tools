@@ -60,6 +60,8 @@ class PadInfo:
         fab_property: The pad fabrication property, or `None` for none.
         drill: The drill size in mm for through-hole pads, or `None` for
             surface-mount pads.
+        mask_size: The solder-mask aperture size in mm, or `None` to inherit
+            the footprint-level mask margin.
         paste_shape: The solder-paste opening shape, or `None` to use `shape`
             (in which case no separate paste pad is created).
         paste_margin: The solder-paste margin in mm applied when a separate
@@ -77,6 +79,9 @@ class PadInfo:
     fab_property: Pad.FabProperty | None = None
     drill: Vector2D | float | None = None
     """The drill size in mm for through-hole pads, or `None` for SMD pads."""
+    mask_size: Vector2D | None = None
+    """The solder-mask aperture size in mm, or `None` to inherit the
+    footprint-level mask margin."""
     paste_shape: str | None = None
     paste_margin: float = 0.0
 
@@ -141,6 +146,14 @@ def pad_info_to_pads(pad_info: PadInfo) -> list[Pad]:
         else None
     )
 
+    # The per-pad solder-mask margin, derived from the explicit mask aperture
+    # when one is given. Zero means the footprint-level mask margin applies.
+    solder_mask_margin = (
+        (pad_info.mask_size.x - pad_info.size.x) / 2.0
+        if pad_info.mask_size is not None
+        else 0.0
+    )
+
     pads = [
         Pad(
             number=pad_info.name,
@@ -152,6 +165,7 @@ def pad_info_to_pads(pad_info: PadInfo) -> list[Pad]:
             layers=layers,
             drill=pad_info.drill,
             round_radius_handler=round_radius_handler,
+            solder_mask_margin=solder_mask_margin,
         )
     ]
 
