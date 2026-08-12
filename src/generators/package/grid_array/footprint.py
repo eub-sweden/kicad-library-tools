@@ -32,7 +32,8 @@ from generators.tools.footprint.nodes import pin1_arrow
 from generators.tools.footprint.save_footprint import write_footprint
 from generators.tools.pad_factory import pad_info_to_pads
 
-from .pad_factory import make_pad_factory
+from .config import GridStagger
+from .pad_factory import calculate_stagger, make_pad_factory
 from .spec import GridArraySpec
 
 
@@ -102,7 +103,7 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
             x = -x
         return x
 
-    pitchX, pitchY, staggered = config.calculate_stagger()
+    pitchX, pitchY, staggered = calculate_stagger(config.layouts[0])
 
     xCenter = 0.0
     xLeftFab = xCenter - pkg_x / 2.0
@@ -246,9 +247,9 @@ def _create_footprint_variant(config: GridArraySpec, generator_name: str) -> Non
     )
     f.extend(dwg_nodes)
 
-    if staggered:
+    if staggered is not GridStagger.NONE:
         pdesc = str(spec.get("pitch")) if "pitch" in spec else f"{pitchX}x{pitchY}"
-        sdesc = f"{staggered.upper()}-staggered "
+        sdesc = f"{staggered.name}-staggered "
     else:
         pdesc = str(pitchX) if pitchX == pitchY else f"{pitchX}x{pitchY}"
         sdesc = ""

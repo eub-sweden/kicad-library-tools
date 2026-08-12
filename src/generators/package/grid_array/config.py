@@ -11,11 +11,24 @@
 #
 # (C) The KiCad Librarian Team
 
+import enum
 import itertools
 from typing import Any
 
 from collections.abc import Generator
 from string import ascii_uppercase
+
+
+class GridStagger(enum.Enum):
+    """The stagger direction of a grid layout."""
+
+    NONE = "none"
+    """No stagger: the pads are aligned in a rectangular grid."""
+    X = "x"
+    """x-stagger: the pads are staggered in the x direction."""
+    Y = "y"
+    """y-stagger: the pads are staggered in the y direction."""
+
 
 def _row_name_generator() -> Generator[str, Any, None]:
     row_names: list[str] = [x for x in ascii_uppercase if x not in "IOQSXZ"]

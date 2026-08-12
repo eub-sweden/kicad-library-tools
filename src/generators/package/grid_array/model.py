@@ -64,6 +64,7 @@ import cadquery as cq
 
 from generators.tools.model import export_tools
 
+from .pad_factory import make_pad_factory
 from .spec import GridArraySpec
 
 
@@ -127,11 +128,11 @@ def create_models(spec: GridArraySpec, generator_name: str) -> int:
     sphere = cq.Workplane("XY", s_center).sphere(sphere_r)
     bpin = sphere.translate((0, 0, b / 2 - sp))
 
+    pads = list(make_pad_factory(spec).pads())
     pin_positions: list[cq.Location] = []
-    for layout_data in spec.layout_data_list:
-        for pad_data in layout_data.pad_data_list:
-            pos = pad_data.position
-            pin_positions.append(cq.Location(cq.Vector(pos.x, -pos.y)))
+    for pad in pads:
+        pos = pad.position
+        pin_positions.append(cq.Location(cq.Vector(pos.x, -pos.y)))
 
     # Create all pins in a single, efficient operation
     merged_pins = (
@@ -220,18 +221,15 @@ def create_models(spec: GridArraySpec, generator_name: str) -> int:
 
     if spec.marker is not None:
         pad_position_found = False
-        for layout_data in spec.layout_data_list:
-            for pad_data in layout_data.pad_data_list:
-                if pad_data.name == spec.marker:
-                    pad_position_found = True
-                    pos = pad_data.position
-                    pinmark = (
-                        cq.Workplane("XY", (pos.x, -pos.y, a))
-                        .circle(marker_diameter / 2, False)
-                        .extrude(-marker_depth)
-                    )
-                    break
-            if pad_position_found:
+        for pad in pads:
+            if pad.name == spec.marker:
+                pad_position_found = True
+                pos = pad.position
+                pinmark = (
+                    cq.Workplane("XY", (pos.x, -pos.y, a))
+                    .circle(marker_diameter / 2, False)
+                    .extrude(-marker_depth)
+                )
                 break
         if not pad_position_found:
             raise ValueError(f"Mark is '{spec.marker}', however no such pin was found.")
