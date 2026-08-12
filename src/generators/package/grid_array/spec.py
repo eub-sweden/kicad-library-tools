@@ -17,6 +17,7 @@ import itertools
 
 from kilibs.config import ipc_rules
 from kilibs.geom import Vector2D
+from kilibs.util.toleranced_size import TolerancedSize
 from generators.tools.footprint.declarative_def_tools import (
     common_metadata,
     fp_additional_drawing,
@@ -194,19 +195,27 @@ class GridArraySpec(PackageSpec):
             f"'{string}' is an invalid ball type."
         )
 
+    def _read_dimension(self, name: str) -> float:
+        """Read a body dimension from the spec, tolerances included.
+
+        The YAML may give a plain number or a tolerance string such as
+        ``0.286 +/- 0.05``. the nominal value is used for the 3D model.
+        """
+        return TolerancedSize.from_yaml(self.spec, base_name=name).nominal
+
     def _extract_3d_data(self) -> None:
         self.has_3d_data = True
         if "body_pcb_gap" in self.spec and "overall_height" in self.spec:
-            self.body_pcb_gap = self.spec["body_pcb_gap"]
-            self.overall_height = self.spec["overall_height"]
+            self.body_pcb_gap = self._read_dimension("body_pcb_gap")
+            self.overall_height = self._read_dimension("overall_height")
             self.body_height = self.overall_height - self.body_pcb_gap
         elif "body_height" in self.spec and "overall_height" in self.spec:
-            self.body_height = self.spec["body_height"]
-            self.overall_height = self.spec["overall_height"]
+            self.body_height = self._read_dimension("body_height")
+            self.overall_height = self._read_dimension("overall_height")
             self.body_pcb_gap = self.overall_height - self.body_height
         elif "body_height" in self.spec and "body_pcb_gap" in self.spec:
-            self.body_height = self.spec["body_height"]
-            self.body_pcb_gap = self.spec["body_pcb_gap"]
+            self.body_height = self._read_dimension("body_height")
+            self.body_pcb_gap = self._read_dimension("body_pcb_gap")
             self.overall_height = self.body_pcb_gap + self.body_height
         else:
             self.has_3d_data = False
