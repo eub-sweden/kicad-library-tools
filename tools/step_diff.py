@@ -17,6 +17,8 @@ import file_resolver
 if TYPE_CHECKING:
     import cadquery as cq
 
+logger = logging.getLogger(__name__)
+
 
 class _LoadStepFileError(Exception):
     def __init__(self, path: Path):
@@ -237,6 +239,14 @@ def process_file_pair(
     except _LoadStepFileError as e:
         result.error = f"WARNING: {e.message}"
         return result
+    except Exception:
+        logger.exception(
+            "Failed to diff %s (old=%s, new=%s)",
+            pair.name,
+            old_file,
+            new_file,
+        )
+        raise
 
     result.step_diff_stats = step_diff.stats
 
@@ -256,7 +266,16 @@ def process_file_pair(
             if config.output_as_file
             else config.output_path / pair.name
         )
-        save_step_diff(step_diff, diff_file, config.colors)
+        try:
+            save_step_diff(step_diff, diff_file, config.colors)
+        except Exception:
+            logger.exception(
+                "Failed to save diff for %s (old=%s, new=%s)",
+                pair.name,
+                old_file,
+                new_file,
+            )
+            raise
 
     return result
 
@@ -289,8 +308,14 @@ def format_diff_stats(stats: StepDiffStats) -> None:
     return s
 
 
-def _worker_init():
-    """Ignore SIGINT in worker processes; let the main process handle it."""
+def _worker_init(log_level):
+    """Configure worker processes.
+
+    Workers are forked from a forkserver, so they do not inherit the main
+    process's logging configuration. Ignore SIGINT there as well; the main
+    process handles the interrupt and terminates the workers.
+    """
+    logging.basicConfig(level=log_level)
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
@@ -395,9 +420,13 @@ If you set --repo, then the paths are interpreted as Git commits
     args = parser.parse_args()
 
     if args.verbose >= 2:
-        logging.basicConfig(level=logging.DEBUG)
+        log_level = logging.DEBUG
     elif args.verbose == 1:
-        logging.basicConfig(level=logging.INFO)
+        log_level = logging.INFO
+    else:
+        log_level = logging.WARNING
+
+    logging.basicConfig(level=log_level)
 
     def filter_files(path: Path) -> bool:
         path = Path(path)
@@ -433,6 +462,7 @@ If you set --repo, then the paths are interpreted as Git commits
     with ProcessPoolExecutor(
         max_workers=args.jobs if args.jobs and args.jobs > 0 else None,
         initializer=_worker_init,
+        initargs=(log_level,),
     ) as executor:
 
         futures = {}
