@@ -405,37 +405,15 @@ class HTMLDiff:
         if self.diff_svg_output_dir is not None:
             self.diff_svg_output_dir.mkdir(parents=True, exist_ok=True)
 
+        self.meta = meta
+
         if "CI_MERGE_REQUEST_ID" in os.environ:
-            old_sha, _old_shortid = meta.get("old_git", (None, None))
-            old_path = meta.get("old_path")
-            new_path = meta.get("new_path")
-            source_branch = os.environ.get("CI_MERGE_REQUEST_SOURCE_BRANCH_NAME")
-
-            self.old_url = None
-            if old_sha and old_path:
-                self.old_url = (
-                    f'{os.environ["CI_PROJECT_URL"]}/-/blob/{old_sha}/{old_path}'
-                )
-                if "old_line_range" in meta:
-                    start, end = meta["old_line_range"]
-                    self.old_url += f"#L{start}-{end}"
-
-            self.new_url = None
-            if new_path and source_branch:
-                self.new_url = (
-                    f'{os.environ["CI_MERGE_REQUEST_SOURCE_PROJECT_URL"]}'
-                    f"/-/blob/{source_branch}/{new_path}"
-                )
-                if "new_line_range" in meta:
-                    start, end = meta["new_line_range"]
-                    self.new_url += f"#L{start}-{end}"
-
             self.mr_url = (
                 f'{os.environ["CI_MERGE_REQUEST_PROJECT_URL"]}'
                 f"/-/merge_requests/{os.environ['CI_MERGE_REQUEST_IID']}"
             )
         else:
-            self.old_url = self.new_url = self.mr_url = None
+            self.mr_url = None
 
         if meta.get("old_git") is not None:
             revname, commit_id = meta["old_git"]
@@ -566,6 +544,53 @@ class HTMLDiff:
 
         return self.base_output / lib_diff
 
+    def _pair_urls(
+        self, pair: file_resolver.ResolvedFilePair
+    ) -> tuple[str | None, str | None]:
+        """
+        Compute GitLab "Old File"/"New File" blob URLs for a resolved pair.
+
+        Only meaningful in a GitLab merge-request pipeline, where the CI_*
+        variables are set and the pair was resolved from git (--repo).
+
+        Returns (old_url, new_url). Either one may be None if it cannot be
+        built (e.g. the file was created or deleted on that side).
+        """
+        if self.mr_url is None:
+            return None, None
+
+        old_git = self.meta.get("old_git")
+        if old_git is None:
+            return None, None
+
+        old_sha = old_git[1] or old_git[0]
+        source_branch = os.environ.get("CI_MERGE_REQUEST_SOURCE_BRANCH_NAME")
+        project_url = os.environ.get("CI_PROJECT_URL")
+        mr_source_project_url = os.environ.get("CI_MERGE_REQUEST_SOURCE_PROJECT_URL")
+
+        # If the MR URL is set we expect the other variables
+        if not all([old_sha, source_branch, project_url, mr_source_project_url]):
+            warnings.warn(
+                "Cannot build old file/new file URLs: missing CI variables or old_git info"
+            )
+            return None, None
+
+        old_url = None
+        new_url = None
+
+        if pair.file1 is not None:
+            old_url = f"{project_url}/-/blob/{old_sha}/{pair.name}"
+            if "old_line_range" in self.meta:
+                start, end = self.meta["old_line_range"]
+                old_url += f"#L{start}-{end}"
+        if pair.file2 is not None:
+            new_url = f"{mr_source_project_url}/-/blob/{source_branch}/{pair.name}"
+            if "new_line_range" in self.meta:
+                start, end = self.meta["new_line_range"]
+                new_url += f"#L{start}-{end}"
+
+        return old_url, new_url
+
     @staticmethod
     def format_index(diff_index, part_name: str):
 
@@ -606,6 +631,8 @@ class HTMLDiff:
         enable_layers,
         hide_text_in_diff,
         unit_names=[],
+        old_url=None,
+        new_url=None,
         **kwargs,
     ):
 
@@ -625,8 +652,8 @@ class HTMLDiff:
             diff_index=index,
             prefetch_url=prefetch,
             pipeline_button=button_if("Pipeline", os.environ.get("CI_PIPELINE_URL")),
-            old_file_button=button_if("Old File", self.old_url),
-            new_file_button=button_if("New File", self.new_url),
+            old_file_button=button_if("Old File", old_url),
+            new_file_button=button_if("New File", new_url),
             merge_request_button=button_if("Merge Request", self.mr_url),
             **kwargs,
         )
@@ -641,6 +668,8 @@ class HTMLDiff:
         prev_diff: str,
         next_diff: str,
         ref_svg,
+        old_url=None,
+        new_url=None,
     ):
 
         old_mod = None
@@ -684,6 +713,8 @@ class HTMLDiff:
             old_svg=js_str_list([old_svg_text]),
             new_svg=js_str_list([new_svg_text]),
             reference_svg=js_str_list([ref_svg]),
+            old_url=old_url,
+            new_url=new_url,
         )
 
     def _get_ref_fn(self, new_file):
@@ -776,6 +807,8 @@ class HTMLDiff:
                 ref_fn = ref_fn.with_name(f"{new_file.stem}.svg")
                 ref_svg = ref_fn.read_text()
 
+        old_url, new_url = self._pair_urls(pair)
+
         diff_text = self.mod_diff(
             part_name=pair.name.stem,
             lib_name=lib_name,
@@ -784,6 +817,8 @@ class HTMLDiff:
             prev_diff=self._diff_name(prev_pair.name).name,
             next_diff=self._diff_name(next_pair.name).name,
             ref_svg=ref_svg,
+            old_url=old_url,
+            new_url=new_url,
         )
         out_file.write_text(diff_text)
 
@@ -824,6 +859,10 @@ class HTMLDiff:
 
         # Name of the symbol in the old kicad_sym file
         old_name: str
+
+        # GitLab blob URLs for the old and new symbol library files
+        old_url: str | None = None
+        new_url: str | None = None
 
     def _diff_name(self, new_file: Path) -> Path:
         return self.output / new_file.with_suffix(".html").name
@@ -1055,6 +1094,11 @@ class HTMLDiff:
 
             new_infos = self._get_symbol_diffs(old_kicad_sym_path, new_kicad_sym_path)
 
+            old_url, new_url = self._pair_urls(pair)
+            for info in new_infos:
+                info.old_url = old_url
+                info.new_url = new_url
+
             sym_diff_infos += new_infos
 
         # Build the per-symbol diff index, for the sidebar navigation
@@ -1164,6 +1208,8 @@ class HTMLDiff:
                 new_svg=js_str_list(svgs_new),
                 reference_svg=js_str_list(screenshots_content),
                 unit_names=unit_names,
+                old_url=sym_diff_info.old_url,
+                new_url=sym_diff_info.new_url,
             )
         )
 
