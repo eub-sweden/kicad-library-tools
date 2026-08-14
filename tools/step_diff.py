@@ -10,12 +10,9 @@ import signal
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING
 
+import cadquery as cq
 import file_resolver
-
-if TYPE_CHECKING:
-    import cadquery as cq
 
 logger = logging.getLogger(__name__)
 
@@ -118,9 +115,29 @@ def load_step_file(path: Path) -> "cq.Workplane":
         raise _LoadStepFileError(path)
 
 
-def get_step_diff(
-    old_path: Path | None, new_path: Path | None
-) -> StepDiffResult:
+def shape_volume(model: "cq.Workplane | None") -> float:
+    """Total volume of a model, summed over its solids.
+
+    cadquery (at least 2.8.0) ``Shape.Volume()`` raises ``StopIteration`` on
+    some STEP files whose compound structure contains an empty nested compound.
+    Summing the individual solids avoids the crash and is equivalent.
+
+    Remove this function if this is fixed in a future cadquery version.
+    See: https://github.com/CadQuery/cadquery/issues/2078
+    """
+    if model is None:
+        return 0.0
+
+    shape = model.val()
+
+    # Shape could be a Vector is the model is empty
+    if not isinstance(shape, cq.occ_impl.shapes.Shape):
+        return 0.0
+
+    return sum(s.Volume() for s in shape.Solids())
+
+
+def get_step_diff(old_path: Path | None, new_path: Path | None) -> StepDiffResult:
     """Compute the difference between two STEP files.
 
     Either *old_path* or *new_path* may be ``None``, meaning that side
@@ -130,8 +147,8 @@ def get_step_diff(
     old_model = load_step_file(old_path) if old_path is not None else None
     new_model = load_step_file(new_path) if new_path is not None else None
 
-    old_volume = old_model.val().Volume() if old_model is not None else 0.0
-    new_volume = new_model.val().Volume() if new_model is not None else 0.0
+    old_volume = shape_volume(old_model)
+    new_volume = shape_volume(new_model)
 
     if (
         old_model is not None
@@ -145,10 +162,8 @@ def get_step_diff(
         model_added = new_model
         model_removed = old_model
 
-    added_volume = model_added.val().Volume() if model_added is not None else 0.0
-    removed_volume = (
-        model_removed.val().Volume() if model_removed is not None else 0.0
-    )
+    added_volume = shape_volume(model_added)
+    removed_volume = shape_volume(model_removed)
 
     model_name = old_path.stem if old_path is not None else new_path.stem
 
@@ -191,7 +206,7 @@ def save_step_diff(
         print(f"Write permission denied: {output_file_path}")
         return
 
-    if step_diff.old_model.val().Volume() == 0:
+    if shape_volume(step_diff.old_model) == 0:
         unchanged = step_diff.old_model
     else:
         unchanged = step_diff.old_model.intersect(step_diff.new_model)
