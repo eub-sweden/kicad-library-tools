@@ -395,6 +395,7 @@ class HTMLDiff:
         self.name_map = {}
         self.diff_index = []
         self.max_workers = 1
+        self.git_mode = False
 
         if screenshot_dir is None:
             tmp = self.screenshot_tmpdir = tempfile.TemporaryDirectory()
@@ -491,22 +492,90 @@ class HTMLDiff:
         else:
             logging.warning("Ignoring unsupported file: %s", file)
 
-    def diff_pairs(self, pairs: list[file_resolver.ResolvedFilePair]) -> None:
+    def _git_old_name(self, pair: file_resolver.ResolvedFilePair) -> Path | None:
+        """
+        Return the reconstructed old (repo-relative) name of a git pair.
+
+        In git mode the old side is checked out under a temporary root, so
+        the old path is ``<lib>/<file>`` relative to that root. Returns None
+        when the name cannot be reconstructed (not git mode, or the old side
+        is missing).
+        """
+        if not self.git_mode or pair.file1 is None:
+            return None
+
+        old_file = Path(pair.file1)
+        return Path(old_file.parent.name) / old_file.name
+
+    def _rename_old_name(self, pair: file_resolver.ResolvedFilePair) -> Path | None:
+        """
+        Return the old (repo-relative) name if the pair is a rename within
+        one library, otherwise None.
+
+        Cross-library moves return None (they are split into delete + create
+        instead of being shown as a rename), as do non-git pairs (see
+        _git_old_name).
+        """
+        if pair.file2 is None:
+            return None
+
+        old_name = self._git_old_name(pair)
+        if old_name is None or old_name == pair.name:
+            return None
+
+        old_key = self._library_key(old_name, Path(pair.file1))
+        new_key = self._library_key(pair.name, Path(pair.file2))
+
+        if old_key != new_key:
+            # Cross-library move.
+            return None
+
+        return old_name
+
+    def diff_pairs(
+        self,
+        pairs: list[file_resolver.ResolvedFilePair],
+        *,
+        git_mode: bool = False,
+    ) -> None:
         """
         Diff the given resolved file pairs, grouping them into libraries.
 
         Footprint pairs (.kicad_mod) are grouped by their .pretty directory.
         Symbol pairs (.kicad_sym) are grouped by their .kicad_symdir directory,
         or treated as their own library if they are packed library files.
+
+        In git mode, a rename within one library is rendered as a single
+        change (with the old name shown). A move between libraries is split
+        into a deletion and an addition.
         """
+        self.git_mode = git_mode
+
         mod_libs: dict[Path, list[file_resolver.ResolvedFilePair]] = {}
         sym_libs: dict[Path, list[file_resolver.ResolvedFilePair]] = {}
 
         for pair in pairs:
-            file = pair.file2 if pair.file2 is not None else pair.file1
-            if file is None:
+            # Split cross-library moves into delete + create
+            # Keep in-library renames as a single change.
+            old_name = self._git_old_name(pair)
+            if (
+                old_name is not None
+                and old_name != pair.name
+                and self._rename_old_name(pair) is None
+            ):
+                old_file = Path(pair.file1)
+                new_file = Path(pair.file2)
+                self._add_pair_to_library(
+                    mod_libs,
+                    sym_libs,
+                    file_resolver.ResolvedFilePair(old_file, None, old_name),
+                )
+                self._add_pair_to_library(
+                    mod_libs,
+                    sym_libs,
+                    file_resolver.ResolvedFilePair(None, new_file, pair.name),
+                )
                 continue
-            file = Path(file)
 
             self._add_pair_to_library(mod_libs, sym_libs, pair)
 
@@ -581,7 +650,9 @@ class HTMLDiff:
         new_url = None
 
         if pair.file1 is not None:
-            old_url = f"{project_url}/-/blob/{old_sha}/{pair.name}"
+            old_name = self._rename_old_name(pair)
+            old_rel = old_name if old_name is not None else pair.name
+            old_url = f"{project_url}/-/blob/{old_sha}/{old_rel}"
             if "old_line_range" in self.meta:
                 start, end = self.meta["old_line_range"]
                 old_url += f"#L{start}-{end}"
@@ -633,6 +704,7 @@ class HTMLDiff:
         enable_layers,
         hide_text_in_diff,
         unit_names=[],
+        old_name=None,
         old_url=None,
         new_url=None,
         **kwargs,
@@ -640,9 +712,14 @@ class HTMLDiff:
 
         index, prefetch = self.format_index(self.diff_index, part_name)
 
+        display_name = part_name
+        if old_name is not None:
+            display_name = f"{old_name} -> {part_name}"
+
         return j2env.get_template("diff.html").render(
-            page_title=f"diff: {part_name} in {lib_name}",
+            page_title=f"diff: {display_name} in {lib_name}",
             part_name=part_name,
+            display_name=display_name,
             unit_names=unit_names,
             source_revisions=self.source_revisions,
             enable_layers="true" if enable_layers else "false",
@@ -670,6 +747,7 @@ class HTMLDiff:
         prev_diff: str,
         next_diff: str,
         ref_svg,
+        old_name=None,
         old_url=None,
         new_url=None,
     ):
@@ -703,6 +781,7 @@ class HTMLDiff:
         return self._format_html_diff(
             part_name=part_name,
             lib_name=lib_name,
+            old_name=old_name,
             next_diff=next_diff,
             prev_diff=prev_diff,
             enable_layers=True,
@@ -811,6 +890,9 @@ class HTMLDiff:
 
         old_url, new_url = self._pair_urls(pair)
 
+        old_name = self._rename_old_name(pair)
+        old_name = old_name.stem if old_name is not None else None
+
         diff_text = self.mod_diff(
             part_name=pair.name.stem,
             lib_name=lib_name,
@@ -819,6 +901,7 @@ class HTMLDiff:
             prev_diff=self._diff_name(prev_pair.name).name,
             next_diff=self._diff_name(next_pair.name).name,
             ref_svg=ref_svg,
+            old_name=old_name,
             old_url=old_url,
             new_url=new_url,
         )
@@ -903,6 +986,9 @@ class HTMLDiff:
                 else ""
             )
             changed = old_text != new_text
+            if self._rename_old_name(pair) is not None:
+                # A rename counts as a change even if the content is identical.
+                changed = True
             created = old_file is None or not old_file.is_file()
             deleted = new_file is None or not new_file.is_file()
 
@@ -1391,7 +1477,10 @@ If kicad-cli is not in PATH, you can give its location by setting the KICAD_CLI 
         diff_svg_output_dir=args.diff_svg_output_dir,
     )
     html_diff.max_workers = workers
-    html_diff.diff_pairs(resolver.files)
+    html_diff.diff_pairs(
+        resolver.files,
+        git_mode=isinstance(resolver, file_resolver.GitDiffResolver),
+    )
 
     # Generate the top-level index.html
     if args.output is not None and args.output.suffix != ".diff":
