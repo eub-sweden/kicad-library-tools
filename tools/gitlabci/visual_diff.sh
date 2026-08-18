@@ -77,11 +77,6 @@ python3 "$klu_dir/html-diff/src/html_diff.py" \
     "$base_sha" "$target_sha" \
     "${html_diff_args[@]}"
 
-
-# If there is at least one *.diff, create the index.html
-# The link path must be relative to ../ because index.html will be placed in the "index.html.diffs" directory
-python3 "$klu_dir/html-diff/src/render_index_html.py" "$output_dir"
-
 if [ "$open_result" = true ]; then
     xdg-open "$output_dir/index.html"
 fi

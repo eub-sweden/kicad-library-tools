@@ -45,6 +45,7 @@ import kicad_sym
 import print_fp_properties
 import print_sym_properties
 import render_fp
+import render_index_html
 import render_sym
 
 ERROR_TEMPLATE = """<!DOCTYPE html>
@@ -1383,3 +1384,14 @@ If kicad-cli is not in PATH, you can give its location by setting the KICAD_CLI 
     )
     html_diff.max_workers = workers
     html_diff.diff_pairs(resolver.files)
+
+    # Generate the top-level index.html
+    if args.output is not None and args.output.suffix != ".diff":
+        # Create the output directory if it does not exist (e.g. for a null diff)
+        os.makedirs(args.output, exist_ok=True)
+        index_html = render_index_html.generate_index_html(args.output, prefix="")
+
+        index_file = args.output / "index.html"
+        index_file.write_text(index_html, encoding="utf-8")
+
+        logging.info("Generated index.html in %s", args.output)

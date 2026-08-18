@@ -1,18 +1,12 @@
-#!/usr/bin/env python3
 """
 
-This script generates an index.html file for a directory. The index.html file
-contains buttons for each sub-directory in the directory. Clicking on a button
-will redirect to the first HTML file in the sub-directory.
+Generate an index.html page that links to a set of ".diff" sub-directories.
 
-If there is only one sub-directory, the index.html file will redirect to the
-first HTML file in the sub-directory.
-
-Usage:
-    python render_index_html.py <directory with .diff directories inside>
+html_diff.py calls generate_index_html() after writing the per-library diffs,
+so the whole diff can be browsed from a single page. If there is only one
+sub-directory, the index.html page redirects to the first HTML file in it.
 """
 
-import argparse
 import os
 from pathlib import Path
 
@@ -65,7 +59,7 @@ css = """
 """
 
 
-def generate_index_html(directory, prefix):
+def generate_index_html(directory: str | Path, prefix: str) -> str:
     """
     Generate the index HTML page for a diff superdirectory.
     The diff superdirectory shall contain sub-directories, each of which
@@ -148,31 +142,3 @@ def generate_index_html(directory, prefix):
                 </body>
             </html>
         """
-
-
-def main():
-    parser = argparse.ArgumentParser(description="Generate index.html for a directory")
-    parser.add_argument("directory", type=str, help="Directory to process")
-    parser.add_argument(
-        "-p",
-        "--link-prefix",
-        type=str,
-        default="",
-        help="Relative path prefix to link to",
-    )
-    args = parser.parse_args()
-
-    index_html_path = os.path.join(args.directory, "index.html")
-    print(f"Generating index.html at {index_html_path}")
-
-    # Create the directory if it does not exist (can happen for a null diff)
-    os.makedirs(args.directory, exist_ok=True)
-
-    index_html_content = generate_index_html(args.directory, prefix=args.link_prefix)
-
-    with open(index_html_path, "w", encoding="utf-8") as file:
-        file.write(index_html_content)
-
-
-if __name__ == "__main__":
-    main()
