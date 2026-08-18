@@ -14,6 +14,7 @@ import tempfile
 import textwrap
 import traceback
 import warnings
+import webbrowser
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
@@ -1344,6 +1345,13 @@ If kicad-cli is not in PATH, you can give its location by setting the KICAD_CLI 
         + "<library>.diff subdirectory inside it. If the path ends in .diff, "
         + "it is used directly as the output directory of a single library.",
     )
+    parser.add_argument(
+        "-O",
+        "--open-result",
+        action="store_true",
+        help="Open the generated diff in a web browser after generating the diff.",
+    )
+
     args = parser.parse_args()
 
     if args.verbose >= 2:
@@ -1395,3 +1403,18 @@ If kicad-cli is not in PATH, you can give its location by setting the KICAD_CLI 
         index_file.write_text(index_html, encoding="utf-8")
 
         logging.info("Generated index.html in %s", args.output)
+
+    # Open the appropriate diff file in the web browser if requested.
+    if args.open_result and args.output is not None:
+        file_to_open = None
+        if args.output.suffix != ".diff":
+            file_to_open = args.output / "index.html"
+        else:
+            # Open the first diff file in the output directory
+            diff_files = list(args.output.glob("*.html"))
+            if diff_files:
+                file_to_open = diff_files[0]
+
+        if file_to_open is not None and file_to_open.is_file():
+            logging.info("Opening %s in web browser", file_to_open)
+            webbrowser.open(file_to_open.as_uri())

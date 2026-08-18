@@ -23,7 +23,6 @@ usage() {
     echo "  -b base_commit      Base commit SHA for the comparison (default: master)"
     echo "  -t target_commit    Target commit SHA for the comparison (default: HEAD)"
     echo "  -o output_dir       Directory to store the output diffs (default: diffs)"
-    echo "  -O                  Open the result in a browser"
     echo ""
     echo "  html_diff_args       Additional arguments for html_diff.py (e.g. -S /tmp/svg-out-dir)"
 }
@@ -67,8 +66,6 @@ if [ -z "$repo_dir" ] || [ -z "$base_sha" ] || [ -z "$target_sha" ] || [ -z "$ou
     exit 1
 fi
 
-echo "Comparing range $base_sha to $target_sha in '$repo_dir'"
-
 # Run html_diff in git commit-commit mode
 python3 "$klu_dir/html-diff/src/html_diff.py" \
     -j0 \
@@ -76,7 +73,3 @@ python3 "$klu_dir/html-diff/src/html_diff.py" \
     --output "$output_dir" \
     "$base_sha" "$target_sha" \
     "${html_diff_args[@]}"
-
-if [ "$open_result" = true ]; then
-    xdg-open "$output_dir/index.html"
-fi
