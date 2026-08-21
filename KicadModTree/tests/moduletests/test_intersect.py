@@ -53,9 +53,9 @@ def intersect_and_add_to_footprint(
         )
         results = intersect(shape1, shape2)
         for result in results:
-            fp.append(shape_to_node(result))  # type: ignore
-        fp.append(shape_to_node(shape1, "F.Fab"))  # type: ignore
-        fp.append(shape_to_node(shape2, "F.Fab"))  # type: ignore
+            fp.append(shape_to_node(result, layer="F.SilkS", width=0.12))  # type: ignore
+        fp.append(shape_to_node(shape1, layer="F.Fab", width=0.1))  # type: ignore
+        fp.append(shape_to_node(shape2, layer="F.Fab", width=0.1))  # type: ignore
     return bbox.size.y + 1
 
 

@@ -313,7 +313,11 @@ class _ArcPadPrimitive(Node):
             try:
                 cut_arcs = split(current_arc, line)
                 result.append(
-                    shape_to_node(cut_arcs[index_to_keep], width=current_arc.width)  # type: ignore
+                    shape_to_node(
+                        cut_arcs[index_to_keep],
+                        layer=current_arc.layer,
+                        width=current_arc.width,
+                    )  # type: ignore
                 )
             except IndexError:
                 raise ValueError(

@@ -53,7 +53,7 @@ def merge_and_add_to_footprint(
         )
         results = unite(shape1, shape2)
         for result in results:
-            fp.append(shape_to_node(result))  # type: ignore
+            fp.append(shape_to_node(result, layer="F.SilkS", width=0.12))  # type: ignore
     return bbox.size.y + 1
 
 

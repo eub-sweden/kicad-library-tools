@@ -85,8 +85,9 @@ def gen_footprint() -> Footprint:
     for j in range(len(inflate_amount)):
         x_translate = -5 * (len(shapes) - 1)
         for i in range(0, len(shapes)):
-            translated_shape = shapes[i].translated(Vector2D(x_translate, y=y_translate))
-            kicad_mod.append(shape_to_node(translated_shape, layer="F.Fab"))  # type: ignore
+            translation = Vector2D(x_translate, y=y_translate)
+            translated_shape = shapes[i].translated(translation)
+            kicad_mod.append(shape_to_node(translated_shape, layer="F.Fab", width=0.1))  # type: ignore
             try:
                 inflated_shape = translated_shape.inflated(
                     amount=inflate_amount[j],
@@ -96,9 +97,13 @@ def gen_footprint() -> Footprint:
                     if (
                         inflate_amount[j] >= -0.5
                     ):  # Polygons that are deflated too much are rubbish. Don't plot them.
-                        kicad_mod.append(shape_to_node(inflated_shape))
+                        kicad_mod.append(
+                            shape_to_node(inflated_shape, layer="F.SilkS", width=0.12)
+                        )
                 else:
-                    kicad_mod.append(shape_to_node(inflated_shape))
+                    kicad_mod.append(
+                        shape_to_node(inflated_shape, layer="F.SilkS", width=0.12)
+                    )
             except ValueError:
                 pass
             x_translate += 10
