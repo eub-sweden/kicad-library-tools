@@ -130,7 +130,7 @@ def test_apply_circles_to_circle() -> None:
 
 @pytest.mark.parametrize(
     "fp_fudge_r, fp_fudge_x",
-    product(FLOATING_POINT_OFFSETS, repeat=2),
+    list(product(FLOATING_POINT_OFFSETS, repeat=2)),
 )
 def test_arc_tangent_to_circle(fp_fudge_r: float, fp_fudge_x: float) -> None:
     # If an arc just touches the circle, it's one intersection,
@@ -156,7 +156,7 @@ def test_arc_tangent_to_circle(fp_fudge_r: float, fp_fudge_x: float) -> None:
 
 @pytest.mark.parametrize(
     "fp_fudge_r, fp_fudge_cx",
-    product(FLOATING_POINT_OFFSETS, repeat=2),
+    list(product(FLOATING_POINT_OFFSETS, repeat=2)),
 )
 def test_circle_tangent_to_circle(fp_fudge_r: float, fp_fudge_cx: float) -> None:
     # As for arc-circle, one circle just touching shouldn't clip.
@@ -174,7 +174,7 @@ def test_circle_tangent_to_circle(fp_fudge_r: float, fp_fudge_cx: float) -> None
 
 @pytest.mark.parametrize(
     "fp_fudge_r, fp_fudge_cx",
-    product(FLOATING_POINT_OFFSETS, repeat=2),
+    list(product(FLOATING_POINT_OFFSETS, repeat=2)),
 )
 def test_circle_tangent_to_rect(fp_fudge_r: float, fp_fudge_cx: float) -> None:
     # If a circle just touches the rectangle, it's one intersection,
