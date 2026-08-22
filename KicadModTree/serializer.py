@@ -38,22 +38,6 @@ from KicadModTree.util.shape_to_node import shape_to_node
 from kilibs.geom.tolerances import TOL_MM
 from kilibs.geom.vector import Vector2D
 
-_DEFAULT_LAYER_WIDTH = {
-    "F.SilkS": 0.12,
-    "B.SilkS": 0.12,
-    "F.Fab": 0.10,
-    "B.Fab": 0.10,
-    "F.CrtYd": 0.05,
-    "B.CrtYd": 0.05,
-}
-"""Default width for the most common layers."""
-
-_DEFAULT_WIDTH = 0.15
-"""Default width for the layers not listed in _DEFAULT_LAYER_WIDTH."""
-
-_DEFAULT_WIDTH_POLYGON_PAD = 0.0
-"""Default width of the outline of custom sized pads."""
-
 
 class SerializerPriority:
     """A class to sort nodes according to their priorities."""
@@ -583,22 +567,17 @@ class Serializer:
         Args:
             node: The node whose stroke is to be serialized.
         """
-        self.content.append(self._get_stroke_string(node.layer, node.width, node.style))
+        self.content.append(self._get_stroke_string(node.width, node.style))
 
     @functools.cache
-    def _get_stroke_string(
-        self, layer: str, width: float | None, style: LineStyle
-    ) -> str:
+    def _get_stroke_string(self, width: float, style: LineStyle) -> str:
         """Return a cachable string for the stroke parameters.
 
         Args:
-            layer: The layer to draw on (used to fetch default values).
             width: The stroke width.
             style: The stroke style.
         """
         ser = Serializer(self.indent)
-        if width is None:
-            width = _DEFAULT_LAYER_WIDTH.get(layer, _DEFAULT_WIDTH)
         ser.start_block("stroke")
         ser.add_float("width", width)
         ser.add_symbol("type", style.value)
@@ -1096,8 +1075,7 @@ class Serializer:
                     self._add_arc_points_back_compatible(p)
                 else:
                     raise TypeError("Unsuported type of primitive for custom pad.")
-                width = _DEFAULT_WIDTH_POLYGON_PAD if p.width is None else p.width
-                self.add_float("width", width)
+                self.add_float("width", p.width)
                 if fill:
                     self.add_symbol("fill", "yes")
                 self.end_block()
