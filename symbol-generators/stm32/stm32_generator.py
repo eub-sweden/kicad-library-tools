@@ -939,6 +939,28 @@ class Device:
         drawing.appendToSymbol(self.symbol)
 
 
+def upgrade_library(kicad_cli: str, output: pathlib.Path) -> None:
+    """Rewrite the output through kicad-cli to get KiCad formatting
+
+    This helps to get minimal diffs when copying to kicad-symbols.
+    """
+    try:
+        subprocess.run(
+            [kicad_cli, "sym", "upgrade", "--force", str(output)],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+    except FileNotFoundError:
+        raise SystemExit(
+            f"Could not run {kicad_cli}. Set --kicad-cli or KICAD_CLI, or pass "
+            "--no-upgrade to write the file without it."
+        )
+    except subprocess.CalledProcessError as error:
+        raise SystemExit(
+            f"{' '.join(error.cmd)} exited with status {error.returncode}."
+        )
+
+
 @click.command()
 @click.option(
     "--part-number",
@@ -976,15 +998,30 @@ class Device:
     type=click.Path(file_okay=True, dir_okay=False, path_type=pathlib.Path),
     help="JSON cache file for datasheet URLs",
 )
+@click.option(
+    "--kicad-cli",
+    default=lambda: os.environ.get("KICAD_CLI", "kicad-cli"),
+    help="kicad-cli executable, defaults to $KICAD_CLI",
+)
+@click.option(
+    "--upgrade/--no-upgrade",
+    default=True,
+    help="Rewrite the output with kicad-cli so it matches what KiCad itself writes",
+)
 @click.argument(
     "cubemx_mcu_db_dir",
     type=click.Path(file_okay=False, dir_okay=True, path_type=pathlib.Path),
 )
-@click.argument("output_file", type=click.Path(file_okay=True, dir_okay=False))
+@click.argument(
+    "output_file",
+    type=click.Path(file_okay=True, dir_okay=True, path_type=pathlib.Path),
+)
 def cli(
     cubemx_mcu_db_dir,
     part_number_pattern,
     output_file,
+    kicad_cli,
+    upgrade,
     verify_datasheets,
     url_cache,
     skip_without_footprint,
@@ -1229,7 +1266,19 @@ def cli(
 
                 lib.symbols.append(derived_symbol)
 
-    lib.write()
+    if lib.filename.suffix == ".kicad_symdir":
+        for symbol in lib.symbols:
+            symbol.libname = lib.filename.stem
+            symbol.filename = lib.filename / f"{symbol.name}.kicad_sym"
+
+    if not lib.symbols:
+        tqdm.tqdm.write(f"\033[91mNo symbols for {lib.filename.name}.\033[0m")
+        return
+
+    lib.write(write_modified_only=False)
+
+    if upgrade:
+        upgrade_library(kicad_cli, lib.filename)
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ STM32 devices.
 * Python packages listed in requirements.txt. Note that lxml depends on libxml2,
   which should be installed on your system already. When in doubt, try to
   install lxml using your distro's package manager.
+* kicad-cli. It's is used to format the generated files.
 * XML files, taken from STM32CubeMX install (from db/mcu folder). If you do not
   have a copy of the IDE around, you can get a copy of these files here:
   https://gitlab.com/neinseg/stm32square/-/tree/release
