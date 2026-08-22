@@ -488,8 +488,8 @@ class Device:
             "ST*WLCSP*2.93x2.82mm*Layout12x7*P0.4mm*Stagger*",
         ),  # NOQA
         "ST_WLCSP-101_Die485": (
-            "Package_CSP:ST_WLCSP-101_3.86x3.79mm_Layout11x9_P0.35mm_Stagger",
-            "ST*WLCSP*3.86x3.79mm*Layout11x9*P0.35mm*Stagger*",
+            "Package_CSP:ST_WLCSP-101_3.86x3.79mm_Layout11x19_P0.35mm_Stagger",
+            "ST*WLCSP*3.86x3.79mm*Layout11x19*P0.35mm*Stagger*",
         ),  # NOQA
         "ST_WLCSP-27_Die459": (
             "Package_CSP:ST_WLCSP-27_2.34x2.55mm_Layout9x6_P0.4mm_Stagger",
