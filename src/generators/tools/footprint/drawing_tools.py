@@ -1039,6 +1039,7 @@ def CornerBracketWithArrowPointingSouthEast(
         tl_horz_line = Line(
             start=Vector2D(apex.x + 2 * line_width_mm, apex.y),
             end=Vector2D(bracket_max_x, apex.y),
+            layer=layer,
             width=line_width_mm,
         )
         model.append(tl_horz_line)
@@ -1047,6 +1048,7 @@ def CornerBracketWithArrowPointingSouthEast(
         tl_vert_line = Line(
             start=Vector2D(apex.x, apex.y + 2 * line_width_mm),
             end=Vector2D(apex.x, bracket_max_y),
+            layer=layer,
             width=line_width_mm,
         )
         model.append(tl_vert_line)
@@ -1105,6 +1107,7 @@ def CornerBracketWithArrowPointingSouth(
         tl_horz_line = Line(
             start=Vector2D(bracket_max_x, apex.y),
             end=Vector2D(bracket_max_x - pin_1_silk_line_len_x, apex.y),
+            layer=layer,
             width=line_width_mm,
         )
         model.append(tl_horz_line)
@@ -1113,6 +1116,7 @@ def CornerBracketWithArrowPointingSouth(
         tl_vert_line = Line(
             start=Vector2D(apex.x, bracket_max_y),
             end=Vector2D(apex.x, bracket_max_y - pin_1_silk_line_len_y),
+            layer=layer,
             width=line_width_mm,
         )
         model.append(tl_vert_line)

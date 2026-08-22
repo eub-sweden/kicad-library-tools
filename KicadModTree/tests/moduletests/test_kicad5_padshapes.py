@@ -73,6 +73,7 @@ class TestKicad5Pads(SerialisationTest):
 
         polygon = Polygon(
             shape=[(-1, -1), (2, -1), (1, 1), (-1, 2)],
+            layer="F.Cu",
             fill=True,
             width=0,
         )
@@ -98,10 +99,10 @@ class TestKicad5Pads(SerialisationTest):
             Pad(number=1, type=Pad.TYPE_SMT, shape=Pad.SHAPE_CUSTOM,
                 at=[0, 0], size=[1, 1], layers=Pad.LAYERS_SMT,
                 primitives=[
-                     Arc(center=(-1, 0), start=(-1, -0.5), angle=-180, width=0.15),
-                     Line(start=(-1, -0.5), end=(1.25, -0.5), width=0.15),
-                     Line(start=(1.25, -0.5), end=(1.25, 0.5), width=0.15),
-                     Line(start=(1.25, 0.5), end=(-1, 0.5), width=0.15)
+                     Arc(center=(-1, 0), start=(-1, -0.5), angle=-180, layer="F.SilkS", width=0.15),
+                     Line(start=(-1, -0.5), end=(1.25, -0.5), layer="F.SilkS", width=0.15),
+                     Line(start=(1.25, -0.5), end=(1.25, 0.5), layer="F.SilkS", width=0.15),
+                     Line(start=(1.25, 0.5), end=(-1, 0.5), layer="F.SilkS", width=0.15)
                      ]
                 ))
 
@@ -109,8 +110,8 @@ class TestKicad5Pads(SerialisationTest):
             Pad(number=2, type=Pad.TYPE_SMT, shape=Pad.SHAPE_CUSTOM,
                 at=[0, 3], size=[1, 1], layers=Pad.LAYERS_SMT,
                 primitives=[
-                     Arc(center=(-1, 0), start=(-1, -0.5), angle=-180, width=0.15),
-                     PolygonLine(shape=[(-1, -0.5), (1.25, -0.5), (1.25, 0.5), (-1, 0.5)], width=0.15)
+                     Arc(center=(-1, 0), start=(-1, -0.5), angle=-180, layer="F.SilkS", width=0.15),
+                     PolygonLine(shape=[(-1, -0.5), (1.25, -0.5), (1.25, 0.5), (-1, 0.5)], layer="F.SilkS", width=0.15)
                      ]
                 ))
 
@@ -118,7 +119,7 @@ class TestKicad5Pads(SerialisationTest):
             Pad(number=3, type=Pad.TYPE_SMT, shape=Pad.SHAPE_CUSTOM,
                 at=[0, -3], size=[1, 1], layers=Pad.LAYERS_SMT,
                 primitives=[
-                        Circle(center=(0.5, 0.5), radius=0.5, width=0.15)
+                        Circle(center=(0.5, 0.5), radius=0.5, layer="F.SilkS", width=0.15)
                      ]
                 ))
 
@@ -128,8 +129,8 @@ class TestKicad5Pads(SerialisationTest):
     def testCutPolygon(self):
         kicad_mod = Footprint("cut_polygon", FootprintType.SMD)
 
-        p1 = Polygon(shape=[(0, 0), (1, 0), (1, 1), (0, 1)], fill=True, width=0, layer=None)
-        p2 = Polygon(shape=[(-2, -2), (2, -2), (2, 2), (-2, 2)], fill=True, width=0, layer=None)
+        p1 = Polygon(shape=[(0, 0), (1, 0), (1, 1), (0, 1)], fill=True, width=0, layer="F.SilkS")
+        p2 = Polygon(shape=[(-2, -2), (2, -2), (2, 2), (-2, 2)], fill=True, width=0, layer="F.SilkS")
         p2.cut_with_polygon(p1)
 
         kicad_mod.append(Pad(number=1, type=Pad.TYPE_SMT, shape=Pad.SHAPE_CUSTOM,
@@ -166,7 +167,7 @@ class TestKicad5Pads(SerialisationTest):
         size = Vector2D(1.75, 2.25)
         c = Vector2D(3, 3.5)
         d = 0.6
-        kicad_mod.append(Circle(center=c, radius=d/2, width=0.01))
+        kicad_mod.append(Circle(center=c, radius=d/2, layer="F.SilkS", width=0.01))
         chamfer_size = ChamferedPad.get_chamfer_to_avoid_circle(
             center=c, at=at, size=size, diameter=d, clearance=0.005
         )
@@ -212,7 +213,7 @@ class TestKicad5Pads(SerialisationTest):
         c = [2.0, 2.5]
         d = 0.4
 
-        kicad_mod.append(Circle(center=c, radius=d/2, width=0.01))
+        kicad_mod.append(Circle(center=c, radius=d/2, layer="F.SilkS", width=0.01))
         pad.get_chamfer_to_avoid_circle(center=c, diameter=d, clearance=0.005)
         kicad_mod.append(pad)
 

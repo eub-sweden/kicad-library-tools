@@ -243,7 +243,7 @@ def generate_one_footprint(generator_name: str, global_config: GC.GlobalConfig, 
         #p1=[p1[0],-seriesParams.pin_Sy/2]
     crtyd_top_left=v_offset(body_top_left, configuration['courtyard_offset']['connector'])
     crtyd_bottom_right=v_offset(body_bottom_right, configuration['courtyard_offset']['connector'])
-    kicad_mod.append(Rectangle(start=round_to_grid(crtyd_top_left, configuration['courtyard_grid']), end=round_to_grid(crtyd_bottom_right, configuration['courtyard_grid']), layer='F.CrtYd'))
+    kicad_mod.append(Rectangle(start=round_to_grid(crtyd_top_left, configuration['courtyard_grid']), end=round_to_grid(crtyd_bottom_right, configuration['courtyard_grid']), layer='F.CrtYd', width=configuration['courtyard_line_width']))
 
     if params.mount_hole and configuration['courtyard_for_mountscrews']:
         kicad_mod.append(Circle(center=mount_hole_right, radius=seriesParams.mount_screw_head_r+configuration['courtyard_offset']['connector'], layer='B.CrtYd', width=configuration['courtyard_line_width']))

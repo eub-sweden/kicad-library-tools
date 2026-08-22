@@ -58,16 +58,16 @@ def buzzer_round_tht(generator_name: str, args):
     kicad_mod.append(Property(name=Property.VALUE, text=args['name'], at=[buzzer_center, buzzer_radius + 1], layer='F.Fab'))
 
     # create silkscreen
-    kicad_mod.append(Circle(center=[buzzer_center, 0], radius=buzzer_radius + 0.1, layer='F.SilkS'))
+    kicad_mod.append(Circle(center=[buzzer_center, 0], radius=buzzer_radius + 0.1, layer='F.SilkS', width=GLOBAL_CONFIG.silk_line_width))
 
     kicad_mod.append(Text(text='+', at=[0, -args['pad_size'] / 2 - 1], layer='F.SilkS'))
     kicad_mod.append(Text(text='+', at=[0, -args['pad_size']/2 - 1], layer='F.Fab'))
 
     # create fabrication layer
-    kicad_mod.append(Circle(center=[buzzer_center, 0], radius=buzzer_radius, layer='F.Fab'))
+    kicad_mod.append(Circle(center=[buzzer_center, 0], radius=buzzer_radius, layer='F.Fab', width=GLOBAL_CONFIG.fab_line_width))
 
     # create courtyard
-    kicad_mod.append(Circle(center=[buzzer_center, 0], radius=buzzer_radius + args['courtyard'], layer='F.CrtYd'))
+    kicad_mod.append(Circle(center=[buzzer_center, 0], radius=buzzer_radius + args['courtyard'], layer='F.CrtYd', width=GLOBAL_CONFIG.courtyard_line_width))
 
     # create pads
     kicad_mod.append(Pad(number=1, type=Pad.TYPE_THT, shape=Pad.SHAPE_RECT,
@@ -83,4 +83,3 @@ def buzzer_round_tht(generator_name: str, args):
     # write file
     write_footprint(kicad_mod, lib_name, generator_name)
     return 1
-

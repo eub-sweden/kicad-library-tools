@@ -14,6 +14,7 @@
 from KicadModTree import *  # NOQA
 from KicadModTree.nodes.base.Pad import Pad  # NOQA
 from generators.tools.footprint.save_footprint import write_footprint
+from kilibs.config.global_config import GLOBAL_CONFIG
 
 
 def create_shielding(name, outer_size, size,
@@ -37,12 +38,12 @@ def create_shielding(name, outer_size, size,
     # create courtyard
     kicad_mod.append(Rectangle(start=[-courtjard_size, -courtjard_size],
                               end=[courtjard_size, courtjard_size],
-                              layer='F.CrtYd'))
+                              layer='F.CrtYd', width=GLOBAL_CONFIG.courtyard_line_width))
 
     # create Fabriaction Layer
     kicad_mod.append(Rectangle(start=[-size / 2., -size / 2.],
                               end=[size / 2., size / 2.],
-                              layer='F.Fab'))
+                              layer='F.Fab', width=GLOBAL_CONFIG.fab_line_width))
 
     general_kwargs = {'number': 1,
                       'type': Pad.TYPE_THT,
@@ -67,39 +68,40 @@ def create_shielding(name, outer_size, size,
     # create silk screen
     silk_padding = 0.2
     silk_outline = size / 2. + silk_padding
+    silk_width = GLOBAL_CONFIG.silk_line_width
 
     pad_padding = 0.4
 
     if attachment_positions[0] != 0.:
         line_end = attachment_positions[0] / 2. - attachment_diameter / 2. - pad_padding
-        kicad_mod.append(Line(start=[silk_outline, line_end], end=[silk_outline, -line_end], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[-silk_outline, -line_end], end=[-silk_outline, line_end], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[line_end, silk_outline], end=[-line_end, silk_outline], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[line_end, -silk_outline], end=[-line_end, -silk_outline], layer='F.SilkS'))
+        kicad_mod.append(Line(start=[silk_outline, line_end], end=[silk_outline, -line_end], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[-silk_outline, -line_end], end=[-silk_outline, line_end], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[line_end, silk_outline], end=[-line_end, silk_outline], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[line_end, -silk_outline], end=[-line_end, -silk_outline], layer='F.SilkS', width=silk_width))
 
     for begin, end in zip(attachment_positions, attachment_positions[1:]):
         line_begin = begin / 2. + attachment_diameter / 2. + pad_padding
         line_end = end / 2. - attachment_diameter / 2. - pad_padding
-        kicad_mod.append(Line(start=[silk_outline, line_begin], end=[silk_outline, line_end], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[silk_outline, -line_begin], end=[silk_outline, -line_end], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[-silk_outline, line_begin], end=[-silk_outline, line_end], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[-silk_outline, -line_begin], end=[-silk_outline, -line_end], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[line_begin, silk_outline], end=[line_end, silk_outline], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[line_begin, -silk_outline], end=[line_end, -silk_outline], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[-line_begin, silk_outline], end=[-line_end, silk_outline], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[-line_begin, -silk_outline], end=[-line_end, -silk_outline], layer='F.SilkS'))
+        kicad_mod.append(Line(start=[silk_outline, line_begin], end=[silk_outline, line_end], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[silk_outline, -line_begin], end=[silk_outline, -line_end], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[-silk_outline, line_begin], end=[-silk_outline, line_end], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[-silk_outline, -line_begin], end=[-silk_outline, -line_end], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[line_begin, silk_outline], end=[line_end, silk_outline], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[line_begin, -silk_outline], end=[line_end, -silk_outline], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[-line_begin, silk_outline], end=[-line_end, silk_outline], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[-line_begin, -silk_outline], end=[-line_end, -silk_outline], layer='F.SilkS', width=silk_width))
 
     if attachment_positions[-1] != outer_size:
         line_begin = attachment_positions[-1] / 2. + attachment_diameter / 2. + pad_padding
         line_end = outer_size / 2. + silk_padding
-        kicad_mod.append(Line(start=[silk_outline, line_begin], end=[silk_outline, line_end], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[silk_outline, -line_begin], end=[silk_outline, -line_end], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[-silk_outline, line_begin], end=[-silk_outline, line_end], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[-silk_outline, -line_begin], end=[-silk_outline, -line_end], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[line_begin, silk_outline], end=[line_end, silk_outline], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[line_begin, -silk_outline], end=[line_end, -silk_outline], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[-line_begin, silk_outline], end=[-line_end, silk_outline], layer='F.SilkS'))
-        kicad_mod.append(Line(start=[-line_begin, -silk_outline], end=[-line_end, -silk_outline], layer='F.SilkS'))
+        kicad_mod.append(Line(start=[silk_outline, line_begin], end=[silk_outline, line_end], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[silk_outline, -line_begin], end=[silk_outline, -line_end], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[-silk_outline, line_begin], end=[-silk_outline, line_end], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[-silk_outline, -line_begin], end=[-silk_outline, -line_end], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[line_begin, silk_outline], end=[line_end, silk_outline], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[line_begin, -silk_outline], end=[line_end, -silk_outline], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[-line_begin, silk_outline], end=[-line_end, silk_outline], layer='F.SilkS', width=silk_width))
+        kicad_mod.append(Line(start=[-line_begin, -silk_outline], end=[-line_end, -silk_outline], layer='F.SilkS', width=silk_width))
 
     # fix KLC issue 6.3
     # kicad_mod.insert(Translation(outer_size / 2., attachment_positions[-1] / 2.))
@@ -123,5 +125,5 @@ def generate_all(global_config) -> int:
 
     # http://katalog.we-online.de/pbs/datasheet/36503605.pdf
     create_shielding('Würth_36503605_60x60mm', 60.5, 60.5, 1.1, 1.7, [5.08, 15.24, 25.40, 35.56, 45.72, 55.88])
-    
+
     return 5

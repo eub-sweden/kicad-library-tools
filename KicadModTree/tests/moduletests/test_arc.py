@@ -365,88 +365,88 @@ class TestArcSerialisation(SerialisationTest):
 
         center = Vector2D(0, 0)
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(1, 0), angle=-90))
+            Arc(center=center, start=Vector2D(1, 0), angle=-90, layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(0, -1.2), angle=-90))
+            Arc(center=center, start=Vector2D(0, -1.2), angle=-90, layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(-1.4, 0), angle=-90))
+            Arc(center=center, start=Vector2D(-1.4, 0), angle=-90, layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(0, 1.6), angle=-90))
+            Arc(center=center, start=Vector2D(0, 1.6), angle=-90, layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(2, 0), angle=90))
+            Arc(center=center, start=Vector2D(2, 0), angle=90, layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(0, 2.2), angle=90))
+            Arc(center=center, start=Vector2D(0, 2.2), angle=90, layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(-2.4, 0), angle=90))
+            Arc(center=center, start=Vector2D(-2.4, 0), angle=90, layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(0, -2.6), angle=90))
+            Arc(center=center, start=Vector2D(0, -2.6), angle=90, layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(3, 0), end=Vector2D(0, -3)))
+            Arc(center=center, start=Vector2D(3, 0), end=Vector2D(0, -3), layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(0, -3.2), end=Vector2D(-3.2, 0)))
+            Arc(center=center, start=Vector2D(0, -3.2), end=Vector2D(-3.2, 0), layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(-3.4, 0), end=Vector2D(0, 3.4)))
+            Arc(center=center, start=Vector2D(-3.4, 0), end=Vector2D(0, 3.4), layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(0, 3.6), end=Vector2D(3.6, 0)))
+            Arc(center=center, start=Vector2D(0, 3.6), end=Vector2D(3.6, 0), layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(4, 0), end=Vector2D(0, 4)))
+            Arc(center=center, start=Vector2D(4, 0), end=Vector2D(0, 4), layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(0, 4.2), end=Vector2D(-4.2, 0)))
+            Arc(center=center, start=Vector2D(0, 4.2), end=Vector2D(-4.2, 0), layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(-4.4, 0), end=Vector2D(0, -4.4)))
+            Arc(center=center, start=Vector2D(-4.4, 0), end=Vector2D(0, -4.4), layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(0, -4.6), end=Vector2D(4.6, 0)))
+            Arc(center=center, start=Vector2D(0, -4.6), end=Vector2D(4.6, 0), layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
             Arc(center=center, start=Vector2D(5, 0), end=Vector2D(0, -5),
-                long_way=True))
+                long_way=True, layer="F.SilkS", width=0.12))
         kicad_mod.append(
             Arc(center=center, start=Vector2D(0, -5.2), end=Vector2D(-5.2, 0),
-                long_way=True))
+                long_way=True, layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
             Arc(center=center, start=Vector2D(-5.4, 0), end=Vector2D(0, 5.4),
-                long_way=True))
+                long_way=True, layer="F.SilkS", width=0.12))
         kicad_mod.append(
             Arc(center=center, start=Vector2D(0, 5.6), end=Vector2D(5.6, 0),
-                long_way=True))
+                long_way=True, layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(6, 0), end=Vector2D(-6, 0)))
+            Arc(center=center, start=Vector2D(6, 0), end=Vector2D(-6, 0), layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, start=Vector2D(-6.2, 0), end=Vector2D(6.2, 0)))
+            Arc(center=center, start=Vector2D(-6.2, 0), end=Vector2D(6.2, 0), layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
             Arc(center=center, start=Vector2D(6.6, 0), end=Vector2D(-6.6, 0),
-                long_way=True))
+                long_way=True, layer="F.SilkS", width=0.12))
         kicad_mod.append(
             Arc(center=center, start=Vector2D(-6.8, 0), end=Vector2D(6.8, 0),
-                long_way=True))
+                long_way=True, layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
-            Arc(center=center, mid=Vector2D(7, 0), angle=90))
+            Arc(center=center, mid=Vector2D(7, 0), angle=90, layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, mid=Vector2D(0, -7.2), angle=90))
+            Arc(center=center, mid=Vector2D(0, -7.2), angle=90, layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, mid=Vector2D(-7.4, 0), angle=90))
+            Arc(center=center, mid=Vector2D(-7.4, 0), angle=90, layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, mid=Vector2D(0, 7.6), angle=90))
+            Arc(center=center, mid=Vector2D(0, 7.6), angle=90, layer="F.SilkS", width=0.12))
 
         kicad_mod.append(
-            Arc(center=center, mid=Vector2D(8, 0), angle=-90))
+            Arc(center=center, mid=Vector2D(8, 0), angle=-90, layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, mid=Vector2D(0, -8.2), angle=-90))
+            Arc(center=center, mid=Vector2D(0, -8.2), angle=-90, layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, mid=Vector2D(-8.4, 0), angle=-90))
+            Arc(center=center, mid=Vector2D(-8.4, 0), angle=-90, layer="F.SilkS", width=0.12))
         kicad_mod.append(
-            Arc(center=center, mid=Vector2D(0, 8.6), angle=-90))
+            Arc(center=center, mid=Vector2D(0, 8.6), angle=-90, layer="F.SilkS", width=0.12))
 
         self.assert_serialises_as(kicad_mod, 'arc_90deg.kicad_mod')
 
@@ -458,104 +458,104 @@ class TestArcSerialisation(SerialisationTest):
             Arc(
                 center=center,
                 start=(Vector2D(1, 0)+center).rotate(45, origin=center),
-                angle=-90
+                angle=-90, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(0, -1.2)+center).rotate(45, origin=center),
-                angle=-90
+                angle=-90, layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(-1.4, 0)+center).rotate(45, origin=center),
-                angle=-90
+                angle=-90, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(0, 1.6)+center).rotate(45, origin=center),
-                angle=-90
+                angle=-90, layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(2, 0)+center).rotate(45, origin=center),
-                angle=90
+                angle=90, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(0, 2.2)+center).rotate(45, origin=center),
-                angle=90
+                angle=90, layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(-2.4, 0)+center).rotate(45, origin=center),
-                angle=90
+                angle=90, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(0, -2.6)+center).rotate(45, origin=center),
-                angle=90
+                angle=90, layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(3, 0)+center).rotate(45, origin=center),
-                end=(Vector2D(0, -3)+center).rotate(45, origin=center)
+                end=(Vector2D(0, -3)+center).rotate(45, origin=center), layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(0, -3.2)+center).rotate(45, origin=center),
-                end=(Vector2D(-3.2, 0)+center).rotate(45, origin=center)
+                end=(Vector2D(-3.2, 0)+center).rotate(45, origin=center), layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(-3.4, 0)+center).rotate(45, origin=center),
-                end=(Vector2D(0, 3.4)+center).rotate(45, origin=center)
+                end=(Vector2D(0, 3.4)+center).rotate(45, origin=center), layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(0, 3.6)+center).rotate(45, origin=center),
-                end=(Vector2D(3.6, 0)+center).rotate(45, origin=center)
+                end=(Vector2D(3.6, 0)+center).rotate(45, origin=center), layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(4, 0)+center).rotate(45, origin=center),
-                end=(Vector2D(0, 4)+center).rotate(45, origin=center)
+                end=(Vector2D(0, 4)+center).rotate(45, origin=center), layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(0, 4.2)+center).rotate(45, origin=center),
-                end=(Vector2D(-4.2, 0)+center).rotate(45, origin=center)
+                end=(Vector2D(-4.2, 0)+center).rotate(45, origin=center), layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(-4.4, 0)+center).rotate(45, origin=center),
-                end=(Vector2D(0, -4.4)+center).rotate(45, origin=center)
+                end=(Vector2D(0, -4.4)+center).rotate(45, origin=center), layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(0, -4.6)+center).rotate(45, origin=center),
-                end=(Vector2D(4.6, 0)+center).rotate(45, origin=center)
+                end=(Vector2D(4.6, 0)+center).rotate(45, origin=center), layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
@@ -563,14 +563,14 @@ class TestArcSerialisation(SerialisationTest):
                 center=center,
                 start=(Vector2D(5, 0)+center).rotate(45, origin=center),
                 end=(Vector2D(0, -5)+center).rotate(45, origin=center),
-                long_way=True
+                long_way=True, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(0, -5.2)+center).rotate(45, origin=center),
                 end=(Vector2D(-5.2, 0)+center).rotate(45, origin=center),
-                long_way=True
+                long_way=True, layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
@@ -578,27 +578,27 @@ class TestArcSerialisation(SerialisationTest):
                 center=center,
                 start=(Vector2D(-5.4, 0)+center).rotate(45, origin=center),
                 end=(Vector2D(0, 5.4)+center).rotate(45, origin=center),
-                long_way=True
+                long_way=True, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(0, 5.6)+center).rotate(45, origin=center),
                 end=(Vector2D(5.6, 0)+center).rotate(45, origin=center),
-                long_way=True
+                long_way=True, layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(6, 0)+center).rotate(45, origin=center),
-                end=(Vector2D(-6, 0)+center).rotate(45, origin=center)
+                end=(Vector2D(-6, 0)+center).rotate(45, origin=center), layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(-6.2, 0)+center).rotate(45, origin=center),
-                end=(Vector2D(6.2, 0)+center).rotate(45, origin=center)
+                end=(Vector2D(6.2, 0)+center).rotate(45, origin=center), layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
@@ -606,64 +606,64 @@ class TestArcSerialisation(SerialisationTest):
                 center=center,
                 start=(Vector2D(6.6, 0)+center).rotate(45, origin=center),
                 end=(Vector2D(-6.6, 0)+center).rotate(45, origin=center),
-                long_way=True
+                long_way=True, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 start=(Vector2D(-6.8, 0)+center).rotate(45, origin=center),
                 end=(Vector2D(6.8, 0)+center).rotate(45, origin=center),
-                long_way=True
+                long_way=True, layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
             Arc(
                 center=center,
                 mid=(Vector2D(7, 0)+center).rotate(45, origin=center),
-                angle=90
+                angle=90, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 mid=(Vector2D(0, -7.2)+center).rotate(45, origin=center),
-                angle=90
+                angle=90, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 mid=(Vector2D(-7.4, 0)+center).rotate(45, origin=center),
-                angle=90
+                angle=90, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 mid=(Vector2D(0, 7.6)+center).rotate(45, origin=center),
-                angle=90
+                angle=90, layer="F.SilkS", width=0.12
             ))
 
         kicad_mod.append(
             Arc(
                 center=center,
                 mid=(Vector2D(8, 0)+center).rotate(45, origin=center),
-                angle=-90
+                angle=-90, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 mid=(Vector2D(0, -8.2)+center).rotate(45, origin=center),
-                angle=-90
+                angle=-90, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 mid=(Vector2D(-8.4, 0)+center).rotate(45, origin=center),
-                angle=-90
+                angle=-90, layer="F.SilkS", width=0.12
             ))
         kicad_mod.append(
             Arc(
                 center=center,
                 mid=(Vector2D(0, 8.6)+center).rotate(45, origin=center),
-                angle=-90
+                angle=-90, layer="F.SilkS", width=0.12
             ))
 
         self.assert_serialises_as(kicad_mod, 'arc_90deg_45deg.kicad_mod')

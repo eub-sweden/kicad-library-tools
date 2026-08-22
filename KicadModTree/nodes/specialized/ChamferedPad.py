@@ -192,6 +192,7 @@ class ChamferedPad(Pad):
                 primitives = [
                     Polygon(
                         shape=points,
+                        layer="F.Cu",
                         width=polygon_width,
                         fill=True,
                         x_mirror=x_mirror,

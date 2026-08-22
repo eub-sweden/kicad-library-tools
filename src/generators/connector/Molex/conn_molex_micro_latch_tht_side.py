@@ -160,7 +160,8 @@ def generate_one_footprint(generator_name: str, global_config: GC.GlobalConfig, 
 
     #add the final tab line
     x = (pins_per_row-1) * pitch
-    kicad_mod.append(Line(start=[x - 0.3, pad_size[1]/2+pso], end=[x+0.3, pad_size[1]/2+pso]))
+    kicad_mod.append(Line(start=[x - 0.3, pad_size[1]/2+pso], end=[x+0.3, pad_size[1]/2+pso],
+                          layer="F.SilkS", width=configuration['silk_line_width']))
 
     #pin-1 marker
     y =  y2 + 0.5

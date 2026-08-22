@@ -92,7 +92,7 @@ def _init_map_geomshape_node() -> None:
 def shape_to_node(
     shape: GeomLine,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> Line: ...
@@ -102,7 +102,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomArc,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> Arc: ...
@@ -112,7 +112,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomCircle,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> Circle: ...
@@ -122,7 +122,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomRectangle,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> Rectangle: ...
@@ -132,7 +132,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomPolygon,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> Polygon: ...
@@ -142,7 +142,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomCompoundPolygon,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> CompoundPolygon: ...
@@ -152,7 +152,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomCross,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> Cross: ...
@@ -162,7 +162,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomCruciform,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> Cruciform: ...
@@ -172,7 +172,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomRoundRectangle,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> RoundRectangle: ...
@@ -182,7 +182,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomStadium,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> Stadium: ...
@@ -192,7 +192,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomTrapezoid,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> Trapezoid: ...
@@ -202,7 +202,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomChamferedRectangle,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> ChamferedRectangle: ...
@@ -211,7 +211,7 @@ def shape_to_node(
 def shape_to_node(
     shape: GeomShapes,
     layer: str,
-    width: float | None,
+    width: float,
     style: LineStyle = LineStyle.SOLID,
     fill: bool = False,
 ) -> Shape:

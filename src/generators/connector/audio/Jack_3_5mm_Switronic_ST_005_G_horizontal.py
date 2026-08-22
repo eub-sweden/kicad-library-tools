@@ -53,9 +53,9 @@ def generate_all(generator_name: str, global_config: GC.GlobalConfig, configurat
     t1 = 0.1
     t2 = 0.15
 
-    wCrtYd = 0.05
-    wFab = 0.1
-    wSilkS = 0.12
+    wCrtYd = global_config.courtyard_line_width
+    wFab = global_config.fab_line_width
+    wSilkS = global_config.silk_line_width
     crtYdClearance = 0.5
     silkClearance = 0.2
 
@@ -115,7 +115,7 @@ def generate_all(generator_name: str, global_config: GC.GlobalConfig, configurat
                     end=[xRightCrtYd, yBottomCrtYd],
                     layer="F.CrtYd", width=wCrtYd))
 
-    f.append(Circle(center=[xBackPad, ySilkBackPadTop], radius=0.3, layer="F.Fab"))
+    f.append(Circle(center=[xBackPad, ySilkBackPadTop], radius=0.3, layer="F.Fab", width=wFab))
     f.append(PolygonLine(shape=[[xFabLeft, yFabOutletTop],
                                 [xFabBaseLeft, yFabOutletTop],
                                 [xFabBaseLeft, yFabTop],

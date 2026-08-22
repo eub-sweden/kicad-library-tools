@@ -39,6 +39,10 @@ def generate_all(generator_name: str, global_config: GC.GlobalConfig) -> int:
 
     courtyard_outline = 0.5
 
+    lw_fab = global_config.fab_line_width
+    lw_slk = global_config.silk_line_width
+    lw_crt = global_config.courtyard_line_width
+
     for itr in range (1, 20 + 1):
 
         # for special case, details: https://www.stocko-contact.com/en/products-connector-system-pitch-2.5-mm-rfk-2-mks-1650.php
@@ -81,42 +85,42 @@ def generate_all(generator_name: str, global_config: GC.GlobalConfig) -> int:
         kicad_mod.append(Property(name = Property.REFERENCE, text='REF**', at=[(pin_count - 1) * (pad_span / 2), -4.5], layer='F.SilkS'))
         # top
         kicad_mod.append(Line(start = [-silks_outline_x + silks_arc_r, -silks_outline_y],
-                            end = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_arc_r, -silks_outline_y], layer = 'F.SilkS'))
+                            end = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_arc_r, -silks_outline_y], layer = 'F.SilkS', width = lw_slk))
         # left
         kicad_mod.append(Line(start = [-silks_outline_x, -silks_outline_y + silks_arc_r],
-                            end = [-silks_outline_x, silks_outline_y - silks_arc_r], layer = 'F.SilkS'))
+                            end = [-silks_outline_x, silks_outline_y - silks_arc_r], layer = 'F.SilkS', width = lw_slk))
         # right
         kicad_mod.append(Line(start = [(pin_cnt - 1) * pad_span + silks_outline_x, -silks_outline_y + silks_arc_r],
-                            end = [(pin_cnt - 1) * pad_span + silks_outline_x, silks_outline_y - silks_arc_r], layer = 'F.SilkS'))
+                            end = [(pin_cnt - 1) * pad_span + silks_outline_x, silks_outline_y - silks_arc_r], layer = 'F.SilkS', width = lw_slk))
         # bottom left
         kicad_mod.append(Line(start = [-silks_outline_x + silks_arc_r, silks_outline_y],
-                            end = [-silks_outline_x + silks_cut_width, silks_outline_y], layer = 'F.SilkS'))
+                            end = [-silks_outline_x + silks_cut_width, silks_outline_y], layer = 'F.SilkS', width = lw_slk))
         kicad_mod.append(Line(start = [-silks_outline_x + silks_cut_width, silks_outline_y],
-                            end = [-silks_outline_x + silks_cut_width, silks_outline_y - silks_cut_depth], layer = 'F.SilkS'))
+                            end = [-silks_outline_x + silks_cut_width, silks_outline_y - silks_cut_depth], layer = 'F.SilkS', width = lw_slk))
         # bottom right
         kicad_mod.append(Line(start = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_arc_r, silks_outline_y],
-                            end = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_cut_width, silks_outline_y], layer = 'F.SilkS'))
+                            end = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_cut_width, silks_outline_y], layer = 'F.SilkS', width = lw_slk))
         kicad_mod.append(Line(start = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_cut_width, silks_outline_y],
-                            end = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_cut_width, silks_outline_y - silks_cut_depth], layer = 'F.SilkS'))
+                            end = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_cut_width, silks_outline_y - silks_cut_depth], layer = 'F.SilkS', width = lw_slk))
         # bottom center
         kicad_mod.append(Line(start = [-silks_outline_x + silks_cut_width, silks_outline_y - silks_cut_depth],
-                            end = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_cut_width, silks_outline_y - silks_cut_depth], layer = 'F.SilkS'))
+                            end = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_cut_width, silks_outline_y - silks_cut_depth], layer = 'F.SilkS', width = lw_slk))
         # arc left top
         kicad_mod.append(Arc(center = [-silks_outline_x + silks_arc_r, -silks_outline_y + silks_arc_r],
-                            start = [-silks_outline_x, -silks_outline_y + silks_arc_r], angle = 90, layer = 'F.SilkS'))
+                            start = [-silks_outline_x, -silks_outline_y + silks_arc_r], angle = 90, layer = 'F.SilkS', width = lw_slk))
         # arc right top
         kicad_mod.append(Arc(center = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_arc_r, -silks_outline_y + silks_arc_r],
-                            start = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_arc_r, -silks_outline_y], angle = 90, layer = 'F.SilkS'))
+                            start = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_arc_r, -silks_outline_y], angle = 90, layer = 'F.SilkS', width = lw_slk))
         # arc left bottom
         kicad_mod.append(Arc(center = [-silks_outline_x + silks_arc_r, silks_outline_y - silks_arc_r],
-                            start = [-silks_outline_x + silks_arc_r, silks_outline_y], angle = 90, layer = 'F.SilkS'))
+                            start = [-silks_outline_x + silks_arc_r, silks_outline_y], angle = 90, layer = 'F.SilkS', width = lw_slk))
         # arc right bottom
         kicad_mod.append(Arc(center = [(pin_cnt - 1) * pad_span + silks_outline_x - silks_arc_r, silks_outline_y - silks_arc_r],
-                            start = [(pin_cnt - 1) * pad_span + silks_outline_x, silks_outline_y - silks_arc_r], angle = 90, layer = 'F.SilkS'))
+                            start = [(pin_cnt - 1) * pad_span + silks_outline_x, silks_outline_y - silks_arc_r], angle = 90, layer = 'F.SilkS', width = lw_slk))
         # first pin indicator
-        kicad_mod.append(Line(start = [0.3, 2.9], end = [0, 2.4], layer = 'F.SilkS'))
-        kicad_mod.append(Line(start = [0, 2.4], end = [-0.3, 2.9], layer = 'F.SilkS'))
-        kicad_mod.append(Line(start = [-0.3, 2.9], end = [0.3, 2.9], layer = 'F.SilkS'))
+        kicad_mod.append(Line(start = [0.3, 2.9], end = [0, 2.4], layer = 'F.SilkS', width = lw_slk))
+        kicad_mod.append(Line(start = [0, 2.4], end = [-0.3, 2.9], layer = 'F.SilkS', width = lw_slk))
+        kicad_mod.append(Line(start = [-0.3, 2.9], end = [0.3, 2.9], layer = 'F.SilkS', width = lw_slk))
 
         # CREATE FABRICATION
         # name
@@ -124,53 +128,53 @@ def generate_all(generator_name: str, global_config: GC.GlobalConfig) -> int:
         kicad_mod.append(Property(name = Property.VALUE, text = footprint_name, at = [(pin_count - 1) * (pad_span / 2), silks_outline_y + 2], layer = 'F.Fab'))
         # top
         kicad_mod.append(Line(start = [-fab_outline_x + fab_arc_r, -fab_outline_y],
-                            end = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_arc_r, -fab_outline_y], layer = 'F.Fab'))
+                            end = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_arc_r, -fab_outline_y], layer = 'F.Fab', width = lw_fab))
         # left
         kicad_mod.append(Line(start = [-fab_outline_x, -fab_outline_y + fab_arc_r],
-                            end = [-fab_outline_x, fab_outline_y - fab_arc_r], layer = 'F.Fab'))
+                            end = [-fab_outline_x, fab_outline_y - fab_arc_r], layer = 'F.Fab', width = lw_fab))
         # right
         kicad_mod.append(Line(start = [(pin_cnt - 1) * pad_span + fab_outline_x, -fab_outline_y + fab_arc_r],
-                            end = [(pin_cnt - 1) * pad_span + fab_outline_x, fab_outline_y - fab_arc_r], layer = 'F.Fab'))
+                            end = [(pin_cnt - 1) * pad_span + fab_outline_x, fab_outline_y - fab_arc_r], layer = 'F.Fab', width = lw_fab))
         # bottom left
         kicad_mod.append(Line(start = [-fab_outline_x + fab_arc_r, fab_outline_y],
-                            end = [-fab_outline_x + fab_cut_width, fab_outline_y], layer = 'F.Fab'))
+                            end = [-fab_outline_x + fab_cut_width, fab_outline_y], layer = 'F.Fab', width = lw_fab))
         kicad_mod.append(Line(start = [-fab_outline_x + fab_cut_width, fab_outline_y],
-                            end = [-fab_outline_x + fab_cut_width, fab_outline_y - fab_cut_depth], layer = 'F.Fab'))
+                            end = [-fab_outline_x + fab_cut_width, fab_outline_y - fab_cut_depth], layer = 'F.Fab', width = lw_fab))
         # bottom right
         kicad_mod.append(Line(start = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_arc_r, fab_outline_y],
-                            end = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_cut_width, fab_outline_y], layer = 'F.Fab'))
+                            end = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_cut_width, fab_outline_y], layer = 'F.Fab', width = lw_fab))
         kicad_mod.append(Line(start = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_cut_width, fab_outline_y],
-                            end = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_cut_width, fab_outline_y - fab_cut_depth], layer = 'F.Fab'))
+                            end = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_cut_width, fab_outline_y - fab_cut_depth], layer = 'F.Fab', width = lw_fab))
         # bottom center and first pin indicator
         kicad_mod.append(Line(start = [-fab_outline_x + fab_cut_width, fab_outline_y - fab_cut_depth],
-                            end = [-fab_first_pin, fab_outline_y - fab_cut_depth], layer = 'F.Fab'))
+                            end = [-fab_first_pin, fab_outline_y - fab_cut_depth], layer = 'F.Fab', width = lw_fab))
 
         kicad_mod.append(Line(start = [fab_first_pin, fab_outline_y - fab_cut_depth],
-                            end = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_cut_width, fab_outline_y - fab_cut_depth], layer = 'F.Fab'))
+                            end = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_cut_width, fab_outline_y - fab_cut_depth], layer = 'F.Fab', width = lw_fab))
 
         kicad_mod.append(Line(start = [-fab_first_pin, fab_outline_y - fab_cut_depth],
-                            end = [0, fab_outline_y - fab_cut_depth - fab_first_pin], layer = 'F.Fab'))
+                            end = [0, fab_outline_y - fab_cut_depth - fab_first_pin], layer = 'F.Fab', width = lw_fab))
 
         kicad_mod.append(Line(start = [0, fab_outline_y - fab_cut_depth - fab_first_pin],
-                            end = [fab_first_pin, fab_outline_y - fab_cut_depth], layer = 'F.Fab'))
+                            end = [fab_first_pin, fab_outline_y - fab_cut_depth], layer = 'F.Fab', width = lw_fab))
 
         # arc left top
         kicad_mod.append(Arc(center = [-fab_outline_x + fab_arc_r, -fab_outline_y + fab_arc_r],
-                            start = [-fab_outline_x, -fab_outline_y + fab_arc_r], angle = 90, layer = 'F.Fab'))
+                            start = [-fab_outline_x, -fab_outline_y + fab_arc_r], angle = 90, layer = 'F.Fab', width = lw_fab))
         # arc right top
         kicad_mod.append(Arc(center = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_arc_r, -fab_outline_y + fab_arc_r],
-                            start = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_arc_r, -fab_outline_y], angle = 90, layer = 'F.Fab'))
+                            start = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_arc_r, -fab_outline_y], angle = 90, layer = 'F.Fab', width = lw_fab))
         # arc left bottom
         kicad_mod.append(Arc(center = [-fab_outline_x + fab_arc_r, fab_outline_y - fab_arc_r],
-                            start = [-fab_outline_x + fab_arc_r, fab_outline_y], angle = 90, layer = 'F.Fab'))
+                            start = [-fab_outline_x + fab_arc_r, fab_outline_y], angle = 90, layer = 'F.Fab', width = lw_fab))
         # arc right bottom
         kicad_mod.append(Arc(center = [(pin_cnt - 1) * pad_span + fab_outline_x - fab_arc_r, fab_outline_y - fab_arc_r],
-                            start = [(pin_cnt - 1) * pad_span + fab_outline_x, fab_outline_y - fab_arc_r], angle = 90, layer = 'F.Fab'))
+                            start = [(pin_cnt - 1) * pad_span + fab_outline_x, fab_outline_y - fab_arc_r], angle = 90, layer = 'F.Fab', width = lw_fab))
 
         # CREATE COURTYARD
         kicad_mod.append(Rectangle(start = [-fab_outline_x - courtyard_outline, -fab_outline_y - courtyard_outline],
                                 end = [(pin_cnt - 1) * pad_span + fab_outline_x + courtyard_outline, fab_outline_y + courtyard_outline],
-                                layer = 'F.CrtYd'))
+                                layer = 'F.CrtYd', width = lw_crt))
         # add 3D model
         kicad_mod.append(
             Model(

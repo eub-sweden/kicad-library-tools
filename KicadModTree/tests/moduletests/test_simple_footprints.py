@@ -59,9 +59,9 @@ class TestSimpleFootprints(SerialisationTest):
         kicad_mod.append(Property(name=Property.REFERENCE, text='REF**', at=[0, -3], layer='F.SilkS'))
         kicad_mod.append(Property(name=Property.VALUE, text="footprint name", at=[0, 3], layer='F.Fab'))
 
-        kicad_mod.append(Arc(center=[0, 0], start=[-1, 0], angle=180, layer='F.SilkS'))
-        kicad_mod.append(Circle(center=[0, 0], radius=1.5, layer='F.SilkS'))
-        kicad_mod.append(Line(start=[1, 0], end=[-1, 0], layer='F.SilkS'))
+        kicad_mod.append(Arc(center=[0, 0], start=[-1, 0], angle=180, layer='F.SilkS', width=0.12))
+        kicad_mod.append(Circle(center=[0, 0], radius=1.5, layer='F.SilkS', width=0.12))
+        kicad_mod.append(Line(start=[1, 0], end=[-1, 0], layer='F.SilkS', width=0.12))
         kicad_mod.append(Model(filename="example.3dshapes/example_footprint.wrl",
                                at=[0, 0, 0], scale=[1, 1, 1], rotate=[0, 0, 0]))
         kicad_mod.append(Pad(number=1, type=Pad.TYPE_THT, shape=Pad.SHAPE_RECT,

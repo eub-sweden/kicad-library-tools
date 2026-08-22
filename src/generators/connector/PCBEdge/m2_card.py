@@ -2,7 +2,7 @@
 #SPDX-License-Identifier: GPL-3.0-or-later
 #Copyright (c) 2024, Lothar Felten <lothar.felten@gmail.com>
 """
-m2_card 
+m2_card
 M.2 card footprint generator script for KiCad
 Supported dimensions: 2242, 2280, 22110, 3042, 3080, 30110
 Supported notches: A, B, E and M
@@ -13,6 +13,7 @@ from generators.tools.footprint.footprint_text_fields import addTextFields
 
 from ..config import CONNECTOR_CONFIG
 from generators.tools.footprint.save_footprint import write_footprint
+from kilibs.config.global_config import GLOBAL_CONFIG
 
 
 lib_name = "Connector_PCBEdge"
@@ -68,7 +69,7 @@ def generate_footprint(widthType, heightType, notchType, configuration, generato
     chamferOffset = 5.5
     thicknessText = "PCB thickness 0.8 mm"
     thicknessOffset = 7
-   
+
     # connector cutout
     f.append(PolygonLine(shape=[[(-holeWidth/2), -(heightType-conHeight)],
         [(-widthType/2), -(heightType-conHeight)],
@@ -102,29 +103,30 @@ def generate_footprint(widthType, heightType, notchType, configuration, generato
     f.append(Arc(center=[0, -(heightType-conHeight)],
         start=[(holeWidth/2), -(heightType-conHeight)],
         angle=180.0, layer="Edge.Cuts", width=cutWidth))
-        
+
     # mounting hole copper - TODO: this overlaps with the cutout on the edges of the arc
     #f.append(Arc(center=[0, -(heightType-conHeight)],
     #    start=[(holeWidth/2)+(holeCopperWidth/2), -(heightType-conHeight)],
     #    angle=180.0, layer="F.Cu", width=holeCopperWidth))
-        
+
     # courtyard
+    courtyard_width = GLOBAL_CONFIG.courtyard_line_width
     f.append(Rectangle(start=[-((widthType+courtyardBorder)/2), 0-courtyardBorder],
         end=[((widthType+courtyardBorder)/2), conHeight+courtyardBorder],
-        layer="F.CrtYd"))
+        layer="F.CrtYd", width=courtyard_width))
     f.append(PolygonLine(shape=[[-(courtyardRadius), -(heightType-conHeight)],
         [(courtyardRadius), -(heightType-conHeight)]],
-        layer="F.CrtYd"))
+        layer="F.CrtYd", width=courtyard_width))
     f.append(Arc(center=[0, -(heightType-conHeight)],
         start=[-(courtyardRadius), -(heightType-conHeight)],
-        angle=-180.0, layer="F.CrtYd"))        
+        angle=-180.0, layer="F.CrtYd", width=courtyard_width))
     f.append(PolygonLine(shape=[[-(courtyardRadius), -(heightType-conHeight)],
         [(courtyardRadius), -(heightType-conHeight)]],
-        layer="B.CrtYd"))
+        layer="B.CrtYd", width=courtyard_width))
     f.append(Arc(center=[0, -(heightType-conHeight)],
         start=[-(courtyardRadius), -(heightType-conHeight)],
-        angle=-180.0, layer="B.CrtYd"))   
-        
+        angle=-180.0, layer="B.CrtYd", width=courtyard_width))
+
     # chamfer
     f.append(PolygonLine(shape=[[-(conWidth/2), conHeight - chamferLength],
         [(notch-(notchWidth/2)), conHeight - chamferLength]],
@@ -136,13 +138,13 @@ def generate_footprint(widthType, heightType, notchType, configuration, generato
         layer="Cmts.User", size=refSize, thickness=t2))
     f.append(Text(text=thicknessText, at=[0, thicknessOffset],
         layer="Cmts.User", size=refSize, thickness=t2))
-        
+
     # silkscreen: triangle and key type
     f.append(PolygonLine(shape=[[xPadRight-(triangleWidth/2),0],
         [xPadRight+(triangleWidth/2), 0],
         [xPadRight, (triangleWidth)],
         [xPadRight-(triangleWidth/2), 0]],
-        layer="F.SilkS"))
+        layer="F.SilkS", width=GLOBAL_CONFIG.silk_line_width))
     f.append(Text(text=str(notchType), at=[notch+notchWidth, 0],
         layer="F.SilkS", size=textsize, thickness=t1))
 

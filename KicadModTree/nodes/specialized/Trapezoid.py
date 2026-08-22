@@ -31,8 +31,8 @@ class Trapezoid(Shape, GeomTrapezoid):
 
     def __init__(
         self,
-        layer: str = "F.SilkS",
-        width: float | None = None,
+        layer: str,
+        width: float,
         style: LineStyle = LineStyle.SOLID,
         fill: bool = False,
         offset: float = 0.0,
@@ -60,8 +60,7 @@ class Trapezoid(Shape, GeomTrapezoid):
 
         Args:
             layer: Layer.
-            width: Line width in mm. If `None`, then the standard width for the given
-                layer will be used when the serializing the node.
+            width: Line width in mm.
             style: Line style.
             fill: `True` if the trapezoid is filled, `False` if only the outline is
                 visible.

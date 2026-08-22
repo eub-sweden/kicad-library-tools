@@ -24,8 +24,8 @@ class TestSmallValueSerialisation(SerialisationTest):
         kicad_mod = Footprint("test_sort_small_values", FootprintType.SMD)
 
         center = Vector2D(0, 0)
-        kicad_mod.append(Line(start=Vector2D(1e-15, 1), end=center))
-        kicad_mod.append(Line(start=Vector2D(-1e-15, 2), end=center))
+        kicad_mod.append(Line(start=Vector2D(1e-15, 1), end=center, layer="F.SilkS", width=0.12))
+        kicad_mod.append(Line(start=Vector2D(-1e-15, 2), end=center, layer="F.SilkS", width=0.12))
 
         self.assert_serialises_as(kicad_mod, "test_sort_small_values.kicad_mod")
 
@@ -42,6 +42,7 @@ class TestSmallValueSerialisation(SerialisationTest):
                 start=Vector2D(-1.1, -1.1),
                 end=Vector2D(1.1, 1.1),
                 layer="F.SilkS",
+                width=0.12,
             )
         )
         # Circle
@@ -51,6 +52,7 @@ class TestSmallValueSerialisation(SerialisationTest):
                 radius=0.7,
                 layer="F.SilkS",
                 fill=True,
+                width=0.12,
             )
         )
         prototype.append(
@@ -59,6 +61,7 @@ class TestSmallValueSerialisation(SerialisationTest):
                 radius=1.0,
                 layer="F.SilkS",
                 fill=False,
+                width=0.12,
             )
         )
         prototype.append(
@@ -67,6 +70,7 @@ class TestSmallValueSerialisation(SerialisationTest):
                 radius=1.0,
                 layer="F.SilkS",
                 fill=True,
+                width=0.12,
             )
         )
 

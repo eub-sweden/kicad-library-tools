@@ -25,8 +25,8 @@ class Arc(Shape, GeomArc):
 
     def __init__(
         self,
-        layer: str = "F.SilkS",
-        width: float | None = None,
+        layer: str,
+        width: float,
         style: LineStyle = LineStyle.SOLID,
         fill: bool = False,
         shape: Arc | GeomArc | None = None,
@@ -41,8 +41,7 @@ class Arc(Shape, GeomArc):
 
         Args:
             layer: Layer.
-            width: Line width in mm. If `None`, then the standard width for the given
-                layer will be used when the serializing the node.
+            width: Line width in mm.
             style: Line style.
             fill: Unused parameter - needed to provide a homogeneous initializer
                 interface.

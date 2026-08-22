@@ -47,8 +47,8 @@ class PolygonLine(Shape, Container[Line], GeomPolygon):
         shape: (
             Self | GeomPolygon | GeomRectangle | BoundingBox | Iterable[Vec2DCompatible]
         ),
-        layer: str = "F.SilkS",
-        width: float | None = None,
+        layer: str,
+        width: float,
         style: LineStyle = LineStyle.SOLID,
         fill: bool = False,
         offset: float = 0,
@@ -60,15 +60,14 @@ class PolygonLine(Shape, Container[Line], GeomPolygon):
         Args:
             shape: Polygon, rectangle, bounding box or list of points from which to derive the polygon.
             layer: Layer.
-            width: Line width in mm. If `None`, then the standard width for the given
-                layer will be used when the serializing the node.
+            width: Line width in mm.
             style: Line style.
             fill: If the shape is filled or only the outline is visible.
             offset: amount by which the shape is inflated or deflated (if offset negative).
             x_mirror: Mirror x direction around offset axis.
             y_mirror: Mirror y direction around offset axis.
         """
-        Shape.__init__(self)
+        Shape.__init__(self, layer=layer, width=width, style=style, fill=fill, shape=shape)
         Container.__init__(self)  # pyright: ignore
         close = True
         if isinstance(shape, list | tuple):
@@ -77,12 +76,7 @@ class PolygonLine(Shape, Container[Line], GeomPolygon):
         GeomPolygon.__init__(
             self, shape=shape, x_mirror=x_mirror, y_mirror=y_mirror, close=close
         )
-        self.layer = layer
-        self.width = width
-        self.fill = fill
-        if self.width is not None:
-            self.width = float(self.width)
-        self.style = style
+
         if offset:
             self.inflate(amount=offset)
         self._update_children()

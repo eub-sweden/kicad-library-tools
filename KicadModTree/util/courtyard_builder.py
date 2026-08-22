@@ -107,6 +107,11 @@ class CourtyardBuilder:
         return cb
 
     @property
+    def line_width(self) -> float:
+        """The line width of the courtyard."""
+        return self.global_config.courtyard_line_width
+
+    @property
     def bbox(self) -> BoundingBox:
         """Get the bounding box of the courtyard."""
         if self._bbox is None:
@@ -162,17 +167,16 @@ class CourtyardBuilder:
         )[0]
         self.crt_pts = crt_pts
 
-        width = self.global_config.courtyard_line_width
         if len(crt_pts) == 4:  # pyright: ignore
             p1 = crt_pts[0]  # pyright: ignore
             p2 = crt_pts[2]  # pyright: ignore
             self._node = Rectangle(
-                width=width, layer="F.CrtYd", start=p1, end=p2  # pyright: ignore
+                width=self.line_width, layer="F.CrtYd", start=p1, end=p2  # pyright: ignore
             )
         else:
             crt_pts.append(crt_pts[0])  # close the courtyard  # pyright: ignore
             self._node = PolygonLine(
-                shape=crt_pts, width=width, layer="F.CrtYd"  # pyright: ignore
+                shape=crt_pts, width=self.line_width, layer="F.CrtYd"  # pyright: ignore
             )
         return self._node
 
@@ -244,7 +248,7 @@ class CourtyardBuilder:
         elif len(polygon) == 2:
             # polygons with 2 vertices are just lines
             self.add_line(
-                Line(start=polygon[0], end=polygon[1]), offset
+                GeomLine(start=polygon[0], end=polygon[1]), offset
             )  # pyright: ignore
             return
         else:

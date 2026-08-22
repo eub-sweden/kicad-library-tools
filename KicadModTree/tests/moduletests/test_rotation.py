@@ -25,7 +25,7 @@ class TestRotation(SerialisationTest):
 
         for t in range(0, 360, 15):
             kicad_mod.append(
-                Line(start=start, end=end).rotate(t, origin=center))
+                Line(start=start, end=end, layer="F.SilkS", width=0.12).rotate(t, origin=center))
 
         self.assert_serialises_as(kicad_mod, 'rotation_line.kicad_mod')
 
@@ -39,7 +39,7 @@ class TestRotation(SerialisationTest):
 
         for t in range(0, 360, 15):
             kicad_mod.append(
-                Arc(center=center, mid=mid, angle=angle)
+                Arc(center=center, mid=mid, angle=angle, layer="F.SilkS", width=0.12)
                 .rotate(angle/3, origin=center)
                 .rotate(t, origin=rot_center))
 
@@ -54,7 +54,10 @@ class TestRotation(SerialisationTest):
 
         for t in range(0, 360, 15):
             kicad_mod.append(
-                Circle(center=center, radius=radius).rotate(t, origin=rot_center))
+                Circle(
+                    center=center, radius=radius, layer="F.SilkS", width=0.12
+                ).rotate(t, origin=rot_center)
+            )
 
         self.assert_serialises_as(kicad_mod, 'rotation_circle.kicad_mod')
 
@@ -67,7 +70,7 @@ class TestRotation(SerialisationTest):
 
         for t in range(0, 360, 60):
             kicad_mod.append(
-                Polygon(shape=points, fill=True, width=None, layer="F.SilkS").rotate(t, origin=rot_center))
+                Polygon(shape=points, fill=True, width=0.12, layer="F.SilkS").rotate(t, origin=rot_center))
 
         self.assert_serialises_as(kicad_mod, 'rotation_polygon.kicad_mod')
 
@@ -76,7 +79,7 @@ class TestRotation(SerialisationTest):
 
         rot_center = Vector2D(0.35, 0)
         points = [(-1, 0), (-1.2, 0.5), (0, 0), (-1.2, -0.5)]
-        prim = Polygon(shape=points, fill=True, width=None, layer=None)
+        prim = Polygon(shape=points, fill=True, width=0.0, layer="F.SilkS")
         i = 1
         for t in range(0, 300, 60):
             kicad_mod.append(

@@ -15,7 +15,6 @@ import math
 
 from KicadModTree import *  # NOQA
 from generators.tools.footprint.drawing_tools import *
-from generators.tools.footprint.footprint_global_properties import *
 from generators.tools.footprint.save_footprint import write_footprint
 from kilibs.config import global_config as GC
 
@@ -212,6 +211,10 @@ def makeResistorSIP(generator_name, pins, footprint_name, description):
     l_crt = min(l_slk, -padx / 2) - crt_offset
     t_crt = min(t_slk, -pady / 2) - crt_offset
 
+    lw_fab = global_config.fab_line_width
+    lw_slk = global_config.silk_line_width
+    lw_crt = global_config.courtyard_line_width
+
     lib_name = "Resistor_THT"
 
     # init kicad footprint
@@ -229,8 +232,8 @@ def makeResistorSIP(generator_name, pins, footprint_name, description):
     kicad_mod.append(Line(start=[0.5 * rm, top], end=[0.5 * rm, top + h], layer='F.Fab', width=lw_fab))
 
     # create SILKSCREEN-layer
-    kicad_mod.append(Rectangle(start=[l_slk, t_slk], end=[l_slk + w_slk, t_slk + h_slk], layer='F.SilkS'))
-    kicad_mod.append(Line(start=[0.5 * rm, t_slk], end=[0.5 * rm, t_slk + h_slk], layer='F.SilkS'))
+    kicad_mod.append(Rectangle(start=[l_slk, t_slk], end=[l_slk + w_slk, t_slk + h_slk], layer='F.SilkS', width=lw_slk))
+    kicad_mod.append(Line(start=[0.5 * rm, t_slk], end=[0.5 * rm, t_slk + h_slk], layer='F.SilkS', width=lw_slk))
 
     # create courtyard
     kicad_mod.append(

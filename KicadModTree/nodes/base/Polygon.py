@@ -39,8 +39,8 @@ class Polygon(Shape, GeomPolygon):
             | GeomRectangle
             | BoundingBox
         ),
-        layer: str = "F.SilkS",
-        width: float | None = None,
+        layer: str,
+        width: float,
         style: LineStyle = LineStyle.SOLID,
         fill: bool = False,
         offset: float = 0.0,
@@ -54,8 +54,7 @@ class Polygon(Shape, GeomPolygon):
             shape: Polygon, rectangle, bounding box or list of points from which to
                 derive the polygon.
             layer: Layer.
-            width: Line width in mm. If `None`, then the standard width for the given
-                layer will be used when the serializing the node.
+            width: Line width in mm.
             style: Line style.
             fill: `True` if the polygon is filled, `False` if only the outline is
                 visible.

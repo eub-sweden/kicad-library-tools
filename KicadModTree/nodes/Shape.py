@@ -33,8 +33,8 @@ class Shape(Node, GeomShape):
 
     def __init__(
         self,
-        layer: str = "F.SilkS",
-        width: float | None = None,
+        layer: str,
+        width: float,
         style: LineStyle = LineStyle.SOLID,
         fill: bool = False,
         shape: Self | GeomShape | None = None,
@@ -43,8 +43,7 @@ class Shape(Node, GeomShape):
 
         Args:
             layer: Layer.
-            width: Line width in mm. If `None`, then the standard width for the given
-                layer will be used when the serializing the node.
+            width: Line width in mm.
             style: Line style.
             fill: `True` if the rectangle is filled, `False` if only the outline is
                 visible. `False` for open shapes.
@@ -54,7 +53,7 @@ class Shape(Node, GeomShape):
         # Instance attributes:
         self.layer: str
         """The layer on which the node is drawn."""
-        self.width: float | None
+        self.width: float
         """The width of the outline of the shape."""
         self.style: LineStyle
         """The line style used to draw the outline of the shape."""

@@ -47,8 +47,8 @@ class CompoundPolygon(Shape, GeomCompoundPolygon):
             | Iterable[Vec2DCompatible]
             | Iterable[GeomPolygon | GeomLine | GeomArc]
         ),
-        layer: str = "F.SilkS",
-        width: float | None = None,
+        layer: str,
+        width: float,
         style: LineStyle = LineStyle.SOLID,
         fill: bool = False,
         offset: float = 0,
@@ -61,8 +61,7 @@ class CompoundPolygon(Shape, GeomCompoundPolygon):
             shape: compound polygon, list of points, polygons, lines or arcs  from which
                 to derive the compound polygon.
             layer: Layer.
-            width: Line width in mm. If `None`, then the standard width for the given
-                layer will be used when the serializing the node.
+            width: Line width in mm.
             style: Line style.
             fill: `True` if the compound polygon is filled, `False` if only the outline
                 is visible.

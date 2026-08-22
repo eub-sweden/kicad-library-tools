@@ -14,6 +14,7 @@
 from KicadModTree import *  # NOQA
 from KicadModTree.nodes.base.Pad import Pad  # NOQA
 from generators.tools.footprint.save_footprint import write_footprint
+from kilibs.config.global_config import GLOBAL_CONFIG
 
 
 def create_shielding(name, outer_size, size,
@@ -33,12 +34,12 @@ def create_shielding(name, outer_size, size,
     # create courtyard
     kicad_mod.append(Rectangle(start=[-outer_size / 2. - 0.25, -outer_size / 2. - 0.25],
                               end=[outer_size / 2. + 0.25, outer_size / 2. + 0.25],
-                              layer='F.CrtYd'))
+                              layer='F.CrtYd', width=GLOBAL_CONFIG.courtyard_line_width))
 
     # create Fabriaction Layer
     kicad_mod.append(Rectangle(start=[-size / 2., -size / 2.],
                               end=[size / 2., size / 2.],
-                              layer='F.Fab'))
+                              layer='F.Fab', width=GLOBAL_CONFIG.fab_line_width))
 
     outer_pointing_pos = outer_size / 2. - attachment_width / 2.
 

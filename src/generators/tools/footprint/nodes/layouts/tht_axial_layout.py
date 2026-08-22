@@ -125,6 +125,8 @@ class ThtAxialLayout(FootprintLayout[GeomRectangle, Pad]):
     def _add_nodes(self, has_pin1_arrow: bool) -> None:
 
         silk_off = self.global_config.silk_fab_offset
+        silk_width = self.global_config.silk_line_width
+        fab_width = self.global_config.fab_line_width
 
         pitch_length = self.pitch * (self.num_pads - 1)
         if self.total_length is not None:
@@ -138,8 +140,8 @@ class ThtAxialLayout(FootprintLayout[GeomRectangle, Pad]):
             # Fab lines:
             start = Vector2D.from_floats(-total_length / 2, 0.0)
             end = Vector2D.from_floats(-self.body_size.x / 2, 0.0)
-            self.append(Line(start=start, end=end, layer="F.Fab"))
-            self.append(Line(start=-end, end=-start, layer="F.Fab"))
+            self.append(Line(start=start, end=end, layer="F.Fab", width=fab_width))
+            self.append(Line(start=-end, end=-start, layer="F.Fab", width=fab_width))
 
             # Silk lines:
             end = Vector2D.from_floats(-self.body_size.x / 2 - silk_off, 0.0)
@@ -148,7 +150,7 @@ class ThtAxialLayout(FootprintLayout[GeomRectangle, Pad]):
                 geom_items=lines,
                 keepouts=self._get_silk_keepouts_around_pads(),
                 layer="F.SilkS",
-                width=self.global_config.silk_line_width,
+                width=silk_width,
             )
 
         # Silk 1 arrow - only used when there's a body chamfer as the other styles
@@ -159,7 +161,7 @@ class ThtAxialLayout(FootprintLayout[GeomRectangle, Pad]):
             # Adjust for the stroke width
             silk_arrow_size, silk_arrow_length = DT.getStandardSilkArrowSize(
                 DT.SilkArrowSize.LARGE,
-                self.global_config.silk_line_width,
+                silk_width,
             )
 
             # The pin 1 arrow is at the end of the body rectangle or pad
@@ -182,8 +184,8 @@ class ThtAxialLayout(FootprintLayout[GeomRectangle, Pad]):
                     pad=self.pad_prototype,
                     arrow_size=DT.SilkArrowSize.LARGE,
                     arrow_direction=Direction.SOUTH,
-                    stroke_width=self.global_config.silk_line_width,
-                    pad_silk_offset=self.global_config.silk_pad_offset,
+                    stroke_width=silk_width,
+                    pad_silk_offset=silk_off,
                 )
 
             elif total_length > pitch_length + self.pad_prototype.size.x:
@@ -195,7 +197,7 @@ class ThtAxialLayout(FootprintLayout[GeomRectangle, Pad]):
                     angle=Direction.SOUTHEAST,
                     size=silk_arrow_size,
                     layer="F.SilkS",
-                    line_width_mm=self.global_config.silk_line_width,
+                    line_width_mm=silk_width,
                 )
 
             else:
@@ -208,7 +210,7 @@ class ThtAxialLayout(FootprintLayout[GeomRectangle, Pad]):
                     size=silk_arrow_size,
                     length=silk_arrow_length,
                     layer="F.SilkS",
-                    line_width_mm=self.global_config.silk_line_width,
+                    line_width_mm=silk_width,
                 )
 
     def _add_courtyard(self) -> None:

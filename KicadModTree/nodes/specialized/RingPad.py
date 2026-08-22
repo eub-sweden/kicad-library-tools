@@ -95,6 +95,7 @@ class _RingPadPrimitive(Node):
                     Circle(
                         center=(-self.radius, 0),
                         radius=self.radius,
+                        layer="F.Cu",
                         width=self.width,
                     )
                 ],
@@ -277,7 +278,7 @@ class _ArcPadPrimitive(Node):
         r_inner = self.reference_arc.radius - self.width / 2 + line_width / 2
         r_outer = self.reference_arc.radius + self.width / 2 - line_width / 2
 
-        ref_arc = Arc(shape=self.reference_arc, width=line_width)
+        ref_arc = Arc(shape=self.reference_arc, layer="F.SilkS", width=line_width)
         ref_arc.radius = r_outer
 
         nodes: list[Arc] = []
@@ -295,10 +296,10 @@ class _ArcPadPrimitive(Node):
             nodes = self._cut_arcs(nodes, self.end_line, 0)
         arcs_and_lines: list[Arc | Line] = cast(list[Arc | Line], nodes)
         arcs_and_lines.append(
-            Line(start=nodes[0].end, end=nodes[-1].end, width=line_width)
+            Line(start=nodes[0].end, end=nodes[-1].end, layer="F.SilkS", width=line_width)
         )
         arcs_and_lines.append(
-            Line(start=nodes[0].start, end=nodes[-2].start, width=line_width)
+            Line(start=nodes[0].start, end=nodes[-2].start, layer="F.SilkS", width=line_width)
         )
 
         return arcs_and_lines

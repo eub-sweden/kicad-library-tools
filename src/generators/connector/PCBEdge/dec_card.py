@@ -1,11 +1,11 @@
-#SPDX-License-Identifier: GPL-3.0-or-later
-#Copyright (c) 2024, Lothar Felten <lothar.felten@gmail.com>
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (c) 2024, Lothar Felten <lothar.felten@gmail.com>
 """
-dec_card 
+dec_card
 DEC card edge footprint generator script for KiCad
 Generates PCB card egdes for DEC (Digital Equipent Corporation)
 card slots. Typically used for flip-chip modules or Qbus, Unibus or Omnibus cards.
-DEC has a special pad naming scheme: 
+DEC has a special pad naming scheme:
 The pads have letters, omitting G, I, O, Q.
 The finger prefix is 'A' to 'C'.
 The side postfix is '1' for the component top side, bottom side prefix is 2.
@@ -19,6 +19,7 @@ from KicadModTree import *
 from generators.tools.footprint.footprint_text_fields import addTextFields
 from ..config import CONNECTOR_CONFIG
 from generators.tools.footprint.save_footprint import write_footprint
+from kilibs.config.global_config import GLOBAL_CONFIG
 
 
 lib_name = "Connector_PCBEdge"
@@ -30,10 +31,10 @@ heightTypes = ['short', 'long']
 padNames = ['V','U','T','S','R','P','N','M','L','K','J','H','F','E','D','C','B','A']
 fingerNames = ['A','B','C','D']
 
-#all dimensions in mil, 1 mil = 0.0254 mm
+# all dimensions in mil, 1 mil = 0.0254 mm
 def mil(x):
     return x * 0.0254
-    
+
 padWidth = mil(80)
 padHeight = mil(563)
 padOffset = 0.5
@@ -58,7 +59,7 @@ fingerPositions = [mil(100), mil(2850), mil(5348), mil(8097)]
 fingerWidth = mil(2240)
 cutWidth = 0.2
 handleHoleOffsetX = mil(219)
-handleHoleOffsetY = mil(-180) 
+handleHoleOffsetY = mil(-180)
 handleHolePositions = [mil(0), mil(2750), mil(5250), mil(8000)]
 handleHoleDistance = mil(2000)
 handleHoleDiameter = mil(128)
@@ -75,7 +76,6 @@ def generate_footprint(heightType, widthType, configuration, generator_name: str
     f.excludeFromBOM = True
     f.excludeFromPositionFiles = True
 
-        
     fingers = fingerCount.get(widthType)
     for finger in range (0, fingers):
         # pads
@@ -87,13 +87,13 @@ def generate_footprint(heightType, widthType, configuration, generator_name: str
                  at=[x, y], size=padSize, layers=layers_top, round_radius_handler=radius_handler))
             f.append(Pad(number=fingerNames[fingers-1-finger]+padNames[i]+'2', type=Pad.TYPE_CONNECT, shape=Pad.SHAPE_ROUNDRECT,
                  at=[x, y], size=padSize, layers=layers_bottom, round_radius_handler=radius_handler))
-            #silkscreen
-            f.append(Text(text=fingerNames[fingers-1-finger]+padNames[i]+'1', 
+            # silkscreen
+            f.append(Text(text=fingerNames[fingers-1-finger]+padNames[i]+'1',
                 at=[x, -padText], rotation=90, layer="F.SilkS", size=[1,1], thickness=0.15))
-            f.append(Text(text=fingerNames[fingers-1-finger]+padNames[i]+'2', 
+            f.append(Text(text=fingerNames[fingers-1-finger]+padNames[i]+'2',
                 at=[x, -padText], rotation=90, mirror=True, layer="B.SilkS", size=[1,1], thickness=0.15))
             i=i+1
-        #edge cuts finger
+        # edge cuts finger
         f.append(PolygonLine(shape=[
             [fingerPositions[finger],-notchHeight],
             [fingerPositions[finger], 0],
@@ -104,7 +104,7 @@ def generate_footprint(heightType, widthType, configuration, generator_name: str
         f.append(PolygonLine(shape=[[fingerPositions[finger], -chamferLength],
             [fingerPositions[finger]+fingerWidth, -chamferLength]],
             layer="Dwgs.User", width=cutWidth))
-        #holes for handles, 2 per finger
+        # holes for handles, 2 per finger
         f.append(Pad(number='H', type=Pad.TYPE_THT, shape=Pad.SHAPE_CIRCLE,
             at=[handleHoleOffsetX+handleHolePositions[finger], -(height+handleHoleOffsetY)],
             size=handleHoleDiameter+mil(100), layers=Pad.LAYERS_THT, drill=handleHoleDiameter))
@@ -112,7 +112,7 @@ def generate_footprint(heightType, widthType, configuration, generator_name: str
             at=[handleHoleOffsetX+handleHolePositions[finger]+handleHoleDistance, -(height+handleHoleOffsetY)],
             size=handleHoleDiameter+mil(100), layers=Pad.LAYERS_THT, drill=handleHoleDiameter))
 
-    #edge cut notches
+    # edge cut notches
     f.append(PolygonLine(shape=[
         [0, -notchDeepHeight],
         [fingerPositions[0], -notchDeepHeight],
@@ -132,7 +132,7 @@ def generate_footprint(heightType, widthType, configuration, generator_name: str
         [width, -notchHeight],
         [width, -notchDeepHeight]],
         layer="Edge.Cuts", width=cutWidth))
-    #edge cuts sides
+    # edge cuts sides
     f.append(PolygonLine(shape=[
         [0, -notchDeepHeight],
         [0 , -height],
@@ -140,12 +140,20 @@ def generate_footprint(heightType, widthType, configuration, generator_name: str
         [width, -notchDeepHeight]],
         layer="Edge.Cuts", width=cutWidth))
 
-    #courtyard
-    f.append(Rectangle(start=[0, 0],
-        end=[math.floor(width*100)/100, math.floor(-notchDeepHeight*100)/100],
-        layer="F.CrtYd"))
+    # courtyard
+    f.append(
+        Rectangle(
+            start=[0, 0],
+            end=[
+                math.floor(width * 100) / 100,
+                math.floor(-notchDeepHeight * 100) / 100,
+            ],
+            layer="F.CrtYd",
+            width=GLOBAL_CONFIG.courtyard_line_width,
+        )
+    )
 
-    #text
+    # text
     f.append(Text(text="Chamfer 30 degree 1 mm", at=[15, 2],
         layer="Cmts.User"))
     f.append(Text(text="PCB thickness 1.6 mm", at=[15, 4],

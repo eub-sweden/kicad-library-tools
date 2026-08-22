@@ -141,17 +141,17 @@ for pincount in pins:
 
         return outline
 
-    fp.append(PolygonLine(shape=outline(), layer='F.Fab'))
-    fp.append(PolygonLine(shape=outline(), layer='F.Fab', x_mirror=B / 2))
+    fp.append(PolygonLine(shape=outline(), layer='F.Fab', width=global_config.fab_line_width))
+    fp.append(PolygonLine(shape=outline(), layer='F.Fab', x_mirror=B / 2, width=global_config.fab_line_width))
 
-    fp.append(PolygonLine(shape=outline(offset=0.15)))
-    fp.append(PolygonLine(shape=outline(offset=0.15), x_mirror=B / 2))
+    fp.append(PolygonLine(shape=outline(offset=0.15), layer='F.SilkS', width=global_config.silk_line_width))
+    fp.append(PolygonLine(shape=outline(offset=0.15), x_mirror=B / 2, layer='F.SilkS', width=global_config.silk_line_width))
 
     #draw lines between pads on F.Fab
     for i in range(pincount - 1):
         x = (i + 0.5) * pitch
 
-        fp.append(Line(start=[x,y1],end=[x,y2],layer='F.Fab'))
+        fp.append(Line(start=[x,y1],end=[x,y2],layer='F.Fab',width=global_config.fab_line_width))
 
     """
 

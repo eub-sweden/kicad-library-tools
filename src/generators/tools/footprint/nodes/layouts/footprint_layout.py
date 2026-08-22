@@ -374,7 +374,11 @@ class FootprintLayout(Translation, Generic[ShapeType, PadType]):
         else:  # if style is CourtyardStyle.RECTANGLE:
             bbox_courtyard = self._get_pads_bounding_box().copy().inflate(offset_pads)
             bbox_courtyard.include_bbox(self.body_shape.bbox().inflate(offset_fab))
-            courtyard = Rectangle(layer="F.CrtYd", shape=bbox_courtyard)
+            courtyard = Rectangle(
+                shape=bbox_courtyard,
+                layer="F.CrtYd",
+                width=self.global_config.courtyard_line_width,
+            )
             courtyard.round_to_grid(self.global_config.courtyard_grid, outwards=True)
 
         self.courtyard = courtyard
