@@ -144,6 +144,17 @@ def get_unit_suffix(unit_num: int) -> str:
     return suffix
 
 
+def file_matches_glob(path: Path, globs: list[str] | None) -> bool:
+    """
+    Return whether a library file matches the --glob filter.
+
+    With no globs, every file matches.
+    """
+    if not globs:
+        return True
+    return any(fnmatch.fnmatch(str(path), g) for g in globs)
+
+
 def temporary_symbol_library(symbol_lines: list[str]) -> str:
     if symbol_lines and not symbol_lines[0].strip().startswith("(symbol"):
         warnings.warn(
@@ -364,12 +375,14 @@ class HTMLDiff:
         output,
         meta,
         name_glob="*",
+        file_glob=None,
         changes_only=True,
         screenshot_dir=None,
         diff_svg_output_dir=None,
     ):
         self.output = output
         self.name_glob = name_glob
+        self.file_glob = file_glob
         self.changes_only = changes_only
         self.name_map = {}
         self.diff_index = []
@@ -774,6 +787,10 @@ class HTMLDiff:
             if not fnmatch.fnmatch(stem, self.name_glob):
                 continue
 
+            # Skip if the file doesn't match the --glob filter
+            if not file_matches_glob(Path(f"{stem}{extension}"), self.file_glob):
+                continue
+
             new_file = new_dir / f"{stem}{extension}"
             old_file = old_dir / f"{stem}{extension}"
 
@@ -1099,6 +1116,12 @@ if __name__ == "__main__":
         help="New version to compare. Format: [library_or_mod_file]:[library_item], with the item name optional.",
     )
     parser.add_argument(
+        "-g",
+        "--glob",
+        action="append",
+        help="Only diff files matching the given glob (can be given multiple times).",
+    )
+    parser.add_argument(
         "-n",
         "--only-names",
         default="*",
@@ -1178,6 +1201,7 @@ if __name__ == "__main__":
                 args.output,
                 meta,
                 args.only_names,
+                file_glob=args.glob,
                 changes_only=(not args.unchanged),
                 screenshot_dir=args.screenshot_dir,
                 diff_svg_output_dir=args.diff_svg_output_dir,
@@ -1247,6 +1271,8 @@ if __name__ == "__main__":
                     for fn in proc.stdout.split("\000"):
                         if not fn:
                             continue
+                        if not file_matches_glob(Path(fn), args.glob):
+                            continue
                         out_fn = tmpd / Path(fn).name
                         with out_fn.open("w") as outf:
                             subprocess.run(
@@ -1270,6 +1296,7 @@ if __name__ == "__main__":
                     args.output,
                     meta,
                     args.only_names,
+                    file_glob=args.glob,
                     changes_only=(not args.unchanged),
                     screenshot_dir=args.screenshot_dir,
                     diff_svg_output_dir=args.diff_svg_output_dir,
