@@ -813,6 +813,15 @@ class HTMLDiff:
         belong to it.
         """
         self.output = self._library_output_dir(lib_key)
+
+        self.diff_index, changed_pairs = self._get_changed_pairs(pairs)
+
+        if not changed_pairs:
+            # No footprints to show in this library: skip it entirely rather
+            # than leaving an empty .diff directory behind (and skip the
+            # pointless reference render).
+            return
+
         self.output.mkdir(exist_ok=True, parents=True)
 
         lib_name = lib_key.stem
@@ -825,8 +834,6 @@ class HTMLDiff:
             # Everything on the new side was deleted: there is nothing to
             # render a reference of, but the renderer still needs a directory.
             new_dir = lib_key
-
-        self.diff_index, changed_pairs = self._get_changed_pairs(pairs)
 
         screenshot_dir = self.screenshot_dir / lib_key.name
         os.makedirs(screenshot_dir, exist_ok=True)
@@ -1065,8 +1072,6 @@ class HTMLDiff:
         self.output must already point at the library's output directory.
         Either path may be None, meaning that side of the library was absent.
         """
-        self.output.mkdir(exist_ok=True, parents=True)
-
         # Get the raw s-expr lines of the symbol libraries for code-level diffs
         index_old = (
             dict(build_symlib_index(old_kicad_sym_path))
@@ -1143,7 +1148,6 @@ class HTMLDiff:
         belong to it.
         """
         self.output = self._library_output_dir(lib_key)
-        self.output.mkdir(exist_ok=True, parents=True)
 
         # Library path on the new side, used for rendering reference SVGs.
         # If the whole library was deleted, fall back to the old side so the
@@ -1188,6 +1192,14 @@ class HTMLDiff:
                 info.new_url = new_url
 
             sym_diff_infos += new_infos
+
+        if not sym_diff_infos:
+            # No symbols to show in this library: skip it entirely rather
+            # than leaving an empty .diff directory behind (and skip the
+            # pointless reference render).
+            return
+
+        self.output.mkdir(exist_ok=True, parents=True)
 
         # Build the per-symbol diff index, for the sidebar navigation
         self.diff_index = []
