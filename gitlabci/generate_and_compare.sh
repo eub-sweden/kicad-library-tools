@@ -125,7 +125,7 @@ delete_if_only_kicad_mod "${curr_output_dir}"
 # clear output directories (without nuking everything if the user passes
 # a path they don't mean to, like ~)
 rm -rf "${diff_output_dir}/index.html"
-rm -rf "${diff_output_dir}/*.diff"
+rm -rf "${diff_output_dir}"/*.diff
 
 # Run the script to generate the footprints
 # $1: The script directory (scripts in the repo)
