@@ -313,9 +313,16 @@ def get_resolver(
     Construct a resolver based on the paths given.
 
     Without --repo (file / directory mode):
-      Both *arg1* and *arg2* must be provided.
-      * Two files        -> use `DirectFileResolver`
-      * Two directories  -> use `DirectoryFileResolver`
+      * One file     -> use `DirectFileResolver` with the old side as None (all files are new).
+      * One dir      -> use `DirectoryFileResolver` with the old side as None (all files are new).
+      * Two files    -> use `DirectFileResolver`
+      * Two dirs     -> use `DirectoryFileResolver`
+      * arg1 missing on disk but arg2 present
+                     -> the new side is treated as all-created
+                     (e.g. a library that is new in this MR).
+      * arg2 missing on disk but arg1 present
+                     -> the old side is treated as all-deleted
+                     (e.g. a library that is removed in this MR).
 
     With --repo (git mode):
       *arg1* and *arg2* are git tree-ish references (commits, branches,
@@ -354,6 +361,27 @@ def get_resolver(
     # Two paths: compare them.
     p1 = Path(arg1)
     p2 = Path(arg2)
+
+    # A missing old side (e.g. a library that is new in this MR) is treated
+    # as if the old side was empty: every file on the new side is created.
+    if not p1.exists():
+        if p2.is_dir():
+            LOGGER.debug("Missing old side: all files in %s are new", p2)
+            return DirectoryFileResolver(None, p2, file_filter=file_filter)
+        if p2.is_file():
+            LOGGER.debug("Missing old side: %s is new", p2)
+            return DirectFileResolver(None, p2, file_filter)
+
+    # A missing new side (e.g. a library that is removed in this MR) is
+    # treated as if the new side was empty. every file on the old side is
+    # "deleted".
+    if not p2.exists():
+        if p1.is_dir():
+            LOGGER.debug("Missing new side: all files in %s are deleted", p1)
+            return DirectoryFileResolver(p1, None, file_filter=file_filter)
+        if p1.is_file():
+            LOGGER.debug("Missing new side: %s is deleted", p1)
+            return DirectFileResolver(p1, None, file_filter)
 
     if p1.is_file() and p2.is_file():
         LOGGER.debug("File diff: %s vs %s", p1, p2)
