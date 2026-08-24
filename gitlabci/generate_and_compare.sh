@@ -191,19 +191,21 @@ generate_all_footprints "${kfg_repo_dir}" "${curr_output_dir}"
 fp_file_count=$(find "$curr_output_dir" -type f | wc -l)
 echo "Current generation result: $fp_file_count footprints"
 
-# Hack: Ensure at least an empty dir exists in base_footprints/ for each
-# dir in generated_footprints/ (otherwise html_diff.py tries to interpret
-# paths of the former as Git revisions when new footprint libs are added)
-# (=> TODO: Add CLI arg to html_diff.py to force interpretation as dir?)
-shopt -s globstar nullglob
-for dir_path in "$curr_output_dir"/**/; do
-    rel_path="${dir_path#"$curr_output_dir"}"
-    mkdir -p "${base_output_dir}/${rel_path}"
-done
-
-# Now compare the two directories and generate the HTML diffs
-"$kfg_repo_dir"/gitlabci/visual_diff.sh "$base_output_dir" "$curr_output_dir" "$diff_output_dir"
-
-if [ "$open_result" = true ]; then
-    xdg-open "$diff_output_dir/index.html"
+if [ -z "${KICAD_LIBRARY_UTILS_DIR}" ]; then
+    echo "KICAD_LIBRARY_UTILS_DIR environment variable is not set, cannot run HTML diff"
+    exit 1
 fi
+
+open_result_args=()
+if [ "$open_result" = true ]; then
+    open_result_args+=(--open-result)
+fi
+
+# Produce the HTML diff of the two directories
+"${KICAD_LIBRARY_UTILS_DIR}/html-diff/src/html_diff.py" \
+    -j0 \
+    --verbose \
+    --output "$diff_output_dir" \
+    "${open_result_args[@]}" \
+    "$base_output_dir" \
+    "$curr_output_dir"
