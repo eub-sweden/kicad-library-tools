@@ -69,19 +69,14 @@ fi
 
 echo "Comparing range $base_sha to $target_sha in '$repo_dir'"
 
-cd "$repo_dir"
-changed_objects=$(git diff-tree --diff-filter=AMR --no-commit-id --name-only "$base_sha" "$target_sha")
+# Run html_diff in git commit-commit mode
+python3 "$klu_dir/html-diff/src/html_diff.py" \
+    -j0 \
+    --repo "$repo_dir" \
+    --output "$output_dir" \
+    "$base_sha" "$target_sha" \
+    "${html_diff_args[@]}"
 
-for change in $changed_objects; do
-    if [[ $change =~ .*\.pretty || $change =~ .*\.kicad_sym ]]; then
-
-        libname=$(realpath --relative-to="${repo_dir}" "${change}")
-        # Strip extension and add .diff
-        output_subdir="$output_dir/${libname%.*}.diff"
-        echo "Diffing: $change to $output_subdir"
-        python3 "$klu_dir/html-diff/src/html_diff.py" -j0 "$base_sha" "$change" -o "$output_subdir" "${html_diff_args[@]}"
-    fi
-done
 
 # If there is at least one *.diff, create the index.html
 # The link path must be relative to ../ because index.html will be placed in the "index.html.diffs" directory

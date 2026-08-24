@@ -32,6 +32,13 @@ except ImportError:
         common := Path(__file__).parent.parent.with_name("common").absolute()
     ) not in sys.path:
         sys.path.insert(0, str(common))
+try:
+    # file_resolver lives in klu/tools, so make sure that is on the path too
+    import file_resolver
+except ImportError:
+    if (tools := Path(__file__).parent.parent.parent / "tools") not in sys.path:
+        sys.path.insert(0, str(tools))
+    import file_resolver
 import jinja2
 import kicad_mod  # NOQA: F811
 import kicad_sym
@@ -375,14 +382,13 @@ class HTMLDiff:
         output,
         meta,
         name_glob="*",
-        file_glob=None,
         changes_only=True,
         screenshot_dir=None,
         diff_svg_output_dir=None,
     ):
         self.output = output
+        self.base_output = output
         self.name_glob = name_glob
-        self.file_glob = file_glob
         self.changes_only = changes_only
         self.name_map = {}
         self.diff_index = []
@@ -400,135 +406,165 @@ class HTMLDiff:
             self.diff_svg_output_dir.mkdir(parents=True, exist_ok=True)
 
         if "CI_MERGE_REQUEST_ID" in os.environ:
-            old_sha, _old_shortid = meta["old_git"]
+            old_sha, _old_shortid = meta.get("old_git", (None, None))
+            old_path = meta.get("old_path")
+            new_path = meta.get("new_path")
+            source_branch = os.environ.get("CI_MERGE_REQUEST_SOURCE_BRANCH_NAME")
 
-            self.old_url = (
-                f'{os.environ["CI_PROJECT_URL"]}/-/blob/{old_sha}/{meta["old_path"]}'
+            self.old_url = None
+            if old_sha and old_path:
+                self.old_url = (
+                    f'{os.environ["CI_PROJECT_URL"]}/-/blob/{old_sha}/{old_path}'
+                )
+                if "old_line_range" in meta:
+                    start, end = meta["old_line_range"]
+                    self.old_url += f"#L{start}-{end}"
+
+            self.new_url = None
+            if new_path and source_branch:
+                self.new_url = (
+                    f'{os.environ["CI_MERGE_REQUEST_SOURCE_PROJECT_URL"]}'
+                    f"/-/blob/{source_branch}/{new_path}"
+                )
+                if "new_line_range" in meta:
+                    start, end = meta["new_line_range"]
+                    self.new_url += f"#L{start}-{end}"
+
+            self.mr_url = (
+                f'{os.environ["CI_MERGE_REQUEST_PROJECT_URL"]}'
+                f"/-/merge_requests/{os.environ['CI_MERGE_REQUEST_IID']}"
             )
-            if "old_line_range" in meta:
-                start, end = meta["old_line_range"]
-                self.old_url += f"#L{start}-{end}"
-
-            self.new_url = f'{os.environ["CI_MERGE_REQUEST_SOURCE_PROJECT_URL"]}/-/blob/{os.environ["CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"]}/{meta["new_path"]}'  # NOQA: E501
-            if "new_line_range" in meta:
-                start, end = meta["new_line_range"]
-                self.new_url += f"#L{start}-{end}"
-
-            self.mr_url = f'{os.environ["CI_MERGE_REQUEST_PROJECT_URL"]}/-/merge_requests/{os.environ["CI_MERGE_REQUEST_IID"]}'  # NOQA: E501
         else:
             self.old_url = self.new_url = self.mr_url = None
 
         if meta.get("old_git") is not None:
             revname, commit_id = meta["old_git"]
-            if meta["old_path"] == meta["new_path"]:
+            new_path = meta.get("new_path")
+            old_path = meta.get("old_path")
+
+            if old_path is not None and old_path == new_path:
+                self.source_revisions = f"Comparing {new_path} against rev {commit_id}"
+            elif old_path is not None:
                 self.source_revisions = (
-                    f'Comparing {meta["new_path"]} against rev {commit_id}'
+                    f"Comparing {new_path} against {old_path} at {commit_id}"
                 )
             else:
-                self.source_revisions = f'Comparing {meta["new_path"]} against {meta["old_path"]} at {commit_id}'  # NOQA: E501
+                self.source_revisions = f"Comparing against rev {commit_id}"
 
             if revname:
                 self.source_revisions += f" alias {revname}"
         else:
+            old_path = meta.get("old_path")
+            new_path = meta.get("new_path")
             self.source_revisions = (
-                f'Comparing {meta["new_path"]} against {meta["old_path"]}'
+                f'Comparing {new_path or "?"} against {old_path or "?"}'
             )
 
-    def diff(self, old, new):
-        old, new = Path(old), Path(new)
+    @staticmethod
+    def _library_key(name: Path, file: Path) -> Path:
+        """
+        Return a stable key identifying the library a pair belongs to.
 
-        if new.suffix == ".kicad_sym":
+        The key must be the same for every pair of a library, regardless of
+        which side of the diff the file exists on. In git mode (and whenever
+        the compared roots sit above the libraries), ``name`` is the
+        repository-relative path, so its parent identifies the library and is
+        identical for old and new sides. When the name has no parent component
+        (the roots are the library files or directories themselves), fallback
+        to the file's own path.
+        """
+        parent = name.parent
 
-            print(f"Diffing symbol libraries {old} and {new}")
+        if parent != Path("."):
+            if (
+                name.suffix.lower() == ".kicad_sym"
+                and parent.suffix.lower() != ".kicad_symdir"
+            ):
+                # A packed symbol library is its own library.
+                return name
+            return parent
 
-            if ":" in old.suffix or ":" in new.suffix:
-                _suffix, _, old_part_name = old.suffix.partition(":")
-                _suffix, _, new_part_name = new.suffix.partition(":")
-                old = old.with_suffix(".kicad_sym")
-                new = new.with_suffix(".kicad_sym")
+        if (
+            file.suffix.lower() == ".kicad_sym"
+            and file.parent.suffix.lower() != ".kicad_symdir"
+        ):
+            return file
+        return file.parent
 
-            self.symlib_diff(old, new)
+    def _add_pair_to_library(
+        self,
+        mod_libs: dict[Path, list[file_resolver.ResolvedFilePair]],
+        sym_libs: dict[Path, list[file_resolver.ResolvedFilePair]],
+        pair: file_resolver.ResolvedFilePair,
+    ) -> None:
+        """Add a resolved pair to the group of its library."""
+        file = pair.file2 if pair.file2 is not None else pair.file1
+        if file is None:
+            return
+        file = Path(file)
 
-        elif new.suffix == ".kicad_mod":
-            if self.name_glob:
-                raise ValueError(
-                    "Name globs are not supported when processing a single footprint only."
-                )  # NOQA: E501
-
-            if self.output is None:
-                self.output = new.with_suffix(".diff")
-            self.output.mkdir(exist_ok=True, parents=True)
-
-            old_text, new_text = old.read_text(), new.read_text()
-
-            part_name = new.stem
-
-            if new.parent.suffix.lower() == ".pretty":
-                lib_name = new.parent.stem
-            else:
-                lib_name = "<unknown library>"
-
-            ref_fn = (
-                self.screenshot_dir
-                / f"{lib_name}.pretty"
-                / f"{part_name}.kicad_mod.svg"
-            )
-            ref_svg = ""
-            if ref_fn.is_file():
-                ref_svg = ref_fn.read_text()
-            else:
-                try:
-                    render_footprint_kicad_cli(new.parent, new.stem, ref_fn.parent)
-                    ref_fn = ref_fn.with_name(f"{part_name}.svg")
-                    ref_svg = ref_fn.read_text()
-                except Exception as e:
-                    warnings.warn(
-                        f"Error exporting reference render using kicad-cli: {e}"
-                    )
-
-            html_file_path = self.output / new.with_suffix(".html").name
-            html_file_path.write_text(
-                self.mod_diff(
-                    part_name=part_name,
-                    lib_name=lib_name,
-                    old_text=old_text,
-                    new_text=new_text,
-                    prev_diff="",
-                    next_diff="",
-                    ref_svg=ref_svg,
-                )
-            )
-
-        elif new.suffix.startswith(".kicad_symdir"):
-            if ":" in old.suffix or ":" in new.suffix:
-                raise ValueError(
-                    "Giving library item names via [library]:[item_name] is not supported. "
-                    "To compare individual symbols, simply list their .kicad_sym files inside the .kicad_symdir directory."  # NOQA: E501
-                )
-
-            if self.output is None:
-                self.output = new.with_suffix(".diff")
-            self.output.mkdir(exist_ok=True, parents=True)
-
-            self.symlib_diff(old, new)
-
-        elif new.suffix == ".pretty":
-            if ":" in old.suffix or ":" in new.suffix:
-                raise ValueError(
-                    "Giving library item names via [library]:[item_name] is only supported for symbol libraries."
-                    "To compare individual footprints, simply list their .kicad_mod files inside the .pretty directory."  # NOQA: E501
-                )
-
-            if self.output is None:
-                self.output = new.with_suffix(".diff")
-            self.output.mkdir(exist_ok=True, parents=True)
-
-            self.pretty_diff(old, new)
-
+        key = self._library_key(pair.name, file)
+        if file.suffix.lower() == ".kicad_mod":
+            mod_libs.setdefault(key, []).append(pair)
+        elif file.suffix.lower() == ".kicad_sym":
+            sym_libs.setdefault(key, []).append(pair)
         else:
+            logging.warning("Ignoring unsupported file: %s", file)
+
+    def diff_pairs(self, pairs: list[file_resolver.ResolvedFilePair]) -> None:
+        """
+        Diff the given resolved file pairs, grouping them into libraries.
+
+        Footprint pairs (.kicad_mod) are grouped by their .pretty directory.
+        Symbol pairs (.kicad_sym) are grouped by their .kicad_symdir directory,
+        or treated as their own library if they are packed library files.
+        """
+        mod_libs: dict[Path, list[file_resolver.ResolvedFilePair]] = {}
+        sym_libs: dict[Path, list[file_resolver.ResolvedFilePair]] = {}
+
+        for pair in pairs:
+            file = pair.file2 if pair.file2 is not None else pair.file1
+            if file is None:
+                continue
+            file = Path(file)
+
+            self._add_pair_to_library(mod_libs, sym_libs, pair)
+
+        num_libs = len(mod_libs) + len(sym_libs)
+        if (
+            self.base_output is not None
+            and self.base_output.suffix == ".diff"
+            and num_libs > 1
+        ):
             raise ValueError(
-                "Unhandled input type {new.suffix}. Supported formats are .kicad_sym, .kicad_mod and .pretty."
-            )  # NOQA: E501
+                "When diffing multiple libraries, --output must be a directory "
+                f"to hold the <library>.diff outputs, not a single file ({self.base_output})."  # NOQA: E501
+            )
+
+        # Sort by library name for deterministic output
+        for lib in sorted(mod_libs, key=lambda p: p.name):
+            self._diff_mod_library(lib, mod_libs[lib])
+        for lib in sorted(sym_libs, key=lambda p: p.name):
+            self._diff_sym_library(lib, sym_libs[lib])
+
+    def _library_output_dir(self, lib_key: Path) -> Path:
+        """
+        Return the output directory for a library, honoring --output.
+
+        lib_key is the library's directory (e.g. "Foo.pretty" or
+        "Foo.kicad_symdir") or a packed .kicad_sym file. The output directory
+        is named after the library with a ".diff" suffix.
+        """
+        lib_diff = Path(lib_key.name).with_suffix(".diff")
+
+        if self.base_output is None:
+            return lib_diff
+
+        if self.base_output.suffix == ".diff":
+            # --output was given as the exact diff directory (single library)
+            return self.base_output
+
+        return self.base_output / lib_diff
 
     @staticmethod
     def format_index(diff_index, part_name: str):
@@ -657,17 +693,38 @@ class HTMLDiff:
             / f"{new_file.stem}.kicad_mod.svg"
         )
 
-    def pretty_diff(self, old: Path, new: Path):
-        self.diff_index, files = self._get_changed_stems(old, new, ".kicad_mod")
+    def _diff_mod_library(
+        self, lib_key: Path, pairs: list[file_resolver.ResolvedFilePair]
+    ) -> None:
+        """
+        Diff a library of footprints, given the resolved file pairs that
+        belong to it.
+        """
+        self.output = self._library_output_dir(lib_key)
+        self.output.mkdir(exist_ok=True, parents=True)
 
-        os.makedirs(self.screenshot_dir / new.name, exist_ok=True)
+        lib_name = lib_key.stem
 
-        # Render reference SVGs all at once
+        new_dir = next(
+            (Path(pair.file2).parent for pair in pairs if pair.file2 is not None),
+            None,
+        )
+        if new_dir is None:
+            # Everything on the new side was deleted: there is nothing to
+            # render a reference of, but the renderer still needs a directory.
+            new_dir = lib_key
+
+        self.diff_index, changed_pairs = self._get_changed_pairs(pairs)
+
+        screenshot_dir = self.screenshot_dir / lib_key.name
+        os.makedirs(screenshot_dir, exist_ok=True)
+
+        # Render reference SVGs all at once.
         # This is a lot faster than rendering them one by one, even if we end up over-rendering
-        renderer = BatchRenderFootprints(new, self.screenshot_dir / new.name)
+        renderer = BatchRenderFootprints(new_dir, screenshot_dir)
 
-        for new_file in files:
-            renderer.add_stem(new_file.stem)
+        for pair in changed_pairs:
+            renderer.add_stem(pair.name.stem)
 
         try:
             renderer.render()
@@ -678,11 +735,11 @@ class HTMLDiff:
 
             args = []
 
-            for i, new_file in enumerate(files):
-                prev_file = self._diff_name(files[(i - 1) % len(files)]).name
-                next_file = self._diff_name(files[(i + 1) % len(files)]).name
-                out_file = self._diff_name(new_file)
-                args.append((old, new_file, next_file, prev_file, out_file))
+            for i, pair in enumerate(changed_pairs):
+                prev_pair = changed_pairs[(i - 1) % len(changed_pairs)]
+                next_pair = changed_pairs[(i + 1) % len(changed_pairs)]
+                out_file = self._diff_name(pair.name)
+                args.append((lib_name, pair, prev_pair, next_pair, out_file))
             try:
                 pool.starmap(self._process_one_mod, args)
             except KeyboardInterrupt:
@@ -693,19 +750,25 @@ class HTMLDiff:
 
     def _process_one_mod(
         self,
-        old: Path,
-        new_file: Path,
-        next_file: Path,
-        prev_file: Path,
+        lib_name: str,
+        pair: file_resolver.ResolvedFilePair,
+        prev_pair: file_resolver.ResolvedFilePair,
+        next_pair: file_resolver.ResolvedFilePair,
         out_file: Path,
     ):
-        old_file = old / new_file.name
-        old_text = old_file.read_text() if old_file.is_file() else ""
-        new_text = new_file.read_text() if new_file.is_file() else ""
+        old_file = Path(pair.file1) if pair.file1 is not None else None
+        new_file = Path(pair.file2) if pair.file2 is not None else None
+
+        old_text = (
+            old_file.read_text() if old_file is not None and old_file.is_file() else ""
+        )
+        new_text = (
+            new_file.read_text() if new_file is not None and new_file.is_file() else ""
+        )
 
         ref_svg = ""
 
-        if new_file.is_file():
+        if new_file is not None and new_file.is_file():
             ref_fn = self._get_ref_fn(new_file)
             if ref_fn.is_file():
                 ref_svg = ref_fn.read_text()
@@ -714,12 +777,12 @@ class HTMLDiff:
                 ref_svg = ref_fn.read_text()
 
         diff_text = self.mod_diff(
-            part_name=new_file.stem,
-            lib_name=new_file.parent.stem,
+            part_name=pair.name.stem,
+            lib_name=lib_name,
             new_text=new_text,
             old_text=old_text,
-            prev_diff=prev_file,
-            next_diff=next_file,
+            prev_diff=self._diff_name(prev_pair.name).name,
+            next_diff=self._diff_name(next_pair.name).name,
             ref_svg=ref_svg,
         )
         out_file.write_text(diff_text)
@@ -734,9 +797,9 @@ class HTMLDiff:
 
         new_lib_path: Path
 
-        # Name of the new/current symbol library
-        old_lib: kicad_sym.KicadLibrary
-        new_lib: kicad_sym.KicadLibrary
+        # The old and new symbol libraries (may be None if deleted/created)
+        old_lib: kicad_sym.KicadLibrary | None
+        new_lib: kicad_sym.KicadLibrary | None
 
     @dataclass
     class SymbolDiffInfo:
@@ -765,46 +828,48 @@ class HTMLDiff:
     def _diff_name(self, new_file: Path) -> Path:
         return self.output / new_file.with_suffix(".html").name
 
-    def _get_changed_stems(
-        self, old_dir: Path, new_dir: Path, extension: str
+    def _get_changed_pairs(
+        self, pairs: list[file_resolver.ResolvedFilePair]
     ) -> tuple[list, list]:
         """
-        Look for files with the given extension in the old and new directories, and return a list of their
-        stems along with their change status (created, changed, deleted).
+        Filter the given resolved file pairs by name and change status.
+
+        Returns a tuple (diff_index, files) where diff_index contains
+        (diff_name, created, changed, deleted) tuples and files contains
+        the pairs to actually diff.
         """
 
         diff_index = []
         files = []
 
-        new_files = set(new_dir.glob(f"*{extension}"))
-        old_files = set(old_dir.glob(f"*{extension}"))
-
-        all_stems = {f.stem for f in new_files.union(old_files)}
-
-        for stem in sorted(list(all_stems)):
+        for pair in pairs:
 
             # Skip if the name doesn't match the glob
-            if not fnmatch.fnmatch(stem, self.name_glob):
+            if not fnmatch.fnmatch(pair.name.stem, self.name_glob):
                 continue
 
-            # Skip if the file doesn't match the --glob filter
-            if not file_matches_glob(Path(f"{stem}{extension}"), self.file_glob):
-                continue
+            old_file = Path(pair.file1) if pair.file1 is not None else None
+            new_file = Path(pair.file2) if pair.file2 is not None else None
 
-            new_file = new_dir / f"{stem}{extension}"
-            old_file = old_dir / f"{stem}{extension}"
-
-            old_text = old_file.read_text() if old_file.is_file() else ""
-            new_text = new_file.read_text() if new_file.is_file() else ""
+            old_text = (
+                old_file.read_text()
+                if old_file is not None and old_file.is_file()
+                else ""
+            )
+            new_text = (
+                new_file.read_text()
+                if new_file is not None and new_file.is_file()
+                else ""
+            )
             changed = old_text != new_text
-            created = not old_file.is_file()
-            deleted = not new_file.is_file()
+            created = old_file is None or not old_file.is_file()
+            deleted = new_file is None or not new_file.is_file()
 
             if self.changes_only and not changed:
                 continue
 
-            diff_index.append((self._diff_name(new_file), created, changed, deleted))
-            files.append(new_file)
+            diff_index.append((self._diff_name(pair.name), created, changed, deleted))
+            files.append(pair)
 
         return diff_index, files
 
@@ -845,12 +910,8 @@ class HTMLDiff:
                 prev_sym = sorted_syms[(i - 1) % len(sorted_syms)]
                 next_sym = sorted_syms[(i + 1) % len(sorted_syms)]
 
-                prev_file = self._diff_name(
-                    prev_sym.old_kicad_sym / prev_sym.new_name
-                ).name
-                next_file = self._diff_name(
-                    next_sym.new_kicad_sym / next_sym.new_name
-                ).name
+                prev_file = self._diff_name(Path(prev_sym.new_name)).name
+                next_file = self._diff_name(Path(next_sym.new_name)).name
 
                 unit_files = renderer.get_files_for_stem(sym_diff_info.new_name)
                 args.append(
@@ -867,26 +928,37 @@ class HTMLDiff:
                 raise e
 
     def _get_symbol_diffs(
-        self, old_kicad_sym_path: Path, new_kicad_sym_path: Path
+        self,
+        old_kicad_sym_path: Path | None,
+        new_kicad_sym_path: Path | None,
     ) -> list[SymbolDiffInfo]:
         """
         Get all the symbol diff infos for the symbols in the given kicad_sym files.
+
+        self.output must already point at the library's output directory.
+        Either path may be None, meaning that side of the library was absent.
         """
-        if self.output is None:
-            self.output = new_kicad_sym_path.with_suffix(".diff")
         self.output.mkdir(exist_ok=True, parents=True)
 
         # Get the raw s-expr lines of the symbol libraries for code-level diffs
-        index_old = dict(build_symlib_index(old_kicad_sym_path))
-        index_new = dict(build_symlib_index(new_kicad_sym_path))
+        index_old = (
+            dict(build_symlib_index(old_kicad_sym_path))
+            if old_kicad_sym_path is not None
+            else {}
+        )
+        index_new = (
+            dict(build_symlib_index(new_kicad_sym_path))
+            if new_kicad_sym_path is not None
+            else {}
+        )
         old_lines = (
             old_kicad_sym_path.read_text().splitlines()
-            if old_kicad_sym_path.is_file()
+            if old_kicad_sym_path is not None and old_kicad_sym_path.is_file()
             else []
         )
         new_lines = (
             new_kicad_sym_path.read_text().splitlines()
-            if new_kicad_sym_path.is_file()
+            if new_kicad_sym_path is not None and new_kicad_sym_path.is_file()
             else []
         )
 
@@ -936,64 +1008,71 @@ class HTMLDiff:
 
         return files
 
-    def symlib_diff(self, old_symlib_path: Path, new_symlib_path: Path) -> None:
+    def _diff_sym_library(
+        self, lib_key: Path, pairs: list[file_resolver.ResolvedFilePair]
+    ) -> None:
         """
-        Diff two libraries containing symbols.
-
-        These could be packed or unpacked.
+        Diff a library of symbols, given the resolved file pairs that
+        belong to it.
         """
+        self.output = self._library_output_dir(lib_key)
+        self.output.mkdir(exist_ok=True, parents=True)
 
-        old_lib = None
-        new_lib = None
+        # Library path on the new side, used for rendering reference SVGs.
+        # If the whole library was deleted, fall back to the old side so the
+        # renderer has something to point at (it will find no new symbols).
+        new_lib_path = next(
+            (
+                (
+                    Path(pair.file2).parent
+                    if Path(pair.file2).parent.suffix.lower() == ".kicad_symdir"
+                    else Path(pair.file2)
+                )
+                for pair in pairs
+                if pair.file2 is not None
+            ),
+            None,
+        )
+        if new_lib_path is None:
+            new_lib_path = next(
+                (
+                    (
+                        Path(pair.file1).parent
+                        if Path(pair.file1).parent.suffix.lower() == ".kicad_symdir"
+                        else Path(pair.file1)
+                    )
+                    for pair in pairs
+                    if pair.file1 is not None
+                ),
+                lib_key,
+            )
 
-        if old_symlib_path.exists():
-            old_lib = kicad_sym.KicadLibrary.from_path(filename=old_symlib_path)
-        if new_symlib_path.exists():
-            new_lib = kicad_sym.KicadLibrary.from_path(filename=new_symlib_path)
+        sym_diff_infos: list[HTMLDiff.SymbolDiffInfo] = []
+
+        for pair in pairs:
+            old_kicad_sym_path = Path(pair.file1) if pair.file1 is not None else None
+            new_kicad_sym_path = Path(pair.file2) if pair.file2 is not None else None
+
+            new_infos = self._get_symbol_diffs(old_kicad_sym_path, new_kicad_sym_path)
+
+            sym_diff_infos += new_infos
+
+        # Build the per-symbol diff index, for the sidebar navigation
+        self.diff_index = []
+        for info in sym_diff_infos:
+            created = info.old_lines == (0, 0)
+            deleted = info.new_lines == (0, 0)
+            self.diff_index.append(
+                (info.out_file, created, not created and not deleted, deleted)
+            )
 
         # This is the common info about the library diff that applies to all
         # symbol diffs in this library.
         symdir_info = self.SymLibDiffInfo(
-            old_lib=old_lib,
-            new_lib=new_lib,
-            new_lib_path=new_symlib_path,
+            old_lib=None,
+            new_lib=None,
+            new_lib_path=new_lib_path,
         )
-
-        # So now we know about a change library, but we need to extract
-        # the actual symbols - do this for both old and new libraries in case they
-        # have different contents or multiple symbols each. This means we can
-        # track symbols across packing/unpacking, for example.
-
-        sym_diff_infos: list[HTMLDiff.SymbolDiffInfo] = []
-
-        # Look for files being added, removed or changed
-
-        # If a .kicad_sym file is given, we treat it as its own packed library.
-        if old_symlib_path.is_file():
-            old_stem_search_dir = old_symlib_path.parent
-        else:
-            old_stem_search_dir = old_symlib_path
-
-        if new_symlib_path.is_file():
-            new_stem_search_dir = new_symlib_path.parent
-        else:
-            new_stem_search_dir = new_symlib_path
-
-        # Looks for appearing, changing or disappearing .kicad_sym files
-        self.diff_index, files = self._get_changed_stems(
-            old_dir=old_stem_search_dir,
-            new_dir=new_stem_search_dir,
-            extension=".kicad_sym",
-        )
-
-        # Gather symbols from each separate .kicad_sym file and do a diff of each one
-        for kicad_sym_file in files:
-            old_kicad_sym_path = old_stem_search_dir / kicad_sym_file.name
-            new_kicad_sym_path = new_stem_search_dir / kicad_sym_file.name
-
-            sym_diff_infos += self._get_symbol_diffs(
-                old_kicad_sym_path, new_kicad_sym_path
-            )
 
         # Finally, process all the symbol diffs
         self._process_sym_diffs(symdir_info, sym_diff_infos)
@@ -1089,31 +1168,80 @@ class HTMLDiff:
         )
 
 
+def _build_meta(args) -> dict:
+    meta: dict = {}
+
+    if args.repo is not None:
+        import git
+
+        repo = git.Repo(args.repo)
+        meta["git_toplevel"] = Path(repo.working_tree_dir)
+
+        old_ref = args.path1 or "HEAD"
+        try:
+            commit_id = repo.git.rev_parse(old_ref, short=True)
+        except Exception:
+            commit_id = old_ref
+        meta["old_git"] = (old_ref, commit_id)
+
+        if args.path2 is not None:
+            meta["old_path"] = old_ref
+            meta["new_path"] = args.path2
+    else:
+        meta["old_git"] = None
+        if args.path1 is not None:
+            meta["old_path"] = str(Path(args.path1))
+        if args.path2 is not None:
+            meta["new_path"] = str(Path(args.path2))
+
+    return meta
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
         description="""html-diff.py generates a visual, HTML-formatted diff between two libraries. It outputs one file per library item into a folder named after the library with suffix ".diff". Included in the diff are:
 
-                                     * An S-Expression diff
-                                     * A visual diff
-                                     * A render using kicad-cli
-                                     * For footprints: A layer-by-layer preview
+* An S-Expression diff
+* A visual diff
+* A render using kicad-cli
+* For footprints: A layer-by-layer preview
 
-                                     If kicad-cli is not in PATH, you can give its location by setting the KICAD_CLI environment variable.
-                                     """  # NOQA: E501
-    )  # NOQA: E501
-    parser.add_argument(
-        "base",
-        nargs="?",
-        default="HEAD",
-        help="Old version to compare against."
-        + " Format: [git_revision]:[library_or_mod_file]:[library_item]."
-        + " All three are optional, defaults to taking the input file from git's HEAD."
-        + " If the given parameter does not name an existing file or no git revision is given,"
-        + " the file is taken from git's HEAD.",
+You can provide one or two paths to compare. The paths can be:
+
+* A single file or a directory containing library files:
+    * File-to-file mode:             [file1] [file2]
+    * Directory-to-directory mode:   [dir1] [dir2]
+    * Single file (show diffs):      [file]
+    * Single directory (show diffs): [dir]
+
+If you set --repo, then the paths are interpreted as Git commits
+(e.g. commit hash, branch name, or tag name) in that repository:
+
+    * Commit-to-commit:              [commit1] [commit2]
+    * Commit-to-working-copy:        [commit1]
+    * HEAD-to-working-copy:          []
+
+If kicad-cli is not in PATH, you can give its location by setting the KICAD_CLI environment variable.
+""",
     )
     parser.add_argument(
-        "path",
-        help="New version to compare. Format: [library_or_mod_file]:[library_item], with the item name optional.",
+        "path1",
+        nargs="?",
+        help="Old version to compare against. A .kicad_sym/.kicad_mod file, a library directory, "
+        "or (with --repo) a Git commit.",
+    )
+    parser.add_argument(
+        "path2",
+        nargs="?",
+        help="New version to compare. A .kicad_sym/.kicad_mod file, a library directory, "
+        "or (with --repo) a Git commit.",
+    )
+    parser.add_argument(
+        "-r",
+        "--repo",
+        type=Path,
+        help="Path to a local Git repository. Makes path1/path2 refer to Git commits or branches.",
     )
     parser.add_argument(
         "-g",
@@ -1165,146 +1293,47 @@ if __name__ == "__main__":
         "-o",
         "--output",
         type=Path,
-        help="Where to output the diff. Must be a directory for symbol/footprint library comparisons,"
-        + " and must be a file for individual symbol or footprint comparisons.",
+        help="Root directory for the diff output. Each library is written to a "
+        + "<library>.diff subdirectory inside it. If the path ends in .diff, "
+        + "it is used directly as the output directory of a single library.",
     )
     args = parser.parse_args()
 
-    path, path_name = Path(args.path), None
-    base, base_name = Path(args.base), None
+    if args.verbose >= 2:
+        log_level = logging.DEBUG
+    elif args.verbose == 1:
+        log_level = logging.INFO
+    else:
+        log_level = logging.WARNING
 
-    meta = {}
+    logging.basicConfig(level=log_level)
 
-    if args.verbose == 1:
-        logging.basicConfig(level=logging.INFO)
-    elif args.verbose > 1:
-        logging.basicConfig(level=logging.DEBUG)
+    def filter_files(path: Path) -> bool:
+        path = Path(path)
+        if path.suffix.lower() not in (".kicad_mod", ".kicad_sym"):
+            return False
+        return file_matches_glob(path, args.glob)
 
-    if not (path.is_file() or path.is_dir()):
-        logging.error(f'Path "{path}" does not exist or is not a file.')
+    try:
+        resolver = file_resolver.get_resolver(
+            args.path1, args.path2, repo=args.repo, file_filter=filter_files
+        )
+    except ValueError as e:
+        logging.error(str(e))
         sys.exit(2)
+
+    meta = _build_meta(args)
 
     workers = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
     logging.info(f"Running with {workers} parallel jobs")
 
-    try:
-        if base.exists():
-            if not path.exists():
-                logging.error(f'File "{path}" does not exist.')
-                sys.exit(2)
-
-            meta["old_git"] = None
-            meta["old_path"] = str(base)
-            meta["new_path"] = str(path)
-
-            html_diff = HTMLDiff(
-                args.output,
-                meta,
-                args.only_names,
-                file_glob=args.glob,
-                changes_only=(not args.unchanged),
-                screenshot_dir=args.screenshot_dir,
-                diff_svg_output_dir=args.diff_svg_output_dir,
-            )
-            html_diff.max_workers = workers
-            html_diff.diff(base, path)
-
-        else:
-            if (
-                base.suffix.lower() in (".kicad_mod", ".kicad_symdir")
-                and ":" not in args.base
-            ):
-                # This does not look like either "[git_revision]" or "[git_revision]:[path]"
-                logging.error(f'File "{base}" does not exist.')
-                sys.exit(2)
-
-            base_rev, _, rest = args.base.partition(":")
-            base_file, _, base_name = rest.rpartition(":")
-            base_file = Path(base_file if base_file else args.path)
-            base_rev = base_rev or "HEAD"
-
-            try:
-                proc = subprocess.run(
-                    ["git", "rev-parse", "--short", base_rev],
-                    check=True,
-                    capture_output=True,
-                    text=True,
-                    cwd=path.parent,
-                )
-                meta["old_git"] = (base_rev, proc.stdout.strip())
-
-                proc = subprocess.run(
-                    ["git", "rev-parse", "--show-toplevel"],
-                    check=True,
-                    capture_output=True,
-                    text=True,
-                    cwd=path.parent,
-                )
-                tl = meta["git_toplevel"] = Path(proc.stdout.strip())
-                meta["old_path"] = str(base_file.absolute().relative_to(tl))
-                meta["new_path"] = str(path.absolute().relative_to(tl))
-
-            except subprocess.CalledProcessError as e:
-                logging.error(
-                    f"Error parsing git revision '{base_rev}': "
-                    f"rc={e.returncode}\n{e.stderr.strip()}"
-                )
-                sys.exit(1)
-
-            with tempfile.TemporaryDirectory(suffix=path.name) as tmpd:
-                print(tmpd)
-                tmpd = Path(tmpd)
-                try:
-                    ls_path = str(
-                        base_file.absolute().relative_to(path.parent.absolute())
-                    )
-                    if path.is_dir():
-                        ls_path += "/"
-
-                    proc = subprocess.run(
-                        ["git", "ls-tree", "--name-only", base_rev, ls_path, "-z"],
-                        check=True,
-                        capture_output=True,
-                        text=True,
-                        cwd=path.parent,
-                    )
-                    for fn in proc.stdout.split("\000"):
-                        if not fn:
-                            continue
-                        if not file_matches_glob(Path(fn), args.glob):
-                            continue
-                        out_fn = tmpd / Path(fn).name
-                        with out_fn.open("w") as outf:
-                            subprocess.run(
-                                ["git", "show", f"{base_rev}:{fn}"],
-                                check=True,
-                                stderr=subprocess.PIPE,
-                                stdout=outf,
-                                text=True,
-                                cwd=path.parent,
-                            )
-                except subprocess.CalledProcessError as e:
-                    logging.error(
-                        f"Error checking out file '{base_file}' from git revision '{base_rev}': "
-                        f"rc={e.returncode}\n{e.stderr.strip()}"
-                    )
-                    sys.exit(1)
-
-                base = tmpd if path.is_dir() else tmpd / base_file.name
-
-                html_diff = HTMLDiff(
-                    args.output,
-                    meta,
-                    args.only_names,
-                    file_glob=args.glob,
-                    changes_only=(not args.unchanged),
-                    screenshot_dir=args.screenshot_dir,
-                    diff_svg_output_dir=args.diff_svg_output_dir,
-                )
-                html_diff.max_workers = workers
-                html_diff.diff(base, path)
-
-    except ValueError as e:
-        raise e
-        print(e.args[0], file=sys.stderr)
-        sys.exit(2)
+    html_diff = HTMLDiff(
+        args.output,
+        meta,
+        args.only_names,
+        changes_only=(not args.unchanged),
+        screenshot_dir=args.screenshot_dir,
+        diff_svg_output_dir=args.diff_svg_output_dir,
+    )
+    html_diff.max_workers = workers
+    html_diff.diff_pairs(resolver.files)

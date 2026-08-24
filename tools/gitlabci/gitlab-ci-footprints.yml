@@ -115,6 +115,7 @@ visual_diff:
         pygments
         wsdiff
         jinja2
+        gitpython
     # Get the MR SHA values
     - source $KICAD_LIBRARY_UTILS_DIR/tools/gitlabci/common.sh
     - $KICAD_LIBRARY_UTILS_DIR/tools/gitlabci/visual_diff.sh
