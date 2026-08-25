@@ -4,3 +4,4 @@
 # related things are.
 include:
   - local: 'library_utils/tools/gitlabci/gitlab-ci-fpgen.yml'
+  - local: 'library_utils/tools/gitlabci/gitlab-ci-libutils.yml'
