@@ -89,6 +89,7 @@ class DataPin:
     altfuncs: list = field(default_factory=list)
     graphical_type: str = "other"
     electrical_type: str = "input"
+    variant: str | None = None
 
     def __post_init__(self):
         # Maps regex for {XML pintype}/{XML pin name} to {graphical}/{electrical} type.
@@ -675,7 +676,9 @@ class Device:
                     )
 
             name = _PINNAME_MATCH.match(name).group()
-            pins_by_number[pos].append(DataPin(pos, name, pintype, altfuncs))
+            pins_by_number[pos].append(
+                DataPin(pos, name, pintype, altfuncs, variant=child.get("Variant"))
+            )
 
         # If this part has a power pad, we have to add it manually
         if (
@@ -694,29 +697,35 @@ class Device:
         # Merge pins where multiple pins of the die are bonded out to a single pin on the package.
         self.pins = []
         for pos, pin_list in pins_by_number.items():
-            if len(pin_list) == 1:
-                self.pins += pin_list
-            else:
-                pin_list = sorted(pin_list, key=pinkey)
-                altfuncs = []
-                for pin in pin_list:
-                    # Add a new entry for the IO remap
-                    altfuncs.append(
-                        kicad_sym.AltFunction(pin.name, "bidirectional", "line")
+            # Pins with the Variant attribute are not bonded, but describe
+            # a remapping. Default after reset is no remap.
+            default = [pin for pin in pin_list if pin.variant is None]
+            remapped = [pin for pin in pin_list if pin.variant is not None]
+
+            def alternates_of(pin):
+                yield kicad_sym.AltFunction(pin.name, "bidirectional", "line")
+                for func in pin.altfuncs:
+                    yield kicad_sym.AltFunction(
+                        f"{func.name} ({pin.name})", func.etype, func.shape
                     )
-                    for func in pin.altfuncs:
-                        altfuncs.append(
-                            kicad_sym.AltFunction(
-                                f"{func.name} ({pin.name})", func.etype, func.shape
-                            )
-                        )
+
+            if len(default) == 1:
+                merged = default[0]
+            else:
+                default = sorted(default, key=pinkey)
                 merged = DataPin(
                     pos,
-                    "/".join(pin.name for pin in pin_list),
-                    pin_list[0].pintype,
-                    altfuncs,
+                    "/".join(pin.name for pin in default),
+                    default[0].pintype,
+                    [alt for pin in default for alt in alternates_of(pin)],
                 )
-                self.pins.append(merged)
+
+            merged.altfuncs = merged.altfuncs + [
+                alt
+                for pin in sorted(remapped, key=pinkey)
+                for alt in alternates_of(pin)
+            ]
+            self.pins.append(merged)
 
     def create_symbol(self, lib, keywords, desc, datasheet):
         # Make the symbol
