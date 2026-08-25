@@ -4,11 +4,11 @@
 # Inside the kicad-symbols folder, run
 #     export BASE_SHA=$(git rev-parse master)
 #     export TARGET_SHA=$(git rev-parse HEAD)
-#     export KICAD_LIBRARY_UTILS_DIR=$(pwd)
 #     export TMP_BUILD_DIR=`mktemp -d` # or supply any temp directory
-#     ../kicad-library-utils/tools/gitlabci/check_symbols.sh
+#     ./library_utils/tools/gitlabci/check_symbols.sh
 
-source $(dirname ${BASH_SOURCE[0]})/common.sh
+kfg_root=$(realpath "$(dirname ${BASH_SOURCE[0]})/../../..")
+source "${kfg_root}/library_utils/tools/gitlabci/common.sh"
 
 # print python version
 python3 -V
@@ -16,10 +16,6 @@ python3 -V
 # Assert that $BASE_SHA and $TARGET_SHA are set
 if [ -z "$CI_PROJECT_DIR" ]; then
   echo "CI_PROJECT_DIR is not set"
-  exit 1
-fi
-if [ -z "$KICAD_LIBRARY_UTILS_DIR" ]; then
-  echo "KICAD_LIBRARY_UTILS_DIR is not set"
   exit 1
 fi
 if [ -z "$BASE_SHA" ]; then
@@ -40,7 +36,6 @@ echo "BASE_SHA: $BASE_SHA"
 echo "TARGET_SHA: $TARGET_SHA"
 echo "CI_PROJECT_DIR: $CI_PROJECT_DIR"
 echo "TMP_BUILD_DIR: $TMP_BUILD_DIR"
-echo "KICAD_LIBRARY_UTILS_DIR: $KICAD_LIBRARY_UTILS_DIR"
 
 # clone required repos
 if [ ! -x "$TMP_BUILD_DIR/kicad-footprints" ]; then
@@ -64,7 +59,7 @@ for LIBNAME in $CHANGED_SYMBOLS; do
   TARGET_FILENAME="$TMP_BUILD_DIR/kicad-symbols-prev/$LIBNAME"
   # the LIBAME will look like "Video.kicad_symdir/SI582.kicad_sym".
   # So we need to create the directory Video.kicad_symdir first
-  # we do this hacky, my creating it with mkdir -p and then deleting the 
+  # we do this hacky, my creating it with mkdir -p and then deleting the
   # subdirectory SI582.kicad_sym
   mkdir -p "$TARGET_FILENAME"
   rmdir "$TARGET_FILENAME"
@@ -73,7 +68,7 @@ for LIBNAME in $CHANGED_SYMBOLS; do
 done
 
 # now run comparelibs
-$KICAD_LIBRARY_UTILS_DIR/klc-check/comparelibs.py -v \
+"${kfg_root}/library_utils/klc-check/comparelibs.py" -v \
   --old $TMP_BUILD_DIR/kicad-symbols-prev/* \
   --new $CHANGED_SYMBOLS \
   --check --check-derived \
@@ -83,7 +78,7 @@ $KICAD_LIBRARY_UTILS_DIR/klc-check/comparelibs.py -v \
 KLC_ERRORS=$?
 
 # check lib table
-$KICAD_LIBRARY_UTILS_DIR/klc-check/check_lib_table.py $CI_PROJECT_DIR/*.kicad_symdir \
+${kfg_root}/library_utils/klc-check/check_lib_table.py $CI_PROJECT_DIR/*.kicad_symdir \
     --table $CI_PROJECT_DIR/sym-lib-table \
     --junit junit.xml
 

@@ -4,18 +4,19 @@ stages:
   - diffs
 
 variables:
-  # By default, use the master branch of the main KLU repository
+  # By default, use the master branch of the main KFG repository
   # You can override this in your projects GitLab UI
-  KICAD_LIBRARY_UTILS_REPO: https://gitlab.com/kicad/libraries/kicad-library-utils.git
-  KICAD_LIBRARY_UTILS_BRANCH: master
-  KICAD_LIBRARY_UTILS_DIR: ~/klu
+  # Even though the utils are now in the kfg repo, we still need to clone them
+  KICAD_LIBRARY_TOOLS_REPO: https://gitlab.com/kicad/libraries/kicad-footprint-generator.git
+  KICAD_LIBRARY_TOOLS_BRANCH: master
+  KICAD_LIBRARY_TOOLS_DIR: ~/kfg
 
 default:
   before_script:
     # ugly hack, 'resolve' the ~, because the other usage of this variable is in quotes, so ~ stays ~ which is bad
-    - KICAD_LIBRARY_UTILS_DIR="${KICAD_LIBRARY_UTILS_DIR/#\~/$HOME}"
-    - echo "Cloning ${KICAD_LIBRARY_UTILS_REPO} branch ${KICAD_LIBRARY_UTILS_BRANCH}"
-    - git clone --depth 1 "${KICAD_LIBRARY_UTILS_REPO}" "$KICAD_LIBRARY_UTILS_DIR" --branch "${KICAD_LIBRARY_UTILS_BRANCH}"
+    - KICAD_LIBRARY_TOOLS_DIR="${KICAD_LIBRARY_TOOLS_DIR/#\~/$HOME}"
+    - echo "Cloning ${KICAD_LIBRARY_TOOLS_REPO} branch ${KICAD_LIBRARY_TOOLS_BRANCH}"
+    - git clone --depth 1 "${KICAD_LIBRARY_TOOLS_REPO}" "$KICAD_LIBRARY_TOOLS_DIR" --branch "${KICAD_LIBRARY_TOOLS_BRANCH}"
     - git config --global --add safe.directory $(realpath .)
 
 klc-check:
@@ -27,6 +28,7 @@ klc-check:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
+        - "library_utils/**/*"
         - "**/*.kicad_sym"
         - "sym-lib-table"
   script:
@@ -34,7 +36,7 @@ klc-check:
     - pip install pytest
     # Don't let Gitlab force return code 1 on error
     - set +e
-    - $KICAD_LIBRARY_UTILS_DIR/tools/gitlabci/check_symbols.sh
+    - $KICAD_LIBRARY_TOOLS_DIR/library_utils/tools/gitlabci/check_symbols.sh
 
   artifacts:
     reports:
@@ -64,8 +66,8 @@ visual_diff:
         jinja2
         gitpython
     # Get the MR SHA values
-    - source $KICAD_LIBRARY_UTILS_DIR/tools/gitlabci/common.sh
-    - $KICAD_LIBRARY_UTILS_DIR/html-diff/src/html_diff.py
+    - source $KICAD_LIBRARY_TOOLS_DIR/library_utils/tools/gitlabci/common.sh
+    - $KICAD_LIBRARY_TOOLS_DIR/library_utils/html-diff/src/html_diff.py
         -j0
         --repo "${CI_PROJECT_DIR}"
         --output "diffs"

@@ -1,13 +1,14 @@
 #!/bin/bash
 
-source $KICAD_LIBRARY_UTILS_DIR/tools/gitlabci/common.sh
+kfg_root=$(realpath "$(dirname ${BASH_SOURCE[0]})/../..")
+source "${kfg_root}/library_utils/tools/gitlabci/common.sh"
 
 export TMP_BUILD_DIR=`mktemp -d`
 echo "Cloning 3d model repo"
 git clone "${KICAD_MODELS_REPO}" "$TMP_BUILD_DIR/models" --branch master
 cd src/generators
-echo "/generate_changed_models.py -p ${BASE_SHA} -c ${TARGET_SHA} -o ${TMP_BUILD_DIR}/models -i -v"
-`dirname $0`/generate_changed_models.py -p "${BASE_SHA}" -c "${TARGET_SHA}" -o "${TMP_BUILD_DIR}/models" -i -v
+echo "${kfg_root}/library_utils/tools/generate_changed_models.py -p ${BASE_SHA} -c ${TARGET_SHA} -o ${TMP_BUILD_DIR}/models -i -v"
+"${kfg_root}/library_utils/tools/generate_changed_models.py" -p "${BASE_SHA}" -c "${TARGET_SHA}" -o "${TMP_BUILD_DIR}/models" -i -v
 export branchname="gen-mr-${CI_MERGE_REQUEST_IID}"
 cd "$TMP_BUILD_DIR/models"
 git switch -c "$branchname"

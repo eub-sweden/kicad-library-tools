@@ -1,7 +1,8 @@
 #!/bin/bash
-source $(dirname ${BASH_SOURCE[0]})/common.sh
+kfg_root=$(realpath "$(dirname ${BASH_SOURCE[0]})/../../..")
+source "${kfg_root}/library_utils/tools/gitlabci/common.sh"
 
-SCRIPT="$KICAD_LIBRARY_UTILS_DIR/klc-check/check_footprint.py"
+SCRIPT="${kfg_root}/library_utils/klc-check/check_footprint.py"
 
 echo "Comparing range $BASE_SHA to $TARGET_SHA"
 
@@ -23,7 +24,7 @@ python3 "$SCRIPT" -vv \
 KLC_ERRORS=$?
 
 # check lib table
-$KICAD_LIBRARY_UTILS_DIR/klc-check/check_lib_table.py $CI_PROJECT_DIR/*.pretty \
+python3 "${kfg_root}/library_utils/klc-check/check_lib_table.py" $CI_PROJECT_DIR/*.pretty \
     --table $CI_PROJECT_DIR/fp-lib-table \
     --junit junit.xml
 

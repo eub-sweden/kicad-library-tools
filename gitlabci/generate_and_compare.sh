@@ -191,18 +191,13 @@ generate_all_footprints "${kfg_repo_dir}" "${curr_output_dir}"
 fp_file_count=$(find "$curr_output_dir" -type f | wc -l)
 echo "Current generation result: $fp_file_count footprints"
 
-if [ -z "${KICAD_LIBRARY_UTILS_DIR}" ]; then
-    echo "KICAD_LIBRARY_UTILS_DIR environment variable is not set, cannot run HTML diff"
-    exit 1
-fi
-
 open_result_args=()
 if [ "$open_result" = true ]; then
     open_result_args+=(--open-result)
 fi
 
 # Produce the HTML diff of the two directories
-"${KICAD_LIBRARY_UTILS_DIR}/html-diff/src/html_diff.py" \
+"${kfg_repo_dir}/library_utils/html-diff/src/html_diff.py" \
     -j0 \
     --verbose \
     --output "$diff_output_dir" \
