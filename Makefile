@@ -19,13 +19,13 @@ help:
 .PHONY: style-check
 style-check:
 	black --check . && \
-	python3 -m isort --check-only . || \
+	isort --check-only . || \
 		{ printf "Formatting issues found.\n\033[1;33mRun 'make style' to fix.\033[0m\n"; exit 1; }
 
 
 .PHONY: style
 style:
-	python3 -m isort .
+	isort .
 	black .
 
 
