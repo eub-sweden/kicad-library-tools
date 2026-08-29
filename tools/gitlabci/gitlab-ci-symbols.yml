@@ -65,7 +65,7 @@ visual_diff:
         gitpython
     # Get the MR SHA values
     - source $KICAD_LIBRARY_UTILS_DIR/tools/gitlabci/common.sh
-    - $KICAD_LIBRARY_UTILS_DIR/tools/html-diff/src/html_diff.py \
+    - $KICAD_LIBRARY_UTILS_DIR/html-diff/src/html_diff.py \
         -j0 \
         --repo "${CI_PROJECT_DIR}" \
         --output "diffs" \
