@@ -1,6 +1,13 @@
 # KiCad Library Utils
 
-This repository contains a variety of tools related to the libraries used in [KiCad](https://kicad.org/):
+> [!important]
+> The content in this directory will be moved or deleted.
+> What you see here is the current state of the effort to
+> simplify our tooling.
+> https://gitlab.com/groups/kicad/libraries/-/work_items/17
+
+This directory contains a variety of tools related to the libraries used in [KiCad](https://kicad.org/):
+
 
 * symbols
 * footprints
@@ -16,7 +23,7 @@ Your contribution for improving this situation is welcome.
 Other tools (beside style and quality checks) are welcome to this repository, too.
 
 
-# Repository content
+# Content
 
 ## klc-check directory
 

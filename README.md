@@ -1,8 +1,20 @@
-# KiCad footprint and 3D model generators
+# KiCad library tooling: footprint and 3D model generators, symbol generators, klc-check scripts and CI-tooling
+
+
+> [!important]
+> There is ongoing effort to integrate the former kicad-library-utils
+> repository into this repo. The k-l-u repo content has been merged
+> into the `library_utils` subdirectory. The integration is not yet
+> finished, you may be suprised by duplication or other unusual things
+> in the meantime,
+> https://gitlab.com/groups/kicad/libraries/-/work_items/17
 
 ## Quick start
 
 Checkout the [Setup and workflow page](https://gitlab.com/groups/kicad/libraries/-/wikis/Generators#setup-and-workflow) page on the Wiki for detailed instructions on **Setup**, **Workflow**, and **Running the Generators**.
+
+Also see [library_utils/README.md](library_utils/README.md) for information about the symbol generators and klc-check scripts
+
 
 ## Documentation
 
