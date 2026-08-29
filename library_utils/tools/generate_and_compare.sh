@@ -5,7 +5,9 @@ set -ex
 # Default values
 
 # Guess the directory of the repo from the script if not given
-kfg_repo_dir=$(realpath "$(dirname "$0")/..")
+# TODO this is ugly, because it breaks when the script is moved to another directory
+#      ask me how I know..
+kfg_repo_dir=$(realpath "$(dirname "$0")/../..")
 
 # This is the URL to download the baseline footprints archive
 # set to the default URL for the upstream repo's master branch
