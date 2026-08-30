@@ -81,6 +81,15 @@ def render_arc(sym, arc, **style):
 
 def render_text(sym, elem, **style):
 
+    content = getattr(elem, "text", getattr(elem, "value", None))
+    assert content is not None
+    x, y = elem.posx, -elem.posy
+
+    yield from text_elem(x, y, elem.rotation, content, elem.effects, style)
+
+
+def render_property(sym, elem, **style):
+
     if elem.is_hidden:
         return
 
@@ -280,7 +289,7 @@ def _render_sym_internal(sym, root_sym, unit=1):
         (render_pin, root_sym.pins),
         (render_text, root_sym.texts),
         # Properties are the only bit that is not in the root symbol
-        (render_text, sym.properties),
+        (render_property, sym.properties),
     ]:
         for elem in elems:
             if not hasattr(elem, "unit") or elem.unit in (0, unit):  # bad API
