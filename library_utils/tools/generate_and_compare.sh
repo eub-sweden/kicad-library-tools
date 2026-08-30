@@ -10,10 +10,11 @@ set -ex
 kfg_repo_dir=$(realpath "$(dirname "$0")/../..")
 
 # This is the URL to download the baseline footprints archive
-# set to the default URL for the upstream repo's master branch
+# set to the default URL for the upstream repo's main branch
 # which allows users to get the latest baseline footprints faster (probably) than
 # generating them themselves.
-base_url="https://gitlab.com/api/v4/projects/21610360/jobs/artifacts/master/raw/footprints.tar.xz?job=fp-generate"
+baseline_branch="main"
+base_url="https://gitlab.com/api/v4/projects/21610360/jobs/artifacts/${baseline_branch}/raw/footprints.tar.xz?job=fp-generate"
 skip_dl=false
 base_rev=""
 script_subdirs=()
@@ -27,10 +28,10 @@ usage() {
     echo "  -r repo           kicad-footprint-generator repo (default: work it out
                               from the script location)"
     echo "  -u base-url       base URL to download a baseline footprints archive
-                              (default KiCad generator repo master branch archive)"
+                              (default KiCad generator repo main branch archive)"
     echo "  -U                skip downloading the baseline footprints archive if the file exists"
     echo "  -b base-rev       base revision to generate the baseline footprints.
-                              Overrides the URL. (e.g. 'HEAD^' or 'master')"
+                              Overrides the URL. (e.g. 'HEAD^' or 'main')"
     echo "  -t temp-dir       Put temporary files in this directory (default: ./output)"
     echo "  -o output-dir     output directory for diffs (default: ./output/diffs)"
     echo "  -g generator      generator directories to run the generate in (default: no subdir,

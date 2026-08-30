@@ -133,7 +133,7 @@ fp-generate:
   tags:
     - saas-linux-medium-amd64
   rules:
-    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "main"
   image: python:3.13
   before_script:
     - python --version

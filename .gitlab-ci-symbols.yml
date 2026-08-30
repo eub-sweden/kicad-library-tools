@@ -4,11 +4,11 @@ stages:
   - diffs
 
 variables:
-  # By default, use the master branch of the main KFG repository
+  # By default, use the main branch of the main KiLT repository
   # You can override this in your projects GitLab UI
   # Even though the utils are now in the kfg repo, we still need to clone them
-  KICAD_LIBRARY_TOOLS_REPO: https://gitlab.com/kicad/libraries/kicad-footprint-generator.git
-  KICAD_LIBRARY_TOOLS_BRANCH: master
+  KICAD_LIBRARY_TOOLS_REPO: https://gitlab.com/kicad/libraries/kicad-library-tools.git
+  KICAD_LIBRARY_TOOLS_BRANCH: main
   KICAD_LIBRARY_TOOLS_DIR: ~/kfg
 
 default:
