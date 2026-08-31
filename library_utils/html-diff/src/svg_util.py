@@ -1,5 +1,14 @@
+import logging
 import math
 import textwrap
+
+
+def guarded(item_label: str, gen):
+    """Yield everything from the gen function. On an exception, log and skip the item."""
+    try:
+        yield from gen
+    except Exception as e:
+        logging.error(f"Error rendering {item_label}:\n\t{e}")
 
 
 class Tag:

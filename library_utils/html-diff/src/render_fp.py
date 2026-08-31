@@ -16,7 +16,7 @@ except ImportError:
     ) not in sys.path:
         sys.path.insert(0, str(common))
 
-from svg_util import Tag, add_bboxes, bbox, define_arc, setup_svg
+from svg_util import Tag, add_bboxes, bbox, define_arc, guarded, setup_svg
 
 LAYERS = [
     "Names",
@@ -401,6 +401,62 @@ def render_pad_custom(pad, layer, **style):
         yield from render_pad_circle(pad, layer, **style)
 
 
+def _render_mod_pad(pad):
+    """Render a single pad to (layer, bbox, tag) tuples."""
+    fun = globals()[f'render_pad_{pad["shape"]}']
+
+    if "number" in pad:
+        x, y = pad["pos"]["x"], pad["pos"]["y"]
+        yield "Names", (x, y, x, y), Tag(
+            "text",
+            [pad["number"]],
+            font_family="monospace",
+            font_size="0.2px",
+            x=x,
+            y=y,
+            dominant_baseline="middle",
+            text_anchor="middle",
+            **{"class": "l-Names-f"},
+        )
+
+    for layer in LAYERS:
+        if any(
+            fnmatch(layer, l.replace(".", "_")) for l in pad["layers"]  # NOQA: E741
+        ):
+
+            # Custom pads are rendered by their primitives, which can have fills or not
+            if pad["shape"] == "custom":
+                style = {"class": ""}
+            else:
+                # Normal pads are always filled
+                style = {"class": layerclass(layer, "fill")}
+
+            for bbox, tag in fun(pad, layer, **style):  # NOQA: F402
+                yield layer, bbox, tag
+
+    if pad["drill"]:
+        if pad["type"] == "thru_hole":
+            layer = "Hole_Plated"
+        elif pad["type"] == "np_thru_hole":
+            layer = "Hole_Nonplated"
+        else:
+            # SMD pads don't have drills, but they *can* have an offset
+            # which is in the drill structure.
+            return
+
+        for bbox, tag in render_drill(pad, **{"class": f"l-{layer}-f"}):
+            yield layer, bbox, tag
+
+
+def _render_mod_zone(zone):
+    """Render a single zone to (layer, bbox, tag) tuples."""
+    for layer in zone["layers"]:
+        style = {"class": layerclass(layer, "fill")}
+
+        for bbox, tag in render_zone(zone, **style):  # NOQA: F402
+            yield layer, bbox, tag
+
+
 def _render_mod_internal(mod):
     for fun, elems in [
         (render_line, mod.lines),
@@ -413,65 +469,20 @@ def _render_mod_internal(mod):
     ]:
         # Single-layer elements
         for elem in elems:
-            for bbox, tag in fun(elem, **elem_style(elem)):  # NOQA: F402
+            for bbox, tag in guarded(  # NOQA: F402
+                f"element {elem}", fun(elem, **elem_style(elem))
+            ):
                 yield elem["layer"], bbox, tag
 
     for pad in mod.pads:
-        fun = globals()[f'render_pad_{pad["shape"]}']
-
-        if "number" in pad:
-            x, y = pad["pos"]["x"], pad["pos"]["y"]
-            yield "Names", (x, y, x, y), Tag(
-                "text",
-                [pad["number"]],
-                font_family="monospace",
-                font_size="0.2px",
-                x=x,
-                y=y,
-                dominant_baseline="middle",
-                text_anchor="middle",
-                **{"class": "l-Names-f"},
-            )
-
-        for layer in LAYERS:
-            if any(
-                fnmatch(layer, l.replace(".", "_")) for l in pad["layers"]  # NOQA: E741
-            ):
-
-                # Custom pads are rendered by their primitives, which can have fills or not
-                if pad["shape"] == "custom":
-                    style = {"class": ""}
-                else:
-                    # Normal pads are always filled
-                    style = {"class": layerclass(layer, "fill")}
-
-                for bbox, tag in fun(pad, layer, **style):
-                    yield layer, bbox, tag
-
-        if pad["drill"]:
-            if pad["type"] == "thru_hole":
-                layer = "Hole_Plated"
-            elif pad["type"] == "np_thru_hole":
-                layer = "Hole_Nonplated"
-            else:
-                # SMD pads don't have drills, but they *can* have an offset
-                # which is in the drill structure.
-                continue
-
-            for bbox, tag in render_drill(pad, **{"class": f"l-{layer}-f"}):
-                yield layer, bbox, tag
+        yield from guarded(f"pad {pad}", _render_mod_pad(pad))
 
     for point in mod.points:
-        for bbox, tag in render_point(point):
+        for bbox, tag in guarded(f"point {point}", render_point(point)):
             yield point["layer"], bbox, tag
 
     for zone in mod.zones:
-
-        for layer in zone["layers"]:
-            style = {"class": layerclass(layer, "fill")}
-
-            for bbox, tag in render_zone(zone, **style):
-                yield layer, bbox, tag
+        yield from guarded(f"zone {zone}", _render_mod_zone(zone))
 
 
 def render_mod(mod: kicad_mod.KicadMod) -> str:

@@ -13,7 +13,7 @@ except ImportError:
         sys.path.insert(0, str(common))
 
 import kicad_sym  # NOQA: F811
-from svg_util import Tag, add_bboxes, bbox, define_arc, setup_svg
+from svg_util import Tag, add_bboxes, bbox, define_arc, guarded, setup_svg
 
 
 def elem_style(elem):
@@ -292,9 +292,12 @@ def _render_sym_internal(sym, root_sym, unit=1):
         (render_property, sym.properties),
     ]:
         for elem in elems:
-            if not hasattr(elem, "unit") or elem.unit in (0, unit):  # bad API
-                for bbox, tag in fun(root_sym, elem, **elem_style(elem)):  # NOQA: F402
-                    yield bbox, tag
+            if hasattr(elem, "unit") and elem.unit not in (0, unit):  # bad API
+                continue
+            yield from guarded(
+                f"element {elem} of symbol {sym.name}",
+                fun(root_sym, elem, **elem_style(elem)),
+            )
 
 
 def render_sym(
