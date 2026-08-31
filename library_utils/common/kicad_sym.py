@@ -1142,8 +1142,8 @@ class KicadSymbol(KicadSymbolBase):
     in_bom: bool = True
     on_board: bool = True
     extends: Optional[str] = None
-    unit_count: int = 0
-    body_style_count: int = 0
+    unit_count: int = 1
+    body_style_count: int = 1
     embedded_fonts = False
     files: List[KicadEmbeddedFile] = field(default_factory=list)
     """
@@ -1523,9 +1523,9 @@ class KicadSymbol(KicadSymbolBase):
 
         # reset members related to graphical part
         newsym.unit_names = {}
-        newsym.unit_count = 0
-        newsym.body_styles = []
-        newsym.body_style_count = 0
+        newsym.unit_count = 1
+        newsym.body_styles = ["standard"]
+        newsym.body_style_count = 1
 
         newsym.name = name
         newsym.extends = self.name

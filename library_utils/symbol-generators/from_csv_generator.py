@@ -714,7 +714,9 @@ def output_symbol(input_csv_file: str, cli_args: Any) -> None:
     )
 
     new_symbol.add_default_properties()
-    new_symbol.unit_count = len(symbol_units_dict.keys())
+
+    # Even if we don't have any unit data, all symbols must have at least one unit
+    new_symbol.unit_count = max(1, len(symbol_units_dict.keys()))
 
     max_bounding_box_width = 0
     max_bounding_box_height = 0
