@@ -144,6 +144,9 @@ class KicadMod:
         # arcs
         self.arcs = self._getArcs()
 
+        # beziers
+        self.beziers = self._getBeziers()
+
         # PCB points
         self.points = self._getPoints()
 
@@ -540,6 +543,36 @@ class KicadMod:
 
         return arcs
 
+    def _getBeziers(self, layer=None) -> List[Dict[str, Any]]:
+        beziers = []
+        for bezier in self._getArray(self.sexpr_data, "fp_curve"):
+            bezier_dict = {}
+            # filter layers, None = all layers
+            if self._hasValue(bezier, layer) or layer is None:
+                bezier_dict["points"] = self._getPts(bezier)
+
+                try:
+                    a = self._getArray(bezier, "layer")[0]
+                    bezier_dict["layer"] = a[1]
+                except IndexError:
+                    bezier_dict["layer"] = ""
+
+                try:
+                    a = self._getArray(bezier, "width")[0]
+                    bezier_dict["width"] = a[1]
+                except IndexError:
+                    bezier_dict["width"] = 0
+
+                try:
+                    a = self._getArray(bezier, "fill")[0]
+                    bezier_dict["fill"] = a[1] in ["solid", "yes"]
+                except IndexError:
+                    bezier_dict["fill"] = False
+
+                beziers.append(bezier_dict)
+
+        return beziers
+
     def _getPoints(self) -> List[Dict[str, Any]]:
         pts = []
         for pt in self._getArray(self.sexpr_data, "point"):
@@ -759,6 +792,13 @@ class KicadMod:
                             e = self._getArray(primitive, "end")
                             if e:
                                 p["end"] = {"x": e[0][1], "y": e[0][2]}
+                        elif primitive[0] == "gr_curve":
+                            # Read the curve's points
+                            p["pts"] = []
+                            pts = self._getArray(primitive, "pts")
+                            for pt in pts[0][1:]:
+                                if pt[0] == "xy":
+                                    p["pts"].append({"x": pt[1], "y": pt[2]})
 
                         try:
                             a = self._getArray(primitive, "fill")[0]
@@ -954,6 +994,12 @@ class KicadMod:
             arc["mid"]["y"] -= anchor_point[1]
             arc["end"]["y"] -= anchor_point[1]
 
+        # change beziers position
+        for bezier in self.beziers:
+            for point in bezier["points"]:
+                point["x"] -= anchor_point[0]
+                point["y"] -= anchor_point[1]
+
         # change pads positions
         for pad in self.pads:
             pad["pos"]["x"] -= anchor_point[0]
@@ -990,6 +1036,11 @@ class KicadMod:
             arc["start"] = _rotatePoint(arc["start"], degrees)
             arc["mid"] = _rotatePoint(arc["mid"], degrees)
             arc["end"] = _rotatePoint(arc["end"], degrees)
+
+        # change beziers position
+        for bezier in self.beziers:
+            for i, point in enumerate(bezier["points"]):
+                bezier["points"][i] = _rotatePoint(point, degrees)
 
         # change pads positions
         for pad in self.pads:
@@ -1072,6 +1123,14 @@ class KicadMod:
 
         return arcs
 
+    def filterBeziers(self, layer: str) -> List[Dict[str, Any]]:
+        beziers = []
+        for bezier in self.beziers:
+            if bezier["layer"] == layer:
+                beziers.append(bezier)
+
+        return beziers
+
     # Return the geometric bounds for a given layer
     # Includes lines, arcs, circles, rects
     def geometricBoundingBox(self, layer: str) -> BoundingBox:
@@ -1150,6 +1209,12 @@ class KicadMod:
                     a = a + dalpha
 
             bb.addPoint(ex, None)
+
+        # Add all beziers
+        beziers = self.filterBeziers(layer)
+        for bezier in beziers:
+            for pt in bezier["points"]:
+                bb.addPoint(pt["x"], pt["y"])
 
         return bb
 
@@ -1398,6 +1463,26 @@ class KicadMod:
         se.addItems(fp_arc, newline=False)
         se.endGroup(newline=False)
 
+    def _formatBezier(self, bezier, se: sexpr.SexprBuilder):
+        se.startGroup("fp_curve", newline=True, indent=False)
+
+        se.startGroup("pts", newline=False, indent=True)
+        pos = 0
+        for pt in bezier["points"]:
+            se.addItem(
+                [{"xy": [pt["x"], pt["y"]]}], newline=(pos != 0), indent=(pos == 1)
+            )
+            pos += 1
+        if pos > 1:
+            se.unIndent()
+        se.endGroup(newline=False)
+
+        fp_curve = [{"layer": bezier["layer"]}, {"width": bezier["width"]}]
+        if bezier.get("fill"):
+            fp_curve.append({"fill": "solid"})
+        se.addItems(fp_curve, newline=False)
+        se.endGroup(newline=False)
+
     def _formatPad(self, pad, se: sexpr.SexprBuilder):
         pos = pad["pos"]
 
@@ -1610,6 +1695,10 @@ class KicadMod:
         # Add Arc Data
         for arc in self.arcs:
             self._formatArc(arc, se)
+
+        # Add Bezier Data
+        for bezier in self.beziers:
+            self._formatBezier(bezier, se)
 
         # Add Pad Data
         for pad in self.pads:

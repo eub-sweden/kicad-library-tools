@@ -225,6 +225,31 @@ def render_arc(arc, **style):
     yield elem_bbox, Tag("path", **style, d=d)
 
 
+def render_bezier(bezier, **style):
+    # KiCad beziers are cubic segments in groups of 4 points: start, control 1,
+    # control 2, end.
+    points = bezier.get("points", bezier.get("pts"))  # bad API
+    if len(points) < 4:
+        raise ValueError(
+            f"Bezier element has {len(points)} points, but at least 4 are required"
+        )
+
+    path_data = []
+    for i in range(0, len(points) - 3, 3):
+        x0, y0 = points[i]["x"], points[i]["y"]
+        x1, y1 = points[i + 1]["x"], points[i + 1]["y"]
+        x2, y2 = points[i + 2]["x"], points[i + 2]["y"]
+        x3, y3 = points[i + 3]["x"], points[i + 3]["y"]
+
+        if i == 0:
+            path_data.append(f"M {x0:.6f} {y0:.6f}")
+        path_data.append(f"C {x1:.6f} {y1:.6f}, {x2:.6f} {y2:.6f}, {x3:.6f} {y3:.6f}")
+
+    yield bbox(*[(pt["x"], pt["y"]) for pt in points]), Tag(
+        "path", **style, d=" ".join(path_data)
+    )
+
+
 def render_point(point):
 
     stroke_width = point["size"] / 20
@@ -389,6 +414,8 @@ def render_pad_custom(pad, layer, **style):
             yield from render_circle(prim, **prim_style)
         elif prim["type"] == "gr_rect":
             yield from render_rect(prim, **prim_style)
+        elif prim["type"] == "gr_curve":
+            yield from render_bezier(prim, **prim_style)
 
     anchor = pad["options"]["anchor"]
 
@@ -464,6 +491,7 @@ def _render_mod_internal(mod):
         (render_circle, mod.circles),
         (render_polygon, mod.polys),
         (render_arc, mod.arcs),
+        (render_bezier, mod.beziers),
         (render_text, mod.userText),
         (render_text, [mod.reference, mod.value]),
     ]:
