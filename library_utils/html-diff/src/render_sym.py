@@ -20,13 +20,26 @@ def elem_style(elem):
     if isinstance(elem, (kicad_sym.Property, kicad_sym.Text)):
         return {"class": "l-any-f"}
     else:
-        classes = "l-any-s"
+        classes = []
         if getattr(elem, "fill_type", None) == "outline":
-            classes += " l-any-f"
+            classes.append("l-any-f")
+
+        stroke_width = getattr(elem, "stroke_width", 0)
+
+        if stroke_width < 0:
+            # An explicit stroke width of < 0 disables the stroke
+            stroke_width = 0
+        elif stroke_width == 0:
+            # Exactly 0 means "use schematic default". The default value
+            # for the schematic default is 0.152mm (6 mil), so we use that.
+            stroke_width = 0.1524
+
+        if stroke_width > 0:
+            classes.append("l-any-s")
 
         return {
-            "class": classes,
-            "stroke_width": max(0.2, getattr(elem, "stroke_width", 0)),
+            "class": " ".join(classes),
+            "stroke_width": stroke_width,
             "stroke_linecap": "round",
             "stroke_linejoin": "round",
         }
