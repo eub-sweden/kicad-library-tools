@@ -1297,6 +1297,19 @@ class HTMLDiff:
                     sym_diff_info.new_kicad_sym, sym_diff_info.new_name
                 )
 
+            # Write the SVGs to disk for debugging or use in other tools
+            if self.diff_svg_output_dir is not None:
+                for i, svg in enumerate(svgs_old, start=1):
+                    (
+                        self.diff_svg_output_dir
+                        / f"{sym_diff_info.new_name}.old.unit{i}.svg"
+                    ).write_text(svg)
+                for i, svg in enumerate(svgs_new, start=1):
+                    (
+                        self.diff_svg_output_dir
+                        / f"{sym_diff_info.new_name}.new.unit{i}.svg"
+                    ).write_text(svg)
+
             sexpr_diff = wsdiff.html_diff_block(
                 old_content,
                 new_content,
