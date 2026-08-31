@@ -79,6 +79,27 @@ def render_arc(sym, arc, **style):
     yield elem_bbox, Tag("path", **style, d=d)
 
 
+def render_bezier(sym, elem, **style):
+    # KiCad beziers are cubic segments in groups of 4 points: start, control 1,
+    # control 2, end.
+    points = [(pt.x, -pt.y) for pt in elem.points]
+
+    if len(points) < 4:
+        raise ValueError(
+            f"Bezier element has {len(points)} points, but at least 4 are required"
+        )
+
+    x0, y0 = points[0]
+    x1, y1 = points[1]
+    x2, y2 = points[2]
+    x3, y3 = points[3]
+    d = f"M {x0:.6f} {y0:.6f} C {x1:.6f} {y1:.6f}, {x2:.6f} {y2:.6f}, {x3:.6f} {y3:.6f}"
+
+    # A cubic Bezier lies within the convex hull of its control points, so the
+    # control-point bbox is a safe (if conservative) bounding box.
+    yield bbox(*points), Tag("path", **style, d=d)
+
+
 def render_text(sym, elem, **style):
 
     content = getattr(elem, "text", getattr(elem, "value", None))
@@ -286,6 +307,7 @@ def _render_sym_internal(sym, root_sym, unit=1):
         (render_circle, root_sym.circles),
         (render_polyline, root_sym.polylines),
         (render_arc, root_sym.arcs),
+        (render_bezier, root_sym.beziers),
         (render_pin, root_sym.pins),
         (render_text, root_sym.texts),
         # Properties are the only bit that is not in the root symbol
