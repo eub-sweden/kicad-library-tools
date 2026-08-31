@@ -15,6 +15,7 @@ import textwrap
 import traceback
 import warnings
 import webbrowser
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
@@ -99,6 +100,15 @@ def _construct_syntax_css() -> str:
 
 
 def html_stacktrace(fun):
+    """
+    Decorator to wrap a function and catch exceptions, formatting them as HTML.
+
+    This means that unrecoverable errors in the diff formatter:
+        - don't crash the whole diff generation
+        - are reported in the HTML output instead of being only hidden in the
+          console output
+    """
+
     @functools.wraps(fun)
     def wrapper(*args, **kwargs):
         try:
@@ -109,6 +119,21 @@ def html_stacktrace(fun):
             return string.Template(ERROR_TEMPLATE).substitute(error=formatted_exc)
 
     return wrapper
+
+
+@contextmanager
+def _item_error_context(item_type: str, item_name: str):
+    """Add the item name as an exception note to any error raised in the block.
+
+    Args:
+        item_type: The type of the item being processed (e.g., "symbol", "footprint").
+        item_name: The name of the item being processed.
+    """
+    try:
+        yield
+    except Exception as e:
+        e.add_note(f"while processing {item_type} {item_name}")
+        raise
 
 
 def button(title, url, _id=None):
@@ -866,6 +891,7 @@ class HTMLDiff:
                 pool.join()
             except Exception as e:
                 warnings.warn(f"Error processing footprints: {e}")
+                raise e
 
     def _process_one_mod(
         self,
@@ -875,44 +901,49 @@ class HTMLDiff:
         next_pair: file_resolver.ResolvedFilePair,
         out_file: Path,
     ):
-        old_file = Path(pair.file1) if pair.file1 is not None else None
-        new_file = Path(pair.file2) if pair.file2 is not None else None
+        with _item_error_context("footprint", pair.name.stem):
+            old_file = Path(pair.file1) if pair.file1 is not None else None
+            new_file = Path(pair.file2) if pair.file2 is not None else None
 
-        old_text = (
-            old_file.read_text() if old_file is not None and old_file.is_file() else ""
-        )
-        new_text = (
-            new_file.read_text() if new_file is not None and new_file.is_file() else ""
-        )
+            old_text = (
+                old_file.read_text()
+                if old_file is not None and old_file.is_file()
+                else ""
+            )
+            new_text = (
+                new_file.read_text()
+                if new_file is not None and new_file.is_file()
+                else ""
+            )
 
-        ref_svg = ""
+            ref_svg = ""
 
-        if new_file is not None and new_file.is_file():
-            ref_fn = self._get_ref_fn(new_file)
-            if ref_fn.is_file():
-                ref_svg = ref_fn.read_text()
-            else:
-                ref_fn = ref_fn.with_name(f"{new_file.stem}.svg")
-                ref_svg = ref_fn.read_text()
+            if new_file is not None and new_file.is_file():
+                ref_fn = self._get_ref_fn(new_file)
+                if ref_fn.is_file():
+                    ref_svg = ref_fn.read_text()
+                else:
+                    ref_fn = ref_fn.with_name(f"{new_file.stem}.svg")
+                    ref_svg = ref_fn.read_text()
 
-        old_url, new_url = self._pair_urls(pair)
+            old_url, new_url = self._pair_urls(pair)
 
-        old_name = self._rename_old_name(pair)
-        old_name = old_name.stem if old_name is not None else None
+            old_name = self._rename_old_name(pair)
+            old_name = old_name.stem if old_name is not None else None
 
-        diff_text = self.mod_diff(
-            part_name=pair.name.stem,
-            lib_name=lib_name,
-            new_text=new_text,
-            old_text=old_text,
-            prev_diff=self._diff_name(prev_pair.name).name,
-            next_diff=self._diff_name(next_pair.name).name,
-            ref_svg=ref_svg,
-            old_name=old_name,
-            old_url=old_url,
-            new_url=new_url,
-        )
-        out_file.write_text(diff_text)
+            diff_text = self.mod_diff(
+                part_name=pair.name.stem,
+                lib_name=lib_name,
+                new_text=new_text,
+                old_text=old_text,
+                prev_diff=self._diff_name(prev_pair.name).name,
+                next_diff=self._diff_name(next_pair.name).name,
+                ref_svg=ref_svg,
+                old_name=old_name,
+                old_url=old_url,
+                new_url=new_url,
+            )
+            out_file.write_text(diff_text)
 
     @dataclass
     class SymLibDiffInfo:
@@ -1058,7 +1089,7 @@ class HTMLDiff:
                 pool.terminate()
                 pool.join()
             except Exception as e:
-                warnings.warn(f"Error processing footprints: {e}")
+                warnings.warn(f"Error processing symbols: {e}")
                 raise e
 
     def _get_symbol_diffs(
@@ -1229,89 +1260,89 @@ class HTMLDiff:
         next_file,
         prev_file,
     ):
+        with _item_error_context("symbol", sym_diff_info.new_name):
+            screenshots_content = [f.read_text() for f in unit_files]
 
-        screenshots_content = [f.read_text() for f in unit_files]
+            svgs_old = []
+            svgs_new = []
 
-        svgs_old = []
-        svgs_new = []
+            old_content = ""
+            new_content = ""
 
-        old_content = ""
-        new_content = ""
+            new_sym = None
+            old_sym = None
 
-        new_sym = None
-        old_sym = None
+            def _get_sym_data(kicad_sym_path: Path, sym_name: str):
+                """
+                Extract symbol data - the raw s-expr lines, the parsed symbol and the rendered SVGs,
+                for a given symbol in a given kicad_sym file.
+                """
+                lib = kicad_sym.KicadLibrary.from_file(kicad_sym_path)
+                content = kicad_sym_path.read_text()
+                sym = lib.get_symbol(sym_name)
 
-        def _get_sym_data(kicad_sym_path: Path, sym_name: str):
-            """
-            Extract symbol data - the raw s-expr lines, the parsed symbol and the rendered SVGs,
-            for a given symbol in a given kicad_sym file.
-            """
-            lib = kicad_sym.KicadLibrary.from_file(kicad_sym_path)
-            content = kicad_sym_path.read_text()
-            sym = lib.get_symbol(sym_name)
+                svgs = [
+                    str(x) for x in render_sym.render_sym(sym, lib, default_style=False)
+                ]
 
-            svgs = [
-                str(x) for x in render_sym.render_sym(sym, lib, default_style=False)
-            ]
+                return content, sym, svgs
 
-            return content, sym, svgs
+            if sym_diff_info.old_lines != (0, 0):
+                old_content, old_sym, svgs_old = _get_sym_data(
+                    sym_diff_info.old_kicad_sym, sym_diff_info.old_name
+                )
 
-        if sym_diff_info.old_lines != (0, 0):
-            old_content, old_sym, svgs_old = _get_sym_data(
-                sym_diff_info.old_kicad_sym, sym_diff_info.old_name
+            if sym_diff_info.new_lines != (0, 0):
+                new_content, new_sym, svgs_new = _get_sym_data(
+                    sym_diff_info.new_kicad_sym, sym_diff_info.new_name
+                )
+
+            sexpr_diff = wsdiff.html_diff_block(
+                old_content,
+                new_content,
+                filename="",
+                lexer=SexprLexer(),
             )
 
-        if sym_diff_info.new_lines != (0, 0):
-            new_content, new_sym, svgs_new = _get_sym_data(
-                sym_diff_info.new_kicad_sym, sym_diff_info.new_name
+            prop_table = print_sym_properties.format_properties(old_sym, new_sym)
+
+            unit_names: list[str] = []
+
+            # Currently, matching units between old and new is not done.
+            # That's quite tricky as units can be added, removed or reordered.
+            # For now, just show the unit names of the new symbol.
+            if new_sym is not None:
+                for unit in range(new_sym.unit_count):
+                    unit_name = new_sym.unit_names.get(unit + 1)
+                    unit_suffix = get_unit_suffix(unit + 1)
+
+                    if unit_name is not None:
+                        # Still show the suffix as this may be useful when looking at ref-des
+                        unit_name = f"{unit_suffix}: {unit_name}"
+                    else:
+                        unit_name = f"Unit {unit_suffix}"
+
+                    unit_names.append(unit_name)
+
+            sym_diff_info.out_file.write_text(
+                self._format_html_diff(
+                    lib_name=symdir_diff_info.new_lib_path.stem,
+                    part_name=sym_diff_info.new_name,
+                    next_diff=next_file,
+                    prev_diff=prev_file,
+                    enable_layers=False,
+                    canvas_background="#e0e0e0",
+                    hide_text_in_diff=False,
+                    properties_table=prop_table,
+                    code_diff=sexpr_diff,
+                    old_svg=js_str_list(svgs_old),
+                    new_svg=js_str_list(svgs_new),
+                    reference_svg=js_str_list(screenshots_content),
+                    unit_names=unit_names,
+                    old_url=sym_diff_info.old_url,
+                    new_url=sym_diff_info.new_url,
+                )
             )
-
-        sexpr_diff = wsdiff.html_diff_block(
-            old_content,
-            new_content,
-            filename="",
-            lexer=SexprLexer(),
-        )
-
-        prop_table = print_sym_properties.format_properties(old_sym, new_sym)
-
-        unit_names: list[str] = []
-
-        # Currently, matching units between old and new is not done.
-        # That's quite tricky as units can be added, removed or reordered.
-        # For now, just show the unit names of the new symbol.
-        if new_sym is not None:
-            for unit in range(new_sym.unit_count):
-                unit_name = new_sym.unit_names.get(unit + 1)
-                unit_suffix = get_unit_suffix(unit + 1)
-
-                if unit_name is not None:
-                    # Still show the suffix as this may be useful when looking at ref-des
-                    unit_name = f"{unit_suffix}: {unit_name}"
-                else:
-                    unit_name = f"Unit {unit_suffix}"
-
-                unit_names.append(unit_name)
-
-        sym_diff_info.out_file.write_text(
-            self._format_html_diff(
-                lib_name=symdir_diff_info.new_lib_path.stem,
-                part_name=sym_diff_info.new_name,
-                next_diff=next_file,
-                prev_diff=prev_file,
-                enable_layers=False,
-                canvas_background="#e0e0e0",
-                hide_text_in_diff=False,
-                properties_table=prop_table,
-                code_diff=sexpr_diff,
-                old_svg=js_str_list(svgs_old),
-                new_svg=js_str_list(svgs_new),
-                reference_svg=js_str_list(screenshots_content),
-                unit_names=unit_names,
-                old_url=sym_diff_info.old_url,
-                new_url=sym_diff_info.new_url,
-            )
-        )
 
 
 def _build_meta(args) -> dict:
