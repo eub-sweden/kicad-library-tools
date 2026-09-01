@@ -13,8 +13,31 @@
 
 import sys
 
-from generators.tools.footprint import standard_box_generator
+from generators.tools.footprint.standard_box_generator import (
+    StandardBoxSpec,
+    create_footprints,
+)
+from generators.tools.spec.spec_generator import get_file_name_ids_specs
 
 
-standard_box_generator.main("bridge_rectivier_NOT_PORTED", sys.argv[1:])
+def main(generator_name: str, file_names: list[str]) -> int:
+    """Generate the footprints for the given YAML files.
 
+    Args:
+        generator_name: The name of the generator.
+        file_names: The list of YAML files to process.
+
+    Returns:
+        The number of footprints generated.
+    """
+    num_footprints_generated = 0
+    for file_name in file_names:
+        for _, ids_specs in get_file_name_ids_specs(None, file_name):
+            for id, spec in ids_specs:
+                spec_obj = StandardBoxSpec(id, spec, file_name)
+                num_footprints_generated += create_footprints(spec_obj, generator_name)
+    return num_footprints_generated
+
+
+if __name__ == "__main__":
+    main("bridge_rectivier_NOT_PORTED", sys.argv[1:])

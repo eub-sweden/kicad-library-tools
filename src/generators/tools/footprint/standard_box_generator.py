@@ -11,12 +11,14 @@
 #
 # (C) The KiCad Librarian Team
 
-import sys
+import copy
 
 from collections.abc import Iterable, Iterator, Sequence
 from typing import Any
 
-from KicadModTree import Footprint, FootprintType, ModArgparser, Pad, Model, Node, Text
+from KicadModTree import Footprint, FootprintType, Pad, Model, Node, Text
+from generators.tools.spec.base_spec import BaseSpec
+from generators.tools.spec.spec_registry import register_spec
 from kilibs.geom import Direction, Vector2D
 from generators.tools.footprint.drawing_tools_silk import SilkArrowSize
 from kilibs.config import global_config
@@ -26,6 +28,60 @@ from generators.tools.pad_factory import DevicePadType, PadFactory, PadInfo
 
 from generators.tools.footprint.nodes.layouts.n_pad_box_layout import NPadBoxLayout
 from generators.tools.footprint.nodes.layouts.footprint_layout import SilkStyle
+
+
+@register_spec
+class StandardBoxSpec(BaseSpec):
+    """
+    A class that represents the parsed specification for a "standard box" declaration.
+    """
+    def __init__(
+        self,
+        id: str = "",
+        spec: dict[str, Any] = {},
+        file_name: str = "",
+    ) -> None:
+        """
+        Initialize and validate the `StandardBoxSpec` from a specification dictionary,
+        which probably comes from a YAML file.
+
+        Args:
+            id: The name/identifier of the spec. Typically, this is the name of the key
+                of the spec (in the YAML file) or the name of the component.
+            spec: The specification dictionary to init from.
+            file_name: The name of the YAML file that holds this spec definition.
+        """
+        super().__init__(id, spec, file_name)
+
+        # TODO: handle this later via global config
+        ipc_default_courtyard_clearance = 0.25
+
+        self.spec = copy.deepcopy(spec)
+        self.has_fp_data = True
+        self.has_3d_data = False
+
+        self.library_name: str = spec["library_name"]
+        self.name: str = spec.get("name", self.id)
+        self.description: str = spec["description"]
+        self.datasheet: str = spec["datasheet"]
+        self.tags: str = spec["tags"]
+        self.compatible_mpns: list[str] = spec.get("compatible_mpns", [])
+        self.smd_tht: str = spec.get("smd_tht", "tht")
+        self.at: Vector2D = Vector2D(spec["at"])
+        self.size: Vector2D | None = Vector2D(spec["size"]) if "size" in spec else None
+        self.pins: list[list[str | float]] = spec["pins"]
+        self.body_position_tolerance: Vector2D = Vector2D(
+            spec.get("body_position_tolerance", [0, 0])
+        )
+        self.body_size_tolerance: Vector2D = Vector2D(
+            spec.get("body_size_tolerance", [0, 0])
+        )
+        self.courtyard: float = float(
+            spec.get("courtyard", ipc_default_courtyard_clearance)
+        )
+        self.extratexts: list[list[str | float]] = spec.get("extratexts", [])
+        self.automatic_pin1_mark: bool = bool(spec.get("automatic_pin1_mark", True))
+        self.arrow_points: str | None = spec.get("arrow_points")
 
 
 class TablePadFactory(PadFactory):
@@ -148,22 +204,36 @@ def arrow_nesw_from_str(s: str | None) -> Direction | None:
     raise ValueError(f"Invalid arrow direction: {s}. Expected one of: NORTH, SOUTH, EAST, WEST.")
 
 
-def converter(generator_name: str, args: dict[str, Any]) -> int:
+def create_footprints(spec: StandardBoxSpec, generator_name: str) -> int:
+    """Create the footprint(s) corresponding to the spec.
 
-    metadata = common_metadata.CommonMetadata(args)
-    footprint_name = args["name"]
-    fptag = args["tags"]
-    SmdTht = str(args["smd_tht"])
-    at = Vector2D(args["at"])
-    size = Vector2D(args["size"])
-    pins = args["pins"]
-    extratexts = args["extratexts"]
-    body_position_tolerance = Vector2D(args["body_position_tolerance"])
-    body_size_tolerance = Vector2D(args["body_size_tolerance"])
-    courtyard = float(args["courtyard"])
-    automatic_pin1_mark = bool(args["automatic_pin1_mark"])
+    Args:
+        spec: The standard box specification.
+        generator_name: The name of the generator.
 
-    arrow_points = arrow_nesw_from_str(args["arrow_points"])
+    Returns:
+        The number of footprints generated.
+    """
+    if not spec.has_fp_data:
+        return 0
+
+    if spec.size is None:
+        raise ValueError("A standard box spec requires a 'size'.")
+    size = spec.size
+
+    metadata = common_metadata.CommonMetadata(spec.spec)
+    footprint_name = spec.name
+    fptag = spec.tags
+    SmdTht = spec.smd_tht
+    at = spec.at
+    pins = spec.pins
+    extratexts = spec.extratexts
+    body_position_tolerance = spec.body_position_tolerance
+    body_size_tolerance = spec.body_size_tolerance
+    courtyard = spec.courtyard
+    automatic_pin1_mark = spec.automatic_pin1_mark
+
+    arrow_points = arrow_nesw_from_str(spec.arrow_points)
 
     # Until this can be passed in properly, use the default global config
     global_cfg = global_config.GLOBAL_CONFIG
@@ -243,38 +313,3 @@ def converter(generator_name: str, args: dict[str, Any]) -> int:
 
     write_footprint(f, metadata.library_name, generator_name)
     return 1
-
-
-def main(generator_name: str, args: list[str] | None = None) -> int:
-    ipc_default_courtyard_clearance = 0.25
-
-    # parse arguments using optparse or argparse or what have you
-    parser = ModArgparser(converter)
-    # the root node of .yml files is parsed as name
-    parser.add_parameter("library_name", type=str, required=True)
-    parser.add_parameter("name", type=str, required=True)
-    parser.add_parameter("description", type=str, required=True)
-    parser.add_parameter("datasheet", type=str, required=True)
-    parser.add_parameter("tags", type=str, required=True)
-    parser.add_parameter("compatible_mpns", type=list, required=False)
-    parser.add_parameter("smd_tht", type=str, required=False, default='tht')
-    parser.add_parameter("at", type=list, required=True)
-    parser.add_parameter("size", type=list, required=False)
-    parser.add_parameter("pins", type=list, required=True)
-    # Maximum body position deviation in each axis
-    parser.add_parameter("body_position_tolerance", type=list, required=False, default=[0, 0])
-    # Maximum body size deviation in each axis from the given nominal size
-    parser.add_parameter("body_size_tolerance", type=list, required=False, default=[0, 0])
-    # Courtyard outside the maximum body extent (i.e. not including the body tolerance)
-    parser.add_parameter("courtyard", type=float, required=False, default=ipc_default_courtyard_clearance)
-    parser.add_parameter("extratexts", type=list, required=False, default=[])
-    parser.add_parameter("automatic_pin1_mark", type=bool, required=False, default=True)
-    parser.add_parameter("arrow_points", type=str, required=False)
-
-    # now run our script which handles the whole part of parsing the files
-    return parser.run(generator_name, args)
-
-
-if __name__ == '__main__':
-    import sys
-    main(sys.argv[1:])

@@ -11,19 +11,19 @@
 #
 # (C) The KiCad Librarian Team
 
-from generators.tools.spec.base_spec import BaseSpec
-from generators.tools.spec.spec_generator import get_spec_file_names
 from generators.tools.footprint import standard_box_generator
 
-def create_footprints(spec: BaseSpec, generator_name: str) -> int:
+from .spec import BatterySpec
+
+
+def create_footprints(spec: BatterySpec, generator_name: str) -> int:
     """Create the footprint(s) corresponding to the spec.
 
     Args:
-        spec: The specification (not used by this generator).
+        spec: The specification of the battery holder.
         generator_name: The name of this generator.
 
     Returns:
         The number of footprints generated.
     """
-    file_dir = get_spec_file_names(generator_name=generator_name)
-    return standard_box_generator.main(generator_name, file_dir)  # type: ignore
+    return standard_box_generator.create_footprints(spec, generator_name)
