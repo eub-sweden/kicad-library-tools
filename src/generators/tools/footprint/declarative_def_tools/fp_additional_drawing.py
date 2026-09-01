@@ -14,13 +14,13 @@
 from dataclasses import dataclass
 from typing import Callable
 
-from KicadModTree import Circle, Node, LineStyle, Rectangle, PolygonLine, Cross
+from KicadModTree import Circle, Node, LineStyle, Rectangle, PolygonLine, Cross, Text
 from kilibs.geom import Vector2D
 from kilibs.declarative_defs import additional_drawings as ADs
 from kilibs.declarative_defs import repeat_defs, evaluable_defs as EDs
 
 from . import shape_properties as SP
-from kilibs.config.global_config import GlobalConfig
+from kilibs.config.global_config import GlobalConfig, GLOBAL_CONFIG
 
 
 class FPDrawingProvider(ADs.DrawingProvider):
@@ -187,6 +187,56 @@ class CrossDrawingProvider(FPDrawingProvider):
             )
         ]
 
+class TextDrawingProvider(FPDrawingProvider):
+    """
+    Draws a text string.
+    """
+
+    text: EDs.EvaluableString
+    position: EDs.EvaluableVector2D
+    angle: EDs.EvaluableScalar
+    size: EDs.EvaluableVector2D
+    justify: str
+
+    def __init__(self, spec: dict):
+        super().__init__(spec)
+
+        self.text = EDs.EvaluableString(spec["text"])
+        self.position = EDs.EvaluableVector2D(spec["position"])
+        self.size = EDs.EvaluableVector2D(spec.get("size"), allow_scalar=True)
+        # Handle the negative PCB y-axis (match pad rotation direction)
+        self.angle = EDs.EvaluableScalar(-spec.get("angle", 0))
+        self.justify = spec.get("justify", "center")
+        self.thickness = spec.get("thickness", None)
+
+    def make_nodes(self, context: FPDrawingProvider.Context) -> list[Node]:
+        position = self.position.evaluate(context.evaluator)
+        text = self.text.evaluate(context.evaluator)
+        size = self.size.evaluate(context.evaluator)
+        angle = self.angle.evaluate(context.evaluator)
+
+        # `Text` has a slightly odd justification API where None is 'center'
+        justify = self.justify if self.justify != "center" else None
+
+        # Text width is a different default to graphical line width
+        if self.thickness is None:
+            thickness_ratio = GLOBAL_CONFIG.get_text_properties_for_layer(context.layer).thickness_ratio
+            thickness = thickness_ratio * size.y
+        else:
+            thickness = self.thickness
+
+        return [
+            Text(
+                text=text,
+                size=size,
+                at=position,
+                rotation=angle,
+                layer=context.layer,
+                thickness=thickness,
+                justify=justify,
+            )
+        ]
+
 
 class FPAdditionalDrawing(ADs.AdditionalDrawing):
     """
@@ -204,6 +254,7 @@ class FPAdditionalDrawing(ADs.AdditionalDrawing):
             "circle": CircleDrawingProvider,
             "poly": PolyDrawingProvider,
             "cross": CrossDrawingProvider,
+            "text": TextDrawingProvider,
         }
 
         self._default_fp_providers.update(additional_providers)

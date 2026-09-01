@@ -159,13 +159,24 @@ class EvaluableVector2D:
     y: EvaluableScalar
     """The y-coordinate."""
 
-    def __init__(self, dict_entry: list[EvaluableScalar.ExprType]) -> None:
+    def __init__(
+        self,
+        dict_entry: list[EvaluableScalar.ExprType],
+        *,
+        allow_scalar: bool = False,
+    ) -> None:
         """Initialize an `EvaluableVector2D`.
 
         Args:
             dict_entry: A dictionary or containing the x- and y-values that can be
                 extracted.
+            allow_scalar: If `True`, allow a single scalar value to be used for both
+                x and y. If `False`, require a list of two values.
         """
+
+        if allow_scalar and not isinstance(dict_entry, list):
+            dict_entry = [dict_entry, dict_entry]
+
         el = EvaluableList(dict_entry, exp_len=2, exp_type=EvaluableScalar.ExprType)
         assert len(el) == 2
         self.x = EvaluableScalar(el[0])
@@ -223,3 +234,27 @@ class EvaluableVector2Int:
             A Vector2D object with the evaluated x- and y-coordinates.
         """
         return (self.x.evaluate(expr_evaluator), self.y.evaluate(expr_evaluator))
+
+
+class EvaluableString:
+    """A string that can be evaluated as an expression, or just be a literal string."""
+
+    def __init__(self, dict_entry: str):
+        """Initialize an `EvaluableString`.
+
+        Args:
+            dict_entry: The string to evaluate.
+        """
+        self.value = dict_entry
+
+    def evaluate(self, expr_evaluator: Callable[[str], str]) -> str:
+        """Evaluate the string and return the result.
+
+        Args:
+            expr_evaluator: A callable that takes a string and returns its evaluated
+                value.
+
+        Returns:
+            The evaluated value as a string.
+        """
+        return expr_evaluator(self.value)

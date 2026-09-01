@@ -31,7 +31,7 @@ class DrawingProvider:
     ) -> Vector2D:
         """Apply the repeat transforms (grid. mirror, etc) to a point in order.
 
-        Points are easy, because they can't be rotated, and a flip is just a  matter of
+        Points are easy, because they can't be rotated, and a flip is just a matter of
         negating the x or y coordinate.
 
         But it won't work for things like rectangles when they are rotated by a non-90
@@ -83,7 +83,7 @@ class AdditionalDrawing(ABC):
                     inherit: key1
                     radius: 2
 
-    Inheritance is possible between additional drawings.
+    Inheritance is possible between additional drawings (this is why they are keyed by name).
 
     Complex shapes can be implemented as their own drawing types, or, perhaps, as a
     full-blown declarative definition class.
