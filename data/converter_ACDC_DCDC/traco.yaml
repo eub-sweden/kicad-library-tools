@@ -483,6 +483,33 @@ Converter_DCDC_TRACO_THN10-xxxxUIR_THT:
     ["tht", "7", 20.32, -20.32, 2.5, 2.5, 1.5]
   ]
 
+Converter_DCDC_TRACO_THN20-xxxxUIR_THT:
+  library_name: 'Converter_DCDC'
+  description: "DCDC-Converter, TRACO, THN 20-xxxxUIR, with pre-mounted 7.62mm heatsink, 20W, Rev. August 31. 2026"
+  datasheet: "https://www.tracopower.com/products/thn20uir.pdf"
+  tags: "DCDC-Converter TRACO THT 1\"x1\" 20W THN20UIR"
+  extratexts: []
+  at: [-2.5, 2.5]
+  size: [25.4, 25.4]
+  # Body nominal 25.4 x 25.4 mm; heatsink variant up to 26.1 x 26.5 mm max.
+  # Heatsink protrudes on one side only, so overhang is halved
+  # (tolerance is applied symmetrically on both sides by the generator).
+  # Position tolerance: datasheet fab tolerance (2.5 mm edge distance, x.x ±0.5).
+  # Size tolerance: half of one-sided heatsink overhang.
+  body_position_tolerance: [0.5, 0.5]
+  body_size_tolerance:     [0.35, 0.55]   # (26.1-25.4)/2 and (26.5-25.4)/2
+  # For future use
+  height: 18.7
+  pins: [
+    ["thtr", "1", 0, 0, 2.5, 2.5, 1.5],
+    ["tht", "2", 7.62, 0, 2.5, 2.5, 1.5],
+    ["tht", "3", 12.7, 0, 2.5, 2.5, 1.5],
+    ["tht", "4", 20.32, 0, 2.5, 2.5, 1.5],
+    ["tht", "5", 0, -20.32, 2.5, 2.5, 1.5],
+    ["tht", "6", 10.16, -20.32, 2.5, 2.5, 1.5],
+    ["tht", "7", 20.32, -20.32, 2.5, 2.5, 1.5]
+  ]
+
 Converter_DCDC_TRACO_THR40-72xxWI_THT:
   library_name: 'Converter_DCDC'
   description: "DCDC-Converter, TRACO, THR40-72xxWI, THR40-72xxxWI, 40W, Rev. August 3. 2026"
