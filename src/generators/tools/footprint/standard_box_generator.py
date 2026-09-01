@@ -22,7 +22,11 @@ from generators.tools.spec.spec_registry import register_spec
 from kilibs.geom import Direction, Vector2D
 from generators.tools.footprint.drawing_tools_silk import SilkArrowSize
 from kilibs.config import global_config
-from generators.tools.footprint.declarative_def_tools import common_metadata
+from generators.tools.footprint.declarative_def_tools import (
+    ast_evaluator,
+    common_metadata,
+    fp_additional_drawing,
+)
 from generators.tools.footprint.save_footprint import write_footprint
 from generators.tools.pad_factory import DevicePadType, PadFactory, PadInfo
 
@@ -82,6 +86,12 @@ class StandardBoxSpec(BaseSpec):
         self.extratexts: list[list[str | float]] = spec.get("extratexts", [])
         self.automatic_pin1_mark: bool = bool(spec.get("automatic_pin1_mark", True))
         self.arrow_points: str | None = spec.get("arrow_points")
+
+        self.additional_drawings: list[fp_additional_drawing.FPAdditionalDrawing]
+
+        self.additional_drawings = (
+            fp_additional_drawing.FPAdditionalDrawing.from_standard_yaml(self.spec)  # type: ignore
+        )
 
 
 class TablePadFactory(PadFactory):
@@ -227,7 +237,6 @@ def create_footprints(spec: StandardBoxSpec, generator_name: str) -> int:
     SmdTht = spec.smd_tht
     at = spec.at
     pins = spec.pins
-    extratexts = spec.extratexts
     body_position_tolerance = spec.body_position_tolerance
     body_size_tolerance = spec.body_size_tolerance
     courtyard = spec.courtyard
@@ -237,6 +246,10 @@ def create_footprints(spec: StandardBoxSpec, generator_name: str) -> int:
 
     # Until this can be passed in properly, use the default global config
     global_cfg = global_config.GLOBAL_CONFIG
+
+    # For now, we don't have specific evaluator symbols
+    evaluator_params = {}
+    fp_evaluator = ast_evaluator.ASTevaluator(symbols=evaluator_params)  # pyright: ignore
 
     # This a very naive way of calculating the total tolerance referenced to the
     # origin, but it's a start
@@ -307,7 +320,9 @@ def create_footprints(spec: StandardBoxSpec, generator_name: str) -> int:
 
     f += layout
 
-    f += build_extra_texts(extratexts)
+    f += fp_additional_drawing.create_additional_drawings(
+        spec.additional_drawings, global_cfg, fp_evaluator
+    )
 
     f += Model(filename=model_filename)
 
