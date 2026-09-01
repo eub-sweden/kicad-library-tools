@@ -3,7 +3,6 @@ Diode_Bridge_30.0x4.6x20.0mm_P10.0mm_P7.5mm:
   description: "Taiwan Semiconductor TS-6P rectifier package, 7.5mm pitch"
   datasheet: "https://www.taiwansemi.com/assets/uploads/datasheet/TS50P05G%20SERIES_H2203.pdf"
   tags: "Taiwan TS-6P rectifier diode bridge"
-  extratexts: []
   at: [-2.5, 1.55]
   size: [30.0, 4.6]
 

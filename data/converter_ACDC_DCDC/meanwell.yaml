@@ -31,7 +31,6 @@ Converter_DCDC_MeanWell_SMU02x-xxN_THT:
   description: "2W isolated DCDC, MeanWell, for SMU02x-xxN"
   datasheet: "https://www.meanwell.com/upload/pdf/SMU02-N/SMU02-N-spec.pdf"
   tags: "DCDC-Converter MeanWell SMU02 THT SIP-4 2W"
-  extratexts: []
   arrow_points: East
   at: [-1.2, 2.04]
   size: [7.5, 11.7]
