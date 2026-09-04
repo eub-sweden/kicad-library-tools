@@ -2658,6 +2658,33 @@ LFCSP-16-1EP_4x4mm_P0.65mm_EP2.6x2.6mm:
     paste_via_clearance: 0.1
     paste_avoid_via: False
 
+MPS_QFN-18_2x3mm_P0.4mm:
+  size_source: 'https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP2672/#page=40'
+  device_type: 'QFN'
+  manufacturer: 'MPS'
+  ipc_class: 'qfn'
+  body_size_x: 2.0 +/-0.1
+  body_size_y: 3.0 +/-0.1
+  overall_height:
+    minimum: 0.8
+    maximum: 1.0
+  num_pins_x: 5
+  num_pins_y: 4
+  pitch: 0.4
+  lead_width:
+    minimum: 0.15
+    maximum: 0.25
+  lead_len_V:
+    minimum: 0.35
+    maximum: 0.45
+  lead_len_H:
+    minimum: 0.55
+    maximum: 0.65
+  pad_overrides:
+    1:
+      size_increase: [0.1, null]
+      move: [0.05, null]
+
 ##############################################################################
 # Please do not place other QFN packages below here, temporary section
 ##############################################################################
