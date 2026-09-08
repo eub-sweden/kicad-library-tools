@@ -31,6 +31,7 @@ AllowedDesignators = [
     "RT",
     "RV",
     "SW",
+    "SYM",
     "T",
     "TC",
     "TJ",
