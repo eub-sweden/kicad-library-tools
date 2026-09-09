@@ -1,5 +1,4 @@
 import cmath
-from copy import deepcopy
 from typing import Any, Dict, List
 
 from kicad_mod import KicadMod
@@ -184,7 +183,6 @@ class Rule(KLCRule):
                             self.intersections.append({"pad": pad, "graph": graph})
             else:
                 for pad in self.module.pads:
-
                     # Skip checks on NPTH and Connect holes
                     if pad["type"] in ["np_thru_hole", "connect"]:
                         continue
@@ -357,83 +355,3 @@ class Rule(KLCRule):
 
         # Return True if any of the checks returned an error
         return bool(self.bad_width or self.intersections or self.refDesError)
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        module = self.module
-
-        if self.check():
-            if self.refDesError:
-                ref = self.module.reference
-                if (
-                    self.checkReference()
-                ):  # @todo checkReference() does not return anything
-                    ref["value"] = "REF**"
-                    ref["layer"] = "F.SilkS"
-                    ref["font"]["width"] = KLC_TEXT_SIZE
-                    ref["font"]["height"] = KLC_TEXT_SIZE
-                    ref["font"]["thickness"] = KLC_TEXT_THICKNESS
-            for graph in self.bad_width:
-                graph["width"] = KLC_SILK_WIDTH
-            for inter in self.intersections:
-                pad = inter["pad"]
-                graph = inter["graph"]
-                if "angle" in graph:
-                    # TODO
-                    pass
-                elif "center" in graph:
-                    # TODO
-                    pass
-                else:
-                    padComplex = complex(pad["pos"]["x"], pad["pos"]["y"])
-                    startComplex = complex(graph["start"]["x"], graph["start"]["y"])
-                    endComplex = complex(graph["end"]["x"], graph["end"]["y"])
-                    if endComplex.imag < startComplex.imag:
-                        startComplex, endComplex = endComplex, startComplex
-
-                        graph["start"]["x"] = startComplex.real
-                        graph["start"]["y"] = startComplex.imag
-                        graph["end"]["x"] = endComplex.real
-                        graph["end"]["y"] = endComplex.imag
-
-                    vector = endComplex - startComplex
-                    padComplex = padComplex - startComplex
-                    length = abs(vector)
-                    phase = cmath.phase(vector)
-                    vectorR = cmath.rect(1, -phase)
-                    padComplex = padComplex * vectorR
-                    distance = cmath.sqrt(
-                        (pad["size"]["x"] / 2.0 + 0.226) ** 2 - (padComplex.imag) ** 2
-                    ).real
-                    padMin = padComplex.real - distance
-                    padMax = padComplex.real + distance
-
-                    if 0 < padMin < length:
-                        if padMax > length:
-                            padComplex = (padMin + 0j) * cmath.rect(
-                                1, phase
-                            ) + startComplex
-                            graph["end"]["x"] = round(padComplex.real, 3)
-                            graph["end"]["y"] = round(padComplex.imag, 3)
-                        else:
-                            padComplex = (padMin + 0j) * cmath.rect(
-                                1, phase
-                            ) + startComplex
-                            graph2 = deepcopy(graph)
-                            graph["end"]["x"] = round(padComplex.real, 3)
-                            graph["end"]["y"] = round(padComplex.imag, 3)
-                            padComplex = (padMax + 0j) * cmath.rect(
-                                1, phase
-                            ) + startComplex
-                            graph2["start"].update({"x": round(padComplex.real, 3)})
-                            graph2["start"].update({"y": round(padComplex.imag, 3)})
-                            module.lines.append(graph2)
-                    elif padMin < 0 and 0 < padMax < length:
-                        padComplex = (padMax + 0j) * cmath.rect(1, phase) + startComplex
-                        graph["start"]["x"] = round(padComplex.real, 3)
-                        graph["start"]["y"] = round(padComplex.imag, 3)
-                    elif padMax > length and padMin < 0:
-                        module.lines.remove(graph)

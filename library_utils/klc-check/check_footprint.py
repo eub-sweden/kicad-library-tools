@@ -125,23 +125,12 @@ def do_rulecheck(module, rules, junit_case: junit.JunitTestCase) -> Tuple[int, i
             junit.add_klc_rule_results(junit_case, rule)
             rule.printOutput(printer, verbosity)
 
-        if rule.hasErrors:
-            if args.fix:
-                if args.fixmore and rule.needsFixMore:
-                    rule.fixmore()
-                rule.fix()
-                rule.printOutput(printer, verbosity, args.silent)
-                rule.recheck()
-
     # No messages?
     if first:
         if not args.silent:
             printer.green(
                 "Checking footprint '{fp}' - No errors".format(fp=module.name)
             )
-
-    if (args.fix or args.fixmore) and ec > 0:
-        module.save()
 
     return (ec, wc)
 
@@ -153,15 +142,6 @@ parser = argparse.ArgumentParser(
     )
 )
 parser.add_argument("kicad_mod_files", nargs="+")
-parser.add_argument("--fix", help="fix the violations if possible", action="store_true")
-parser.add_argument(
-    "--fixmore",
-    help=(
-        "fix additional violations, not covered by --fix (e.g. rectangular courtyards),"
-        " implies --fix!"
-    ),
-    action="store_true",
-)
 parser.add_argument(
     "-r",
     "--rule",
@@ -212,8 +192,6 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
-if args.fixmore:
-    args.fix = True
 
 printer = PrintColor(use_color=not args.nocolor)
 
@@ -263,11 +241,6 @@ for filename in files:
     ec, wc = check_library(filename, rules, junit_suite, args)
     error_count += ec
     warning_count += wc
-
-if args.fix:
-    printer.light_red(
-        "Some files were updated - ensure that they still load correctly in KiCad"
-    )
 
 if args.junit:
     # create the junit xml report

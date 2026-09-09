@@ -21,11 +21,3 @@ class Rule(KLCRule):
             )
             return False
         return True
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        # Re-check line endings
-        self.check()

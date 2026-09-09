@@ -3,7 +3,7 @@
 
 import os
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from boundingbox import BoundingBox
 from kicad_mod import KicadMod
@@ -13,7 +13,6 @@ from rules_footprint.rule import (
     getEndPoint,
     getStartPoint,
     graphItemString,
-    mapToGrid,
     mmToNanoMeter,
 )
 
@@ -89,27 +88,6 @@ class Rule(KLCRule):
             offset = 0.5
 
         return offset
-
-    def defaultCourtyard(self) -> Optional[Dict[str, float]]:
-        bb = self.getFootprintBounds()
-
-        offset = self.defaultOffset()
-
-        bb.expand(offset)
-
-        print("Offset:", offset)
-
-        if bb.valid:
-            return {
-                "x": mapToGrid(bb.xmin, KLC_CRTYD_GRID),
-                "y": mapToGrid(bb.ymin, KLC_CRTYD_GRID),
-                "width": mapToGrid(bb.width, KLC_CRTYD_GRID),
-                "height": mapToGrid(bb.height, KLC_CRTYD_GRID),
-            }
-
-        # No valid bounding box found in component
-        else:
-            return None
 
     def isClosed(self, layer) -> List[Any]:
         def isSame(
@@ -246,40 +224,3 @@ class Rule(KLCRule):
                 self.errorExtra(graphItemString(bad, layer=True, width=False))
 
         return bool(self.bad_width or self.bad_grid or self.unconnected)
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-        if self.bad_width:
-            self.info("Fixing line width of courtyard items")
-        for graph in self.bad_width:
-            graph["width"] = KLC_CRTYD_WIDTH
-
-        if self.bad_grid:
-            self.info("Fixing grid alignment of courtyard items")
-        for item in self.bad_grid:
-            if "center" in item:  # Circle
-                key = "center"
-            else:  # Lines, Arcs
-                key = "start"
-
-            item[key]["x"] = mapToGrid(item[key]["x"], KLC_CRTYD_GRID)
-            item[key]["y"] = mapToGrid(item[key]["y"], KLC_CRTYD_GRID)
-
-            item["end"]["x"] = mapToGrid(item["end"]["x"], KLC_CRTYD_GRID)
-            item["end"]["y"] = mapToGrid(item["end"]["y"], KLC_CRTYD_GRID)
-
-        # create courtyard if does not exists
-        if not self.fCourtyard and not self.bCourtyard:
-            self.info("No courtyard detected - adding default courtyard")
-            cy = self.defaultCourtyard()
-            if not cy:
-                self.info("Could not add courtyard - no footprint items found")
-            else:
-                self.module.addRectangle(
-                    [cy["x"], cy["y"]],
-                    [cy["x"] + cy["width"], cy["y"] + cy["height"]],
-                    "F.CrtYd",
-                    KLC_CRTYD_WIDTH,
-                )

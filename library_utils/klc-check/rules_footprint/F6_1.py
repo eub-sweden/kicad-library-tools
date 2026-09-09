@@ -60,7 +60,6 @@ class Rule(KLCRule):
         # Check if there are SMD pads with paste - in some cases, this could be
         # a footprint that should have the 'SMD' type set.
         if module.footprint_type != "smd" and self.smd_paste_pad_count > 0:
-
             # If the footprint has soldered SMD pads, it should probably not be
             # excluded from the BOM or position files
             if module.exclude_from_bom or module.exclude_from_pos_files:
@@ -95,12 +94,3 @@ class Rule(KLCRule):
                 )
 
         return error
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-        module = self.module
-        if self.check():
-            self.info("Set 'surface mount' attribute")
-            module.footprint_type = "smd"

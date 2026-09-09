@@ -192,21 +192,6 @@ class KLCRuleBase:
     def check(self, component, exception=None) -> None:
         raise NotImplementedError("The check method must be implemented")
 
-    def fix(self, component) -> None:
-        raise NotImplementedError("The fix method must be implemented")
-
-    def recheck(self) -> None:
-
-        self.resetErrorCount()
-        self.resetWarningCount()
-
-        self.check()
-
-        if self.hasErrors():
-            self.error("Could not fix all errors")
-        else:
-            self.success("Everything fixed")
-
     def parse_exceptions(self, properties) -> None:
         for index, prop in enumerate(properties):
             if matches := self.klc_rule_re.match(prop.name):
@@ -310,7 +295,6 @@ class KLCRuleBase:
             }[s]
 
             if entry_verbosity.value <= verbosity.value:
-
                 msg = entry.message
 
                 # Join the message with the extra message

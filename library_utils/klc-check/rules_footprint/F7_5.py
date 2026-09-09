@@ -72,10 +72,3 @@ class Rule(KLCRule):
         module = self.module
 
         return any([self.checkPad(pad) for pad in module.filterPads("thru_hole")])
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        self.info("Fix - not supported for this rule")

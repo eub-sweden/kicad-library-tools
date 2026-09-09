@@ -107,14 +107,3 @@ class Rule(KLCRule):
             self.has_illegal_chars = True
 
         return err
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        self.info("Setting footprint value to '{name}'".format(name=self.module.name))
-        self.module.name = os.path.splitext(os.path.basename(self.module.filename))[0]
-        self.module.value["value"] = self.module.name
-
-        self.recheck()

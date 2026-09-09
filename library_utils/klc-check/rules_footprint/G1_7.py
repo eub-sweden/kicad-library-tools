@@ -19,10 +19,3 @@ class Rule(KLCRule):
             return True
 
         return False
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        self.success("Line endings will be corrected on save")

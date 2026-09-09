@@ -57,16 +57,3 @@ class Rule(KLCRule):
             err = True
 
         return err
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        This fix will always use the pads center position.
-        """
-        module = self.module
-        if self.check():
-            self.info("Footprint anchor fixed")
-
-            center = module.padMiddlePosition()
-
-            module.setAnchor([center["x"], center["y"]])

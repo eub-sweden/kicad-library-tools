@@ -207,14 +207,3 @@ class Rule(KLCRule):
         """
 
         return self.checkPads(self.module.filterPads("smd"))
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        for pad in self.stencil_pads_with_number:
-            self.info("Removing number '{x}' for stencil pad".format(x=pad["number"]))
-            pad["number"] = ""
-
-        self.recheck()

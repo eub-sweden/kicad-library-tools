@@ -159,16 +159,3 @@ class Rule(KLCRule):
         module = self.module
 
         return any([self.checkPads(module.pads)])
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        module = self.module
-
-        for pad in module.filterPads("thru_hole"):
-            self.info(
-                "Pad {n} - Setting required layers for THT pad".format(n=pad["number"])
-            )
-            pad["layers"] = self.REQUIRED_LAYERS

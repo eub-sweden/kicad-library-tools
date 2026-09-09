@@ -13,10 +13,6 @@ from kicad_mod import KicadMod
 from rulebase import KLCRuleBase
 
 
-def mapToGrid(dimension: float, grid: float) -> float:
-    return round(dimension / grid) * grid
-
-
 # Convert mm to microns
 def mmToNanoMeter(mm: float) -> int:
     return round(mm * 1e6)
@@ -101,10 +97,3 @@ class KLCRule(KLCRuleBase):
 
         # Illegal chars
         self.illegal_chars = ["*", "?", ":", "/", "\\", "[", "]", ";", "|", "=", ","]
-
-    def fix(self) -> None:
-        self.info("fix not supported")
-
-    def fixmore(self) -> None:
-        if self.needsFixMore:
-            self.info("fixmore not supported")

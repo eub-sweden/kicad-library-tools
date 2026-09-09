@@ -60,7 +60,6 @@ class Rule(KLCRule):
             directions[d].append((seg, line))
 
         for d, segs in directions.items():
-
             for ii in range(len(segs)):
                 for jj in range(ii + 1, len(segs)):
                     seg, orig_line = segs[ii]
@@ -108,10 +107,3 @@ class Rule(KLCRule):
                     )
 
         return self.errcnt > 0
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        return

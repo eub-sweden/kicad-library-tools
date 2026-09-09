@@ -31,7 +31,6 @@ class Rule(KLCRule):
 
         # check if module is through-hole
         if module.footprint_type == "through_hole":
-
             for name in names:
                 pads = module.getPadsByNumber(name)
                 if pads:
@@ -66,13 +65,3 @@ class Rule(KLCRule):
             return True
 
         return False
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        module = self.module
-        if self.check() and self.pin1_position:
-            self.info("Moved anchor position to Pin-1")
-            module.setAnchor(self.pin1_position)

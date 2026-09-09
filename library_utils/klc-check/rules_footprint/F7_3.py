@@ -36,16 +36,3 @@ class Rule(KLCRule):
             self.warning("Only pad 1 should be rectangular")
 
         return False
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        module = self.module
-
-        for pad in module.filterPads("thru_hole"):
-            self.info(
-                "Pad {n} - Setting required layers for THT pad".format(n=pad["number"])
-            )
-            pad["layers"] = self.required_layers  # @todo required_layers does not exist

@@ -22,10 +22,3 @@ class Rule(KLCRule):
             )
 
         return False
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        self.info("Fixing not supported")

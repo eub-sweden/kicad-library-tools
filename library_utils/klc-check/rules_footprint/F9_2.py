@@ -52,22 +52,3 @@ class Rule(KLCRule):
             )
 
         return err
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        module = self.module
-        if self.check():
-            self.info("Setting footprint properties to default values")
-            module.locked = False
-            module.autoplace_cost90 = 0
-            module.autoplace_cost180 = 0
-
-            # These might actually be required to match datasheet spec.
-
-            # module.clearance = 0
-            # module.solder_mask_margin = 0
-            # module.solder_paste_margin = 0
-            # module.solder_paste_ratio = 0

@@ -43,8 +43,7 @@ class Rule(KLCRule):
 
             if module.exclude_from_pos_files:
                 self.error(
-                    "Through hole footprints should not be excluded from"
-                    " position files"
+                    "Through hole footprints should not be excluded from position files"
                 )
                 self.errorExtra(
                     "If this part isn't physically fitted, perhaps this"
@@ -72,13 +71,3 @@ class Rule(KLCRule):
             # A mix of THT and SMD pads - probably a SMD footprint (e.g. hybrid)
 
         return error
-
-    def fix(self) -> None:
-        """
-        Proceeds the fixing of the rule, if possible.
-        """
-
-        module = self.module
-        if self.check():
-            self.info("Setting placement type to 'Through hole'")
-            module.footprint_type = "through_hole"
