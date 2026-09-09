@@ -1,5 +1,6 @@
 #!/bin/bash
-kfg_root=$(realpath "$(dirname ${BASH_SOURCE[0]})/../../..")
+kfg_root=$(realpath "$(dirname "${BASH_SOURCE[0]}")/../../..")
+# shellcheck source=common.sh
 source "${kfg_root}/library_utils/tools/gitlabci/common.sh"
 
 SCRIPT="${kfg_root}/library_utils/klc-check/check_footprint.py"
@@ -27,14 +28,14 @@ else
     # Run the KLC checker on all the files
     python3 "$SCRIPT" -vv \
         --junit junit.xml \
-        ${mod_files[@]}
+        "${mod_files[@]}"
 
     KLC_ERRORS=$?
 fi
 
 # check lib table
-python3 "${kfg_root}/library_utils/klc-check/check_lib_table.py" $CI_PROJECT_DIR/*.pretty \
-    --table $CI_PROJECT_DIR/fp-lib-table \
+python3 "${kfg_root}/library_utils/klc-check/check_lib_table.py" "$CI_PROJECT_DIR"/*.pretty \
+    --table "$CI_PROJECT_DIR"/fp-lib-table \
     --junit junit.xml
 
 TABLE_ERRORS=$?

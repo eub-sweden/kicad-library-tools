@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-kfg_root=$(realpath "$(dirname ${BASH_SOURCE[0]})/../../..")
+kfg_root=$(realpath "$(dirname "${BASH_SOURCE[0]}")/../../..")
+# shellcheck source=common.sh
 source "${kfg_root}/library_utils/tools/gitlabci/common.sh"
 
 CHANGES=$(git diff-tree --diff-filter=AMR --no-commit-id --name-only -r "$BASE_SHA" "$TARGET_SHA")

@@ -7,7 +7,8 @@
 #     export TMP_BUILD_DIR=`mktemp -d` # or supply any temp directory
 #     ./library_utils/tools/gitlabci/check_symbols.sh
 
-kfg_root=$(realpath "$(dirname ${BASH_SOURCE[0]})/../../..")
+kfg_root=$(realpath "$(dirname "${BASH_SOURCE[0]}")/../../..")
+# shellcheck source=common.sh
 source "${kfg_root}/library_utils/tools/gitlabci/common.sh"
 
 # print python version
@@ -28,7 +29,7 @@ if [ -z "$TARGET_SHA" ]; then
 fi
 if [ -z "$TMP_BUILD_DIR" ]; then
   echo "TMP_BUILD_DIR is not set, creating a temp dir. You might want to delete it later."
-  TMP_BUILD_DIR=`mktemp -d`
+  TMP_BUILD_DIR=$(mktemp -d)
 fi
 
 
@@ -40,22 +41,24 @@ echo "TMP_BUILD_DIR: $TMP_BUILD_DIR"
 # clone required repos
 if [ ! -x "$TMP_BUILD_DIR/kicad-footprints" ]; then
   echo "Cloning footprint repo"
-  git clone --depth 1 https://gitlab.com/kicad/libraries/kicad-footprints.git $TMP_BUILD_DIR/kicad-footprints
+  git clone --depth 1 https://gitlab.com/kicad/libraries/kicad-footprints.git "$TMP_BUILD_DIR"/kicad-footprints
 else
   echo "Found existing kicad-footprints directory"
 fi
-# get the list of files we want to compare - this also works with unpacked libraries
+
+# Get the list of files we want to compare - this also works with unpacked libraries
+# Put them in bash arrays for more robust handling of spaces.
 echo "Comparing range $BASE_SHA to $TARGET_SHA"
-CHANGED_SYMBOLS=$(git diff-tree --diff-filter=AM --no-commit-id --oneline --name-only -r "$BASE_SHA" "$TARGET_SHA" | grep '\.kicad_sym$')
-DELETED_SYMBOLS=$(git diff-tree --diff-filter=D  --no-commit-id --oneline --name-only -r "$BASE_SHA" "$TARGET_SHA" | grep '\.kicad_sym$')
+mapfile -t CHANGED_SYMBOLS < <(git diff-tree --diff-filter=AM --no-commit-id --oneline --name-only -r "$BASE_SHA" "$TARGET_SHA" | grep '\.kicad_sym$')
+mapfile -t DELETED_SYMBOLS < <(git diff-tree --diff-filter=D  --no-commit-id --oneline --name-only -r "$BASE_SHA" "$TARGET_SHA" | grep '\.kicad_sym$')
 
 # do some debug output
-echo "Found changed Symbols: $CHANGED_SYMBOLS"
-echo "Found deleted Symbols: $DELETED_SYMBOLS"
+echo "Found changed Symbols: ${CHANGED_SYMBOLS[*]}"
+echo "Found deleted Symbols: ${DELETED_SYMBOLS[*]}"
 
 # checkout the previous version of the 'old' files so we can compare against them
-mkdir -p $TMP_BUILD_DIR/kicad-symbols-prev
-for LIBNAME in $CHANGED_SYMBOLS; do
+mkdir -p "$TMP_BUILD_DIR"/kicad-symbols-prev
+for LIBNAME in "${CHANGED_SYMBOLS[@]}"; do
   TARGET_FILENAME="$TMP_BUILD_DIR/kicad-symbols-prev/$LIBNAME"
   # the LIBAME will look like "Video.kicad_symdir/SI582.kicad_sym".
   # So we need to create the directory Video.kicad_symdir first
@@ -69,17 +72,17 @@ done
 
 # now run comparelibs
 "${kfg_root}/library_utils/klc-check/comparelibs.py" -v \
-  --old $TMP_BUILD_DIR/kicad-symbols-prev/* \
-  --new $CHANGED_SYMBOLS \
+  --old "$TMP_BUILD_DIR"/kicad-symbols-prev/* \
+  --new "${CHANGED_SYMBOLS[@]}" \
   --check --check-derived \
-  --footprint_directory $TMP_BUILD_DIR/kicad-footprints \
+  --footprint_directory "$TMP_BUILD_DIR"/kicad-footprints \
   -m \
   --junit junit.xml
 KLC_ERRORS=$?
 
 # check lib table
-${kfg_root}/library_utils/klc-check/check_lib_table.py $CI_PROJECT_DIR/*.kicad_symdir \
-    --table $CI_PROJECT_DIR/sym-lib-table \
+"${kfg_root}"/library_utils/klc-check/check_lib_table.py "$CI_PROJECT_DIR"/*.kicad_symdir \
+    --table "$CI_PROJECT_DIR"/sym-lib-table \
     --junit junit.xml
 
 TABLE_ERRORS=$?
