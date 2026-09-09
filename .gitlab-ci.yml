@@ -85,7 +85,7 @@ check-code-formatting:
     - python -m pip install --upgrade pip
     - pip install .[dev]
   script:
-    - ./manage.sh format_check
+    - ./kilt_manage.py format_check
 
 check-static-typing:
   stage: Static Analysis
@@ -103,7 +103,7 @@ check-static-typing:
     - python -m pip install --upgrade pip
     - pip install .[dev]
   script:
-    - ./manage.sh static_type_check
+    - ./kilt_manage.py static_type_check
 
 pytest:
   stage: Test

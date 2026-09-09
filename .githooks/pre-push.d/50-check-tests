@@ -19,4 +19,4 @@ fi
 
 set -e
 
-./manage.sh tests
+./kilt_manage.py tests

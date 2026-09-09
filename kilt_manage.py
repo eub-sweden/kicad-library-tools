@@ -1,0 +1,269 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import pathlib
+import shutil
+import subprocess
+
+ENV = os.environ.copy()
+BASE_DIR = pathlib.Path(__file__).resolve().parent
+KICADMODTREE_DIR = BASE_DIR / "KicadModTree"
+
+
+class DependencyException(Exception):
+    def __init__(self, dependencies: list[str]) -> None:
+        self.dependencies = dependencies
+
+    def __str__(self) -> str:
+        return f"Could not locate dependencies: '{", ".join(self.dependencies)}'"
+
+
+def run_command(cmd, **kwargs):
+    subprocess.run(
+        cmd, bufsize=1, universal_newlines=True, env=ENV, check=True, **kwargs
+    )
+
+
+def check_dependency(dependency: str) -> bool:
+    if shutil.which(dependency):
+        print(f"{dependency} - OK")
+        return True
+
+    print(f"{dependency} - NOT FOUND")
+    return False
+
+
+def check_dependencies(dependencies: list[str]) -> None:
+    print("Checking dependencies...")
+
+    missing: list[str] = []
+
+    for dependency in dependencies:
+        if not check_dependency(dependency):
+            missing.append(dependency)
+
+    if missing:
+        raise DependencyException(missing)
+
+
+def format_check(args):
+    check_dependencies(["pycodestyle", "black", "isort"])
+
+    print("Performing footprint formatting check...")
+    # TODO: Implement pycodestyle pythonically
+
+    run_command(
+        [
+            "pycodestyle",
+            "--max-line-length=120",
+            KICADMODTREE_DIR,
+            BASE_DIR / "src/kilibs/geom",
+        ]
+    )
+
+    clean_files = [
+        KICADMODTREE_DIR / "nodes/specialized/RoundRectangle.py",
+        KICADMODTREE_DIR / "nodes/specialized/Stadium.py",
+        KICADMODTREE_DIR / "nodes/specialized/Trapezoid.py",
+        BASE_DIR / "src/kilibs",
+        BASE_DIR / "tests",
+        BASE_DIR / "src/generators/tools/footprint/drawing_tools.py",
+        BASE_DIR / "src/generators/tools/footprint/misc_tools.py",
+        BASE_DIR / "src/generators/tools/footprint/nodes/layouts",
+        BASE_DIR / "src/generators/generate.py",
+        BASE_DIR / "src/generators/connector/D_sub",
+        BASE_DIR / "src/generators/LED/SMD",
+        BASE_DIR / "src/generators/terminal_block/Barrier",
+    ]
+
+    run_command(["black", "--check", *clean_files])
+    run_command(["isort", "--check-only", *clean_files])
+
+
+def flake8_check(args):
+    check_dependencies(["flake8"])
+
+    print("Performing flake8 validation...")
+
+    run_command(
+        [
+            "flake8",
+            KICADMODTREE_DIR,
+            BASE_DIR / "src/kilibs/geom",
+        ]
+    )
+
+
+def run_shellcheck(args):
+    check_dependencies(["shellcheck"])
+
+    print("Running shellcheck...")
+    gitlabci = BASE_DIR / "library_utils/tools/gitlabci"
+    scripts = gitlabci.glob("*.sh")
+    run_command(["shellcheck", *scripts], cwd=gitlabci)
+
+
+def unit_tests(args):
+    print("Running footprint unit tests...")
+    run_command(["python3", "-m", "pytest"])
+
+
+def py_test_coverage(args):
+    print("Checking unit test coverage...")
+    ENV["PYTHONPATH"] = os.getcwd()
+    run_command(
+        [
+            "python3",
+            "-m",
+            "nose2",
+            "-C",
+            "--coverage",
+            KICADMODTREE_DIR,
+            "--coverage-report",
+            "term-missing",
+            "-s",
+            KICADMODTREE_DIR / "tests",
+        ]
+    )
+
+
+def tests(args):
+    unit_tests(args)
+    format_check(args)
+    static_type_check(args)
+
+
+def update_packages(args):
+    print("Updating packages required for production...")
+    run_command(["python3", "-m", "pip", "install", "--upgrade", "-e", "."])
+
+
+def update_dev_packages(args):
+    print("Updating packages required for development...")
+    run_command(["python3", "-m", "pip", "install", "--upgrade", "-e", ".[dev]"])
+
+
+def update_3d_packages(args):
+    print("Updating packages required for generating 3D models...")
+    run_command(["python3", "-m", "pip", "install", "--upgrade", "-e", ".[3d]"])
+
+
+def update_doc_packages(args):
+    print("Updating packages required for generating documentation...")
+    run_command(
+        ["python3", "-m", "pip", "install", "--upgrade", "-e", ".[documentation]"]
+    )
+
+
+def update_all_packages(args):
+    update_packages(args)
+    update_dev_packages(args)
+    update_3d_packages(args)
+    update_doc_packages(args)
+
+
+def static_type_check(args):
+    check_dependencies(["mypy"])
+
+    print("Performing static type check...")
+    run_command("mypy")
+
+
+def run_all(args):
+    update_all_packages(args)
+    tests(args)
+    flake8_check(args)
+    run_shellcheck(args)
+    py_test_coverage(args)
+
+
+if __name__ == "__main__":
+    ENV["PYTHONPATH"] = str(BASE_DIR)
+
+    parser = argparse.ArgumentParser(
+        description="Manager for KiCad Footprint and 3D Model Generator",
+        add_help=False,
+    )
+    subparsers = parser.add_subparsers(dest="command", metavar="[command]")
+
+    help_parser = subparsers.add_parser("help", help="- This text")
+
+    fmt_chk_parser = subparsers.add_parser(
+        "format_check", help="- pycodestyle/black/isort validation"
+    )
+    fmt_chk_parser.set_defaults(func=format_check)
+
+    flake8_chk_parser = subparsers.add_parser(
+        "flake8_check", help="- flake8 validation"
+    )
+    flake8_chk_parser.set_defaults(func=flake8_check)
+
+    shellchk_parser = subparsers.add_parser(
+        "run_shellcheck", help="- Run CI checks for footprint generators"
+    )
+    shellchk_parser.set_defaults(func=run_shellcheck)
+
+    unit_tests_parser = subparsers.add_parser("unit_tests", help="- Run unit tests")
+    unit_tests_parser.set_defaults(func=unit_tests)
+
+    py_test_cvrg_parser = subparsers.add_parser(
+        "py_test_coverage", help="- Unit test coverage"
+    )
+    py_test_cvrg_parser.set_defaults(func=py_test_coverage)
+
+    tests_parser = subparsers.add_parser("tests", help="- Run all tests")
+    tests_parser.set_defaults(func=tests)
+
+    updt_pkgs_parser = subparsers.add_parser(
+        "update_packages", help="- Check & update production dependency changes"
+    )
+    updt_pkgs_parser.set_defaults(func=update_packages)
+
+    updt_dev_pkgs_parser = subparsers.add_parser(
+        "update_dev_packages",
+        help="- Check & update development and production dependency changes",
+    )
+    updt_dev_pkgs_parser.set_defaults(func=update_dev_packages)
+
+    updt_3d_pkgs_parser = subparsers.add_parser(
+        "update_3d_packages",
+        help="- Check & update 3d model generator dependency changes",
+    )
+    updt_3d_pkgs_parser.set_defaults(func=update_3d_packages)
+
+    updt_doc_pkgs_parser = subparsers.add_parser(
+        "update_doc_packages",
+        help="- Check & update the documentation depencency changes",
+    )
+    updt_doc_pkgs_parser.set_defaults(func=update_doc_packages)
+
+    updt_all_pkgs_parser = subparsers.add_parser(
+        "update_all_packages", help="- Check & update all packages"
+    )
+    updt_all_pkgs_parser.set_defaults(func=update_all_packages)
+
+    stat_typ_chk_parser = subparsers.add_parser(
+        "static_type_check", help="- Run a static type check"
+    )
+    stat_typ_chk_parser.set_defaults(func=static_type_check)
+
+    run_all_parser = subparsers.add_parser(
+        "run_all", help="Run all commands (Testing Only)"
+    )
+    run_all_parser.set_defaults(func=run_all)
+
+    args = parser.parse_args()
+    if hasattr(args, "func"):
+        try:
+            args.func(args)
+        except DependencyException as e:
+            print(f"Dependency Error: {e}")
+            exit(1)
+        except subprocess.CalledProcessError as e:
+            print(
+                f"Called Process Error: '{" ".join([str(x) for x in e.cmd])}' exited with code {e.returncode}"
+            )
+            exit(2)
+    else:
+        parser.print_help()
