@@ -11,6 +11,31 @@
 #
 # (C) The KiCad Librarian Team
 
+import dataclasses
+
+
+@dataclasses.dataclass
+class Datasheet:
+    url: str | None
+    """The datasheet for the part"""
+
+    page: int | None
+    """The page number of the datasheet to refer to. None if the
+    whole datasheet is relevant, or if no datasheet is specified."""
+
+    def construct_url(self) -> str | None:
+        """The complete URI to the datasheet, including the page number if
+        specified. If no datasheet is specified, returns None."""
+
+        if self.url is None:
+            return None
+
+        if self.page is not None:
+            return f"{self.url}#page={self.page}"
+
+        return self.url
+
+
 class CommonMetadata:
     """
     Class that reads "standard" metadata out of a dict, probably
@@ -26,9 +51,10 @@ class CommonMetadata:
     the datatypes and the dict keys/layouts.
     """
 
-    datasheet: str | None
-    """The datasheet for the footprint. Most footprints will have this
-    set, but some generators may generate the URL otherwise."""
+    datasheets: list[Datasheet]
+    """The datasheets for the footprint. Most footprints will have one
+    of these, but some generators may generate the URL otherwise. Parts
+    can have multiple datasheets."""
 
     description: str | None
     """A description of the footprint. Most generators will generate this
@@ -63,7 +89,7 @@ class CommonMetadata:
     def __init__(self, spec: dict):
 
         self.description = spec.get("description", None)
-        self.datasheet = spec.get("datasheet", spec.get("size_source", None))
+        self.datasheets = self._init_datasheets(spec)
 
         self.manufacturer = spec.get("manufacturer", None)
         self.part_number = spec.get("part_number", None)
@@ -73,3 +99,46 @@ class CommonMetadata:
 
         self.custom_name_format = spec.get("custom_name_format", None)
         self.library_name = spec.get("library_name", spec.get("lib_name", None))
+
+    @staticmethod
+    def _init_datasheets(spec: dict) -> list[Datasheet]:
+
+        datasheets: list[Datasheet] = []
+        spec_node = spec.get("datasheet", spec.get("size_source", None))
+
+        if spec_node is None:
+            return datasheets
+
+        # The simplest case is a single datasheet URL, with no page number
+        # or a #page=N fragment.
+        if isinstance(spec_node, str):
+            datasheets.append(Datasheet(url=spec_node, page=None))
+        else:
+            # There are two options now: either `datasheet` is a
+            # DS dict, or it's a list of DS dicts
+            ds_nodes = spec_node if isinstance(spec_node, list) else [spec_node]
+            for ds_node in ds_nodes:
+                if not isinstance(ds_node, dict):
+                    raise ValueError(
+                        f"Invalid datasheet entry: {ds_node!r} (must be a dict)"
+                    )
+                # All datasheet dicts must have a 'url' key
+                url = ds_node["url"]
+                page = ds_node.get("page", None)
+                datasheets.append(Datasheet(url=url, page=page))
+
+        return datasheets
+
+    @property
+    def datasheet(self) -> str | None:
+        """
+        Compose all datasheet URLs into a single string
+        """
+
+        if not self.datasheets:
+            return None
+
+        strs = [ds.construct_url() for ds in self.datasheets]
+        strs = [s for s in strs if s is not None]
+
+        return ", ".join(strs) if strs else None
