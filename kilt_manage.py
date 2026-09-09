@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
 import argparse
+import logging
 import os
 import pathlib
 import shutil
 import subprocess
+import sys
 
 ENV = os.environ.copy()
+PYTHON_EXECUTABLE = sys.executable
 BASE_DIR = pathlib.Path(__file__).resolve().parent
 KICADMODTREE_DIR = BASE_DIR / "KicadModTree"
 
@@ -20,9 +23,19 @@ class DependencyException(Exception):
 
 
 def run_command(cmd, **kwargs):
+
+    logging.info(f"Running command: {_format_command(cmd)}")
+
     subprocess.run(
         cmd, bufsize=1, universal_newlines=True, env=ENV, check=True, **kwargs
     )
+
+
+def _format_command(cmd: list[str] | str) -> str:
+    """Format a subprocess command for display in error messages."""
+    if isinstance(cmd, str):
+        return cmd
+    return " ".join(str(part) for part in cmd)
 
 
 def check_dependency(dependency: str) -> bool:
@@ -63,6 +76,7 @@ def format_check(args):
     )
 
     clean_files = [
+        BASE_DIR / "kilt_manage.py",
         KICADMODTREE_DIR / "nodes/specialized/RoundRectangle.py",
         KICADMODTREE_DIR / "nodes/specialized/Stadium.py",
         KICADMODTREE_DIR / "nodes/specialized/Trapezoid.py",
@@ -106,15 +120,15 @@ def run_shellcheck(args):
 
 def unit_tests(args):
     print("Running footprint unit tests...")
-    run_command(["python3", "-m", "pytest"])
+    run_command([PYTHON_EXECUTABLE, "-m", "pytest"])
 
 
 def py_test_coverage(args):
     print("Checking unit test coverage...")
-    ENV["PYTHONPATH"] = os.getcwd()
+    ENV["PYTHONPATH"] = str(BASE_DIR)
     run_command(
         [
-            "python3",
+            PYTHON_EXECUTABLE,
             "-m",
             "nose2",
             "-C",
@@ -134,33 +148,42 @@ def tests(args):
     static_type_check(args)
 
 
+def _do_pip_e_install(extras: str | list[str] | None = None) -> None:
+    cmd = [PYTHON_EXECUTABLE, "-m", "pip", "install", "--upgrade", "-e"]
+
+    target = "."
+    if extras:
+        if isinstance(extras, list):
+            extras = ",".join(extras)
+        target += f"[{extras}]"
+
+    cmd.append(target)
+    run_command(cmd)
+
+
 def update_packages(args):
     print("Updating packages required for production...")
-    run_command(["python3", "-m", "pip", "install", "--upgrade", "-e", "."])
+    _do_pip_e_install()
 
 
 def update_dev_packages(args):
     print("Updating packages required for development...")
-    run_command(["python3", "-m", "pip", "install", "--upgrade", "-e", ".[dev]"])
+    _do_pip_e_install("dev")
 
 
 def update_3d_packages(args):
     print("Updating packages required for generating 3D models...")
-    run_command(["python3", "-m", "pip", "install", "--upgrade", "-e", ".[3d]"])
+    _do_pip_e_install("3d")
 
 
 def update_doc_packages(args):
     print("Updating packages required for generating documentation...")
-    run_command(
-        ["python3", "-m", "pip", "install", "--upgrade", "-e", ".[documentation]"]
-    )
+    _do_pip_e_install("documentation")
 
 
-def update_all_packages(args):
-    update_packages(args)
-    update_dev_packages(args)
-    update_3d_packages(args)
-    update_doc_packages(args)
+def update_all_packages(args: argparse.Namespace) -> None:
+    print("Updating all packages...")
+    _do_pip_e_install(["3d", "dev", "documentation"])
 
 
 def static_type_check(args):
@@ -183,8 +206,16 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description="Manager for KiCad Footprint and 3D Model Generator",
-        add_help=False,
     )
+
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="count",
+        default=0,
+        help="Increase verbosity level (can be specified multiple times)",
+    )
+
     subparsers = parser.add_subparsers(dest="command", metavar="[command]")
 
     help_parser = subparsers.add_parser("help", help="- This text")
@@ -254,6 +285,15 @@ if __name__ == "__main__":
     run_all_parser.set_defaults(func=run_all)
 
     args = parser.parse_args()
+
+    log_level = logging.WARNING
+    if args.verbose > 1:
+        log_level = logging.DEBUG
+    elif args.verbose == 1:
+        log_level = logging.INFO
+
+    logging.basicConfig(level=log_level)
+
     if hasattr(args, "func"):
         try:
             args.func(args)
@@ -262,8 +302,9 @@ if __name__ == "__main__":
             exit(1)
         except subprocess.CalledProcessError as e:
             print(
-                f"Called Process Error: '{" ".join([str(x) for x in e.cmd])}' exited with code {e.returncode}"
+                f"Called Process Error: '{_format_command(e.cmd)}' "
+                f"exited with code {e.returncode}"
             )
-            exit(2)
+            exit(e.returncode)
     else:
         parser.print_help()
