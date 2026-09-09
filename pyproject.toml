@@ -91,6 +91,7 @@ packages = [
     "generators.tools.pad_factory",
     "kilibs",
     "KicadModTree",
+    "kilt_manage",
 ]
 mypy_path = ["src", "."]
 exclude = [

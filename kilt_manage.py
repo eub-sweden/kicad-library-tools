@@ -7,11 +7,15 @@ import pathlib
 import shutil
 import subprocess
 import sys
+from typing import Sequence, TypeAlias
 
 ENV = os.environ.copy()
 PYTHON_EXECUTABLE = sys.executable
 BASE_DIR = pathlib.Path(__file__).resolve().parent
 KICADMODTREE_DIR = BASE_DIR / "KicadModTree"
+
+# Type alias for subprocess command, which can be a string or a sequence of strings/paths.
+Command: TypeAlias = str | Sequence[str | pathlib.Path]
 
 
 class DependencyException(Exception):
@@ -22,16 +26,19 @@ class DependencyException(Exception):
         return f"Could not locate dependencies: '{", ".join(self.dependencies)}'"
 
 
-def run_command(cmd, **kwargs):
-
+def run_command(cmd: Command, *, cwd: str | pathlib.Path | None = None) -> None:
     logging.info(f"Running command: {_format_command(cmd)}")
-
     subprocess.run(
-        cmd, bufsize=1, universal_newlines=True, env=ENV, check=True, **kwargs
+        cmd,
+        bufsize=1,
+        universal_newlines=True,
+        env=ENV,
+        check=True,
+        cwd=cwd,
     )
 
 
-def _format_command(cmd: list[str] | str) -> str:
+def _format_command(cmd: Command) -> str:
     """Format a subprocess command for display in error messages."""
     if isinstance(cmd, str):
         return cmd
@@ -60,7 +67,7 @@ def check_dependencies(dependencies: list[str]) -> None:
         raise DependencyException(missing)
 
 
-def format_check(args):
+def format_check(args: argparse.Namespace) -> None:
     check_dependencies(["pycodestyle", "black", "isort"])
 
     print("Performing footprint formatting check...")
@@ -95,7 +102,7 @@ def format_check(args):
     run_command(["isort", "--check-only", *clean_files])
 
 
-def flake8_check(args):
+def flake8_check(args: argparse.Namespace) -> None:
     check_dependencies(["flake8"])
 
     print("Performing flake8 validation...")
@@ -109,7 +116,7 @@ def flake8_check(args):
     )
 
 
-def run_shellcheck(args):
+def run_shellcheck(args: argparse.Namespace) -> None:
     check_dependencies(["shellcheck"])
 
     print("Running shellcheck...")
@@ -118,12 +125,12 @@ def run_shellcheck(args):
     run_command(["shellcheck", *scripts], cwd=gitlabci)
 
 
-def unit_tests(args):
+def unit_tests(args: argparse.Namespace) -> None:
     print("Running footprint unit tests...")
     run_command([PYTHON_EXECUTABLE, "-m", "pytest"])
 
 
-def py_test_coverage(args):
+def py_test_coverage(args: argparse.Namespace) -> None:
     print("Checking unit test coverage...")
     ENV["PYTHONPATH"] = str(BASE_DIR)
     run_command(
@@ -142,7 +149,7 @@ def py_test_coverage(args):
     )
 
 
-def tests(args):
+def tests(args: argparse.Namespace) -> None:
     unit_tests(args)
     format_check(args)
     static_type_check(args)
@@ -161,22 +168,22 @@ def _do_pip_e_install(extras: str | list[str] | None = None) -> None:
     run_command(cmd)
 
 
-def update_packages(args):
+def update_packages(args: argparse.Namespace) -> None:
     print("Updating packages required for production...")
     _do_pip_e_install()
 
 
-def update_dev_packages(args):
+def update_dev_packages(args: argparse.Namespace) -> None:
     print("Updating packages required for development...")
     _do_pip_e_install("dev")
 
 
-def update_3d_packages(args):
+def update_3d_packages(args: argparse.Namespace) -> None:
     print("Updating packages required for generating 3D models...")
     _do_pip_e_install("3d")
 
 
-def update_doc_packages(args):
+def update_doc_packages(args: argparse.Namespace) -> None:
     print("Updating packages required for generating documentation...")
     _do_pip_e_install("documentation")
 
@@ -186,14 +193,14 @@ def update_all_packages(args: argparse.Namespace) -> None:
     _do_pip_e_install(["3d", "dev", "documentation"])
 
 
-def static_type_check(args):
+def static_type_check(args: argparse.Namespace) -> None:
     check_dependencies(["mypy"])
 
     print("Performing static type check...")
     run_command("mypy")
 
 
-def run_all(args):
+def run_all(args: argparse.Namespace) -> None:
     update_all_packages(args)
     tests(args)
     flake8_check(args)
