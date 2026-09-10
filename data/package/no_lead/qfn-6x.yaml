@@ -129,7 +129,9 @@ QFN-64-1EP_9x9mm_P0.5mm_EP3.4x3.4mm:
     paste_via_clearance: 0.1
 
 QFN-64-1EP_9x9mm_P0.5mm_EP3.8x3.8mm:
-  size_source: 'https://datasheet.lcsc.com/szlcsc/Realtek-Semicon-RTL8211EG-VB-CG_C69264.pdf#page=77'
+  size_source:
+    url: 'https://datasheet.lcsc.com/szlcsc/Realtek-Semicon-RTL8211EG-VB-CG_C69264.pdf'
+    page: 77
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x: 9.0
@@ -171,7 +173,9 @@ QFN-64-1EP_9x9mm_P0.5mm_EP4.1x4.1mm:
     paste_via_clearance: 0.1
 
 Texas_RGC0064B_VQFN-64-1EP_9x9mm_P0.5mm_EP4.25x4.25mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/msp430f5217.pdf#page=122'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/msp430f5217.pdf'
+    page: 122
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RGC0064B'
@@ -216,7 +220,9 @@ Texas_RGC0064B_VQFN-64-1EP_9x9mm_P0.5mm_EP4.25x4.25mm:
     paste_rings_outside: 1
 
 QFN-64-1EP_9x9mm_P0.5mm_EP4.35x4.35mm:
-  size_source: 'https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT2232H.pdf#page=57'
+  size_source:
+    url: 'https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT2232H.pdf'
+    page: 57
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -279,7 +285,9 @@ QFN-64-1EP_9x9mm_P0.5mm_EP4.7x4.7mm:
     paste_via_clearance: 0.1
 
 QFN-64-1EP_9x9mm_P0.5mm_EP5.2x5.2mm:
-  size_source: 'https://www.silabs.com/documents/public/data-sheets/Si5345-44-42-D-DataSheet.pdf#page=51'
+  size_source:
+    url: 'https://www.silabs.com/documents/public/data-sheets/Si5345-44-42-D-DataSheet.pdf'
+    page: 51
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -342,7 +350,9 @@ QFN-64-1EP_9x9mm_P0.5mm_EP5.4x5.4mm:
     paste_via_clearance: 0.1
 
 VQFN-64-1EP_9x9mm_P0.5mm_EP5.4x5.4mm:
-  size_source: 'https://ww1.microchip.com/downloads/en/DeviceDoc/PIC16LF19195-6-7-Data-Sheet-40001873D.pdf#page=718'
+  size_source:
+    url: 'https://ww1.microchip.com/downloads/en/DeviceDoc/PIC16LF19195-6-7-Data-Sheet-40001873D.pdf'
+    page: 718
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -374,7 +384,9 @@ VQFN-64-1EP_9x9mm_P0.5mm_EP5.4x5.4mm:
     paste_avoid_via: False
 
 QFN-64-1EP_9x9mm_P0.5mm_EP5.45x5.45mm:
-  size_source: 'https://www.infineon.com/dgdl/Infineon-MA12040-DS-v01_00-EN.pdf?fileId=5546d46264a8de7e0164b7467a3d617c#page=81'
+  size_source:
+    url: 'https://www.infineon.com/dgdl/Infineon-MA12040-DS-v01_00-EN.pdf?fileId=5546d46264a8de7e0164b7467a3d617c'
+    page: 81
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -431,7 +443,9 @@ QFN-64-1EP_9x9mm_P0.5mm_EP5.7x5.7mm:
     paste_via_clearance: 0.1
 
 QFN-64-1EP_9x9mm_P0.5mm_EP6x6mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/tusb8041.pdf#page=42'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tusb8041.pdf'
+    page: 42
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x: 9.0
@@ -461,7 +475,9 @@ QFN-64-1EP_9x9mm_P0.5mm_EP6x6mm:
     paste_via_clearance: 0.1
 
 QFN-64-1EP_9x9mm_P0.5mm_EP7.15x7.15mm:
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/229321fa.pdf#page=27'
+  size_source:
+    url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/229321fa.pdf'
+    page: 27
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -607,7 +623,9 @@ QFN-64-1EP_9x9mm_P0.5mm_EP7.65x7.65mm:
     paste_via_clearance: 0.1
 
 QFN-68-1EP_7x7mm_P0.35mm_EP5.49x5.49mm:
-  size_source: 'https://artinchip.com/upload/files/product/20240112/17050529177725663.pdf/#page=42'
+  size_source:
+    url: 'https://artinchip.com/upload/files/product/20240112/17050529177725663.pdf/'
+    page: 42
   device_type: 'QFN'
   manufacturer: 'ArtInChip'
   ipc_class: 'qfn_pull_back'
@@ -648,7 +666,9 @@ QFN-68-1EP_7x7mm_P0.35mm_EP5.49x5.49mm:
     paste_via_clearance: 0.1
 
 QFN-68-1EP_8x8mm_P0.4mm_EP5.2x5.2mm:
-  size_source: 'https://cdn.microsemi.com/documents/1bf6886f-5919-4508-a50b-b1dbf3fdf0f4/download/#page=98'
+  size_source:
+    url: 'https://cdn.microsemi.com/documents/1bf6886f-5919-4508-a50b-b1dbf3fdf0f4/download/'
+    page: 98
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -734,7 +754,9 @@ QFN-68-1EP_8x8mm_P0.4mm_EP6.4x6.4mm:
 
 VQFN-68_1EP_8x8mm_P0.4mm_EP4.3x4.3mm:
 # similar to JEDEC MO-220 variation VLLE-1, but nominal height, lead_len and EP are different
-  size_source: 'https://ftdichip.com/wp-content/uploads/2025/09/DS_FT2233HP.pdf#page=49'
+  size_source:
+    url: 'https://ftdichip.com/wp-content/uploads/2025/09/DS_FT2233HP.pdf'
+    page: 49
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:

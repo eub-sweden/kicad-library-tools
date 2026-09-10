@@ -59,7 +59,9 @@ SOIC-10_3.9x4.9mm_P1.00mm:
   num_pins_y: 5
 
 SSOP-10-1EP_3.9x4.9mm_P1.00mm_EP2.1x3.3mm:
-  size_source: 'http://download.py32.org/%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C/zh-CN/PY32F002A%20%E7%B3%BB%E5%88%97%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C_Rev1.0.pdf#page=44'
+  size_source:
+    url: 'http://download.py32.org/%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C/zh-CN/PY32F002A%20%E7%B3%BB%E5%88%97%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C_Rev1.0.pdf'
+    page: 44
   compatible_mpns:
     - 'ESSOP-10'
   device_type: 'SSOP' # temporary
@@ -137,7 +139,9 @@ SSOP-14_5.3x6.2mm_P0.65mm:
 
 SSOP-16_3.9x4.9mm_P0.635mm:
   # According to NXP, this has no JEDECT source
-  size_source: 'https://www.nxp.com/docs/en/package-information/SOT519-1.pdf#page=2'
+  size_source:
+    url: 'https://www.nxp.com/docs/en/package-information/SOT519-1.pdf'
+    page: 2
   device_type: 'SSOP' # temporary
   body_size_x:
     minimum: 3.8
@@ -165,7 +169,9 @@ SSOP-16_3.9x4.9mm_P0.635mm:
 
 SSOP-16_5.3x6.2mm_P0.65mm:
 # similar to MO-150 variation AC, height A = 2.00mm max
-  size_source: 'https://assets.nexperia.com/documents/data-sheet/74HC_HCT165.pdf#page=14'
+  size_source:
+    url: 'https://assets.nexperia.com/documents/data-sheet/74HC_HCT165.pdf'
+    page: 14
   # new datasheet link, old is broken: 'https://www.mouser.com/datasheet/2/302/74HC_HCT165-224942.pdf#page=15'
   # backup source: https://www.alldatasheet.com/datasheet-pdf/pdf/731258/PHILIPS/74HC_HCT165_15.html
   device_type: 'SSOP' # temporary
@@ -214,7 +220,11 @@ SSOP-20_4.4x6.5mm_P0.65mm:
 
 SSOP-20_5.3x7.2mm_P0.65mm:
   inherit: SSOP-8_5.3x3mm_P0.65mm
-  size_source: 'JEDEC MO-150 variation AE, 1.75mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MO-150, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=396'
+  size_source:
+    - url: 'JEDEC MO-150 variation AE, 1.75mm body thickness'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-150'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+      page: 396
   # old source: 'https://ww1.microchip.com/downloads/en/DeviceDoc/40001800C.pdf#page=480'
   body_size_y: 6.90 .. 7.20 .. 7.50 # D
   body_height: 1.65 .. 1.85
@@ -224,7 +234,12 @@ SSOP-20_5.3x7.2mm_P0.65mm:
 
 SSOP-24_5.3x8.2mm_P0.65mm:
   inherit: SSOP-8_5.3x3mm_P0.65mm
-  size_source: 'JEDEC MO-150 variation AG, 1.75mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MO-150, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=398, https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/ltc-legacy-ssop/ssop_24_05-08-1640.pdf'
+  size_source:
+    - url: 'JEDEC MO-150 variation AG, 1.75mm body thickness'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-150'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+      page: 398
+    - url: 'https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/ltc-legacy-ssop/ssop_24_05-08-1640.pdf'
   body_size_y: 7.90 .. 8.20 .. 8.50 # D
   body_height: 1.65 .. 1.85
   body_pcb_gap: 0.05 .. 0.15
@@ -233,7 +248,11 @@ SSOP-24_5.3x8.2mm_P0.65mm:
 
 SSOP-28_5.3x10.2mm_P0.65mm:
   inherit: SSOP-8_5.3x3mm_P0.65mm
-  size_source: 'JEDEC MO-150 variation AH, 1.75mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MO-150, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=400'
+  size_source:
+    - url: 'JEDEC MO-150 variation AH, 1.75mm body thickness'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-150'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+      page: 400
   body_size_y: 9.90 .. 10.20 .. 10.50 # D
   body_height: 1.65 .. 1.85
   body_pcb_gap: 0.05 .. 0.15

@@ -45,7 +45,9 @@ Texas_MicroSiP-10-1EP_3.8x3.0mm_P0.6mm_EP0.7x2.9mm_ThermalVia:
     paste_avoid_via: False
 
 Texas_SIL0008D_MicroSiP-8-1EP_2.8x3mm_P0.65mm_EP1.1x1.9mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/tps82130.pdf#page=19'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tps82130.pdf'
+    page: 19
   include_suffix_in_3dpath: False
   device_type: 'MicroSiP'
   manufacturer: 'Texas'
@@ -86,7 +88,9 @@ Texas_SIL0008D_MicroSiP-8-1EP_2.8x3mm_P0.65mm_EP1.1x1.9mm:
     paste_avoid_via: False
 
 Texas_SIL0008C_MicroSiP-8-1EP_2.8x3mm_P0.65mm_EP1.1x1.9mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/tps82085.pdf#page=20'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tps82085.pdf'
+    page: 20
   include_suffix_in_3dpath: False
   device_type: 'MicroSiP'
   manufacturer: 'Texas'

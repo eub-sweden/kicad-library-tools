@@ -578,7 +578,9 @@ SSOP-8_3.9x5.05mm_P1.27mm:
   num_pins_y: 4
 
 SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3.0mm:
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/ada4898-1_4898-2.pdf#page=29'
+  size_source:
+    url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/ada4898-1_4898-2.pdf'
+    page: 29
   device_type: 'SOIC' # temporary
   body_size_x:
     minimum: 3.8
@@ -694,7 +696,9 @@ HTSOP-8-1EP_3.9x4.9mm_P1.27mm_EP2.4x3.2mm:
     EP_paste_coverage: 0.65
 
 SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.81mm:
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/ada4898-1_4898-2.pdf#page=29'
+  size_source:
+    url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/ada4898-1_4898-2.pdf'
+    page: 29
   device_type: 'SOIC' # temporary
   body_size_x:
     minimum: 3.8
@@ -737,7 +741,12 @@ SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.81mm:
     EP_paste_coverage: 0.7
 
 SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.95x4.9mm_Mask2.71x3.4mm:
-  size_source: 'JEDEC MS-012 variation BA (thermally enhanced), using tolerances and Exposed Pad from Texas Instruments DDA0008B, https://www.ti.com/lit/ml/pptd058j/pptd058j.pdf, https://www.ti.com/lit/ds/symlink/lm5017.pdf#page=35, https://www.jedec.org/document_search?search_api_views_fulltext=MS-012' # https://web.archive.org/web/20200209135113/https://www.ti.com/lit/ds/symlink/lm5017.pdf#page=31
+  size_source:
+    - url: 'JEDEC MS-012 variation BA (thermally enhanced), using tolerances and Exposed Pad from Texas Instruments DDA0008B'
+    - url: 'https://www.ti.com/lit/ml/pptd058j/pptd058j.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/lm5017.pdf'
+      page: 35
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-012' # https://web.archive.org/web/20200209135113/https://www.ti.com/lit/ds/symlink/lm5017.pdf#page=31
   compatible_mpns:
     - 'Texas_PowerPAD'
   device_type: 'SOIC' # temporary
@@ -780,7 +789,12 @@ SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.95x4.9mm_Mask2.71x3.4mm:
 
 SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.95x4.9mm_Mask2.34x2.34mm:
   inherit: SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.95x4.9mm_Mask2.71x3.4mm
-  size_source: 'JEDEC MS-012 variation BA (thermally enhanced), using tolerances and Exposed Pad from Texas Instruments DDA0008A, https://www.ti.com/lit/ml/pptd272a/pptd272a.pdf, https://www.ti.com/lit/ds/symlink/tps92511.pdf#page=29, https://www.jedec.org/document_search?search_api_views_fulltext=MS-012'
+  size_source:
+    - url: 'JEDEC MS-012 variation BA (thermally enhanced), using tolerances and Exposed Pad from Texas Instruments DDA0008A'
+    - url: 'https://www.ti.com/lit/ml/pptd272a/pptd272a.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/tps92511.pdf'
+      page: 29
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-012'
   EP_size_x: 2.24 .. 2.34
   EP_size_y: 2.24 .. 2.34
   EP_mask_x: 2.34
@@ -824,7 +838,9 @@ HSOP-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.1mm_ThermalVias:
     EP_paste_coverage: 0.65
 
 SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm:
-  size_source: 'http://www.allegromicro.com/~/media/Files/Datasheets/A4950-Datasheet.ashx#page=8'
+  size_source:
+    url: 'http://www.allegromicro.com/~/media/Files/Datasheets/A4950-Datasheet.ashx'
+    page: 8
   device_type: 'SOIC' # temporary
   body_size_x:
     nominal: 3.9
@@ -863,7 +879,9 @@ SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm:
     EP_paste_coverage: 0.7
 
 SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.514x3.2mm:
-  size_source: 'https://www.renesas.com/eu/en/www/doc/datasheet/hip2100.pdf#page=13'
+  size_source:
+    url: 'https://www.renesas.com/eu/en/www/doc/datasheet/hip2100.pdf'
+    page: 13
   device_type: 'SOIC' # temporary
   body_size_x:
     minimum: 3.8 # rounded from 3.811
@@ -923,7 +941,9 @@ SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.71x3.7mm:
     EP_paste_coverage: 0.7
 
 SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.62x3.51mm:
-  size_source: 'https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP2303A/document_id/494#page=14'
+  size_source:
+    url: 'https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP2303A/document_id/494'
+    page: 14
   device_type: 'SOIC' # temporary
   body_size_x:
     minimum: 3.8
@@ -994,7 +1014,10 @@ Infineon_PG-DSO-8-27:
 Texas_R-PDSO-G8_EP2.95x4.9mm_Mask2.4x3.1mm:
 # SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.95x4.9mm_Mask2.4x3.1mm, we should rename it and use compatible_mpns
 # it was previously in hsoic.yaml file
-  size_source: 'http://www.ti.com/lit/ds/symlink/lmr14030.pdf#page=28, http://www.ti.com/lit/ml/msoi002j/msoi002j.pdf'
+  size_source:
+    - url: 'http://www.ti.com/lit/ds/symlink/lmr14030.pdf'
+      page: 28
+    - url: 'http://www.ti.com/lit/ml/msoi002j/msoi002j.pdf'
   custom_name_format: 'Texas_R-PDSO-G{pincount}_EP{ep_size_x:g}x{ep_size_y:g}mm_Mask{mask_size_x:g}x{mask_size_y:g}mm{vias:s}'
   device_type: 'HSOIC' # temporary
   body_size_x:
@@ -1065,7 +1088,9 @@ SO-8_4.0x5.0mm_P1.27mm:
 Infineon_PG-DSO-8-24:
 # it was previously in infineon.yaml file, generates 'Infineon_PG-DSO-8-24_4x5mm'
 # NOTE: This is a SOIC-8 variant without EP
-  size_source: 'https://www.infineon.com/dgdl/Infineon-BSP752R-DS-v01_02-EN.pdf?fileId=db3a304316f112290116f233cbd271e9#page=17'
+  size_source:
+    url: 'https://www.infineon.com/dgdl/Infineon-BSP752R-DS-v01_02-EN.pdf?fileId=db3a304316f112290116f233cbd271e9'
+    page: 17
   custom_name_format: '{man}_PG-DSO-{pincount}-24_{size_x:g}x{size_y:g}mm'
   device_type: 'PG-DSO' # temporary
   manufacturer: Infineon
@@ -1136,7 +1161,13 @@ SOP-8-1EP_4.57x4.57mm_P1.27mm_EP4.57x4.45mm:
     EP_paste_coverage: 0.70
 
 SOIC-8_5.3x5.3mm_P1.27mm:
-  size_source: 'JEITA/EIAJ ED-7311-19 variation 08-001-BBA and Atmel/Microchip, 208 mils width, https://www.jeita.or.jp/japanese/standard/book/ED-7311-19/#target/page_no=21, https://ww1.microchip.com/downloads/en/DeviceDoc/20005045C.pdf#page=23, https://ww1.microchip.com/downloads/en/DeviceDoc/doc2535.pdf#page=162'
+  size_source:
+    - url: 'JEITA/EIAJ ED-7311-19 variation 08-001-BBA and Atmel/Microchip, 208 mils width'
+    - url: 'https://www.jeita.or.jp/japanese/standard/book/ED-7311-19/#target/page_no=21'
+    - url: 'https://ww1.microchip.com/downloads/en/DeviceDoc/20005045C.pdf'
+      page: 23
+    - url: 'https://ww1.microchip.com/downloads/en/DeviceDoc/doc2535.pdf'
+      page: 162
   compatible_mpns:
     - 'P-SOP SOP SOP-8'
     - 'SO SO-8'
@@ -1470,7 +1501,9 @@ SO-16_3.9x9.9mm_P1.27mm:
 
 STC_SOP-16_3.9x9.9mm_P1.27mm:
 # it was previously in sop.yaml file, pending renaming: STC_SOIC-16_3.9x9.9mm_P1.27mm
-  size_source: 'https://www.stcmicro.com/datasheet/STC15F2K60S2-en.pdf#page=156'
+  size_source:
+    url: 'https://www.stcmicro.com/datasheet/STC15F2K60S2-en.pdf'
+    page: 156
   device_type: 'SOP' # temporary
   manufacturer: 'STC'
   body_size_x: 3.80 .. 3.90 .. 4.00 # E1
@@ -1963,7 +1996,9 @@ SOIC-24W_7.5x15.4mm_P1.27mm:
 SOP-24_7.5x15.4mm_P1.27mm:
 # it was previously in sop.yaml file
 # JEDEC MS-013, it's SOIC actually
-  size_source: 'http://www.issi.com/WW/pdf/31FL3218.pdf#page=14'
+  size_source:
+    url: 'http://www.issi.com/WW/pdf/31FL3218.pdf'
+    page: 14
   device_type: 'SOP' # temporary
   body_size_x:
     minimum: 7.4
@@ -2018,7 +2053,9 @@ SOIC-28W_7.5x17.9mm_P1.27mm:
   num_pins_y: 14
 
 SOIC-28W_7.5x18.7mm_P1.27mm:
-  size_source: 'https://www.es.co.th/Schemetic/PDF/AK5394A.PDF#page=23'
+  size_source:
+    url: 'https://www.es.co.th/Schemetic/PDF/AK5394A.PDF'
+    page: 23
   custom_name_format: SOIC-{pincount}W_{size_x:.2g}x{size_y:.3g}mm_P{pitch:g}mm # round to two significant digits to comply with old name
   device_type: 'SOIC' # temporary
   body_size_x:
@@ -2046,7 +2083,9 @@ SOIC-28W_7.5x18.7mm_P1.27mm:
 SOP-28_8.4x18.16mm_P1.27mm:
 # it was previously in sop.yaml file
 # JEDEC MO-059, it's SOIC actually
-  size_source: 'https://www.issi.com/WW/pdf/62-65C256AL.pdf#page=12'
+  size_source:
+    url: 'https://www.issi.com/WW/pdf/62-65C256AL.pdf'
+    page: 12
   device_type: 'SOP' # temporary
   body_size_x:
     minimum: 8.23
@@ -2164,7 +2203,9 @@ Renesas_SOP-32_11.4x20.75mm_P1.27mm:
 SOP-44_12.6x28.5mm_P1.27mm:
 # it was previously in sop.yaml file
 # JEDEC MO-175 (see datasheet), it's SOIC actually
-  size_source: 'https://www.mxic.com.tw/Lists/Datasheet/Attachments/8177/MX23C6410,%205V,%2064Mb,%20v3.1.pdf#page=5'
+  size_source:
+    url: 'https://www.mxic.com.tw/Lists/Datasheet/Attachments/8177/MX23C6410,%205V,%2064Mb,%20v3.1.pdf'
+    page: 5
   device_type: 'SOP' # temporary
   body_size_x:
     minimum: 12.47

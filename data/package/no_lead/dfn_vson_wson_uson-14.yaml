@@ -39,7 +39,9 @@ TDFN-14-1EP_3x3mm_P0.4mm_EP1.78x2.35mm:
 
 Texas_R-PUSON-N14:
 # body size of 1.35x3.5, pitch 0.5
-  size_source: 'https://www.ti.com/lit/ds/symlink/tpd6e05u06.pdf#page=28'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tpd6e05u06.pdf'
+    page: 28
   custom_name_format: 'Texas_R-PUSON-N14'
   device_type: 'USON'
   ipc_class: 'qfn'
@@ -67,7 +69,9 @@ Texas_R-PUSON-N14:
 
 DFN-14_1.35x3.5mm_P0.5mm:
   library: Package_DFN_QFN # TEMPORARY
-  size_source: 'https://m.littelfuse.com/media?resourcetype=datasheets&itemid=9fbe09c9-efee-4022-a889-ca0005cd9b07&filename=littelfuse-tvs-diode-array-sp3012-datasheet#page=5'
+  size_source:
+    url: 'https://m.littelfuse.com/media?resourcetype=datasheets&itemid=9fbe09c9-efee-4022-a889-ca0005cd9b07&filename=littelfuse-tvs-diode-array-sp3012-datasheet'
+    page: 5
   device_type: 'DFN'
   body_size_x:
     minimum: 1.25
@@ -129,7 +133,9 @@ OnSemi_DFN-14-1EP_4x4mm_P0.5mm_EP2.7x3.4mm:
 
 VSON-14-1EP_3x4.5mm_P0.65mm_EP1.6x4.2mm:
 # VSON-14-1EP_3x4.45mm_P0.65mm_EP1.6x4.2mm
-  size_source: 'https://www.ti.com/lit/ds/symlink/lp8868x-q1.pdf#page=45'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/lp8868x-q1.pdf'
+    page: 45
   device_type: 'VSON'
   ipc_class: 'qfn'
   body_size_x:

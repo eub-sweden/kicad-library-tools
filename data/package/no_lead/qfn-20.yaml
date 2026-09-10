@@ -10,7 +10,10 @@ default_parameters:
   library: Package_DFN_QFN
 
 Renesas_UQFN-20_2x3mm_P0.4mm_LayoutBorder4x6y:
-  size_source: 'Renesas STQFN-20L, https://www.renesas.com/en/document/dst/slg465808283-datasheet#page=200'
+  size_source:
+    - url: 'Renesas STQFN-20L'
+    - url: 'https://www.renesas.com/en/document/dst/slg465808283-datasheet'
+      page: 200
   device_type: 'UQFN'
   manufacturer: 'Renesas'
   suffix: '_LayoutBorder4x6y'
@@ -86,7 +89,9 @@ UQFN-20_3x3mm_P0.4mm: # No exposed pad
   EP_chamfer: 0.2
 
 QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm:
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/3553fc.pdf#page=34'
+  size_source:
+    url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/3553fc.pdf'
+    page: 34
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -123,7 +128,9 @@ QFN-20-1EP_3x3mm_P0.4mm_EP1.65x1.65mm:
     paste_between_vias: 2
 
 UQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm:
-  size_source: 'https://www.kinet-ic.com/uploads/web/KTD2058,%20KTD2059,%20KTD2060,%20KTD2061/KTD2061-58-59-60-04e.pdf#page=25'
+  size_source:
+    url: 'https://www.kinet-ic.com/uploads/web/KTD2058,%20KTD2059,%20KTD2060,%20KTD2061/KTD2061-58-59-60-04e.pdf'
+    page: 25
   device_type: 'UQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -195,7 +202,9 @@ VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm:
     paste_between_vias: 2
 
 WQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/ts3ds10224.pdf#page=29'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/ts3ds10224.pdf'
+    page: 29
   compatible_mpns:
     - Texas_RUK0020B
   device_type: 'WQFN'
@@ -271,7 +280,9 @@ Texas_RUK0020B_WQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm_ThermalVias:
     remove_corner_vias: True
 
 UQFN-20-1EP_3x3mm_P0.4mm_EP1.85x1.85mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=332'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 332
   device_type: 'UQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -313,7 +324,9 @@ UQFN-20-1EP_3x3mm_P0.4mm_EP1.85x1.85mm:
     paste_avoid_via: False
 
 Texas_RJE0020A_VQFN-20-1EP_3x3mm_P0.45mm_EP0.675x0.76mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/tps51396a.pdf#page=31'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tps51396a.pdf'
+    page: 31
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RJE0020A'
@@ -353,7 +366,9 @@ Texas_RJE0020A_VQFN-20-1EP_3x3mm_P0.45mm_EP0.675x0.76mm:
     paste_avoid_via: False
 
 VQFN-20-1EP_3x3mm_P0.45mm_EP1.55x1.55mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/doc8246.pdf#page=264'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/doc8246.pdf'
+    page: 264
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -390,7 +405,9 @@ VQFN-20-1EP_3x3mm_P0.45mm_EP1.55x1.55mm:
     paste_between_vias: 2
 
 QFN-20-1EP_3x3mm_P0.45mm_EP1.6x1.6mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/atmel-8235-8-bit-avr-microcontroller-attiny20_datasheet.pdf#page=212'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/atmel-8235-8-bit-avr-microcontroller-attiny20_datasheet.pdf'
+    page: 212
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -477,7 +494,9 @@ QFN-20-1EP_3x4mm_P0.5mm_EP1.65x2.65mm:
 
 Texas_RVC0020A_WQFN-20-1EP_3x4mm_P0.5mm_EP1.6x2.6mm:
   inherit: QFN-20-1EP_3x4mm_P0.5mm_EP1.65x2.65mm
-  size_source: 'https://www.ti.com/lit/ds/symlink/tps25810.pdf#page=35'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tps25810.pdf'
+    page: 35
   device_type: 'WQFN'
   manufacturer: 'Texas'
   part_number: 'RVC0020A'
@@ -584,7 +603,9 @@ TQFN-20-1EP_4x4mm_P0.5mm_EP2.1x2.1mm:
     paste_avoid_via: False
 
 Texas_RGP0020H_VQFN-20-1EP_4x4mm_P0.5mm_EP2.4x2.4mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/cc1101.pdf#page=101'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/cc1101.pdf'
+    page: 101
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RGP0020H'
@@ -626,7 +647,9 @@ Texas_RGP0020H_VQFN-20-1EP_4x4mm_P0.5mm_EP2.4x2.4mm:
     paste_via_clearance: 0.1
 
 QFN-20-1EP_4x4mm_P0.5mm_EP2.5x2.5mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=274'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 274
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -670,7 +693,9 @@ QFN-20-1EP_4x4mm_P0.5mm_EP2.5x2.5mm:
     paste_between_vias: 2
 
 QFN-20-1EP_4x4mm_P0.5mm_EP2.6x2.6mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/doc2535.pdf#page=164'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/doc2535.pdf'
+    page: 164
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -712,7 +737,9 @@ QFN-20-1EP_4x4mm_P0.5mm_EP2.6x2.6mm:
     paste_between_vias: 2
 
 MLF-20-1EP_4x4mm_P0.5mm_EP2.6x2.6mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/doc8246.pdf#page=263'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/doc8246.pdf'
+    page: 263
   device_type: 'MLF'
   ipc_class: 'qfn'
   body_size_x:
@@ -799,7 +826,9 @@ QFN-20-1EP_4x4mm_P0.5mm_EP2.7x2.7mm:
     paste_between_vias: 2
 
 Texas_RGP0020D_VQFN-20-1EP_4x4mm_P0.5mm_EP2.7x2.7mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/drv8662.pdf#page=25'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/drv8662.pdf'
+    page: 25
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RGP0020D'
@@ -836,7 +865,13 @@ Texas_RGP0020D_VQFN-20-1EP_4x4mm_P0.5mm_EP2.7x2.7mm:
     paste_avoid_via: False
 
 WQFN-20-1EP_4x4mm_P0.5mm_EP2.7x2.7mm:
-  size_source: 'JEDEC MO-220 variation WGGD-5, custom Exposed Pad from Texas Instruments and Maxim, https://www.jedec.org/standards-documents/docs/mo-220-k01, https://pdfserv.maximintegrated.com/package_dwgs/21-0139.PDF, https://www.ti.com/lit/ml/qfnd016s/qfnd016s.pdf, https://www.ti.com/lit/ds/symlink/tuss4470.pdf#page=44'
+  size_source:
+    - url: 'JEDEC MO-220 variation WGGD-5, custom Exposed Pad from Texas Instruments and Maxim'
+    - url: 'https://www.jedec.org/standards-documents/docs/mo-220-k01'
+    - url: 'https://pdfserv.maximintegrated.com/package_dwgs/21-0139.PDF'
+    - url: 'https://www.ti.com/lit/ml/qfnd016s/qfnd016s.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/tuss4470.pdf'
+      page: 44
   compatible_mpns:
     - 'Maxim_T2044-5C Maxim_20L-TQFN-4x4x0.75mm' # https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/tqfn/21-0139.pdf
     - 'Texas_RTJ0020D'
@@ -863,7 +898,9 @@ WQFN-20-1EP_4x4mm_P0.5mm_EP2.7x2.7mm:
     drill: 0.2
 
 UQFN-20-1EP_4x4mm_P0.5mm_EP2.8x2.8mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/40001839B.pdf#page=464'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/40001839B.pdf'
+    page: 464
   device_type: 'UQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1031,7 +1068,9 @@ TQFN-20-1EP_5x5mm_P0.65mm_EP3.1x3.1mm:
     paste_avoid_via: False
 
 Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/tps7a47.pdf#page=29'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tps7a47.pdf'
+    page: 29
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RGW0020A'
@@ -1118,7 +1157,9 @@ TQFN-20-1EP_5x5mm_P0.65mm_EP3.25x3.25mm:
     paste_avoid_via: False
 
 QFN-20-1EP_5x5mm_P0.65mm_EP3.35x3.35mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=276'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 276
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:

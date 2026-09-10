@@ -43,7 +43,13 @@ PQFP-44_10x10mm_P0.8mm:
 Microchip_PQFP-44_10x10mm_P0.8mm:
 # Similar to JEDEC MO-112, variation AA-2, it's actually QFP / PQFP
 # It's replacing MQFP-44_10x10mm_P0.8mm, used only by symbol AD7722
-  size_source: 'JEDEC MO-112 variation AA-2, Microchip and Analog Devices, https://www.jedec.org/document_search?search_api_views_fulltext=MO-112, https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/20005418B.pdf#page=10, https://www.analog.com/media/en/technical-documentation/data-sheets/ad7722.pdf#page=23'
+  size_source:
+    - url: 'JEDEC MO-112 variation AA-2, Microchip and Analog Devices'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-112'
+    - url: 'https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/20005418B.pdf'
+      page: 10
+    - url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/ad7722.pdf'
+      page: 23
   # one more source: https://www.analog.com/media/en/technical-documentation/data-sheets/ad7864.pdf#page=27
   # similar sizes: https://ww1.microchip.com/downloads/aemDocuments/documents/package-outline-drawings/c04-00119a.pdf
   compatible_mpns:
@@ -119,7 +125,12 @@ PQFP-80_14x20mm_P0.8mm:
 
 Hitachi_FP80B_PQFP-80_14x20mm_P0.8mm:
   inherit: PQFP-80_14x20mm_P0.8mm
-  size_source: 'Hitachi FP-80B, 2.70mm body thickness, https://www.icbase.com/pdf/HTH/HTH14270106.pdf#page=9, https://bitsavers.trailing-edge.com/components/hitachi/_dataBooks/1994_M24T026_Hitachi_LCD_Controller_Driver_LSI_Data_Book.pdf#page=28'
+  size_source:
+    - url: 'Hitachi FP-80B, 2.70mm body thickness'
+    - url: 'https://www.icbase.com/pdf/HTH/HTH14270106.pdf'
+      page: 9
+    - url: 'https://bitsavers.trailing-edge.com/components/hitachi/_dataBooks/1994_M24T026_Hitachi_LCD_Controller_Driver_LSI_Data_Book.pdf'
+      page: 28
   compatible_mpns:
     - 'Hitachi_FP-80B'
   manufacturer: 'Hitachi'
@@ -869,7 +880,11 @@ TQFP-128_14x14mm_P0.4mm:
 
 LQFP-128_14x14mm_P0.4mm:
   inherit: TQFP-128_14x14mm_P0.4mm
-  size_source: 'JEDEC MS-026 variation BEE, 1.40mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=423' # https://ww1.microchip.com/downloads/aemDocuments/documents/corporate-responsibilty/environmental/material-compliance-documents/128L_LQFP_14x14x1_4mm_C04-00058b.pdf
+  size_source:
+    - url: 'JEDEC MS-026 variation BEE, 1.40mm body thickness'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+      page: 423 # https://ww1.microchip.com/downloads/aemDocuments/documents/corporate-responsibilty/environmental/material-compliance-documents/128L_LQFP_14x14x1_4mm_C04-00058b.pdf
   compatible_mpns:
     - 'Microchip_128-Lead-Low-Profile-Plastic-Quad-Flat-Pack-(PT)'
     - 'Renesas_Q128.14x14' # small difference in lead_width / 'b' nominal value which is 0.16mm, https://www.renesas.com/eu/en/package-image/pdf/outdrawing/q128.14x14.pdf
@@ -925,7 +940,11 @@ TQFP-144_20x20mm_P0.5mm:
 
 LQFP-144_20x20mm_P0.5mm:
   inherit: TQFP-144_20x20mm_P0.5mm
-  size_source: 'JEDEC MS-026 variation BFB, 1.40mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=425'
+  size_source:
+    - url: 'JEDEC MS-026 variation BFB, 1.40mm body thickness'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+      page: 425
   compatible_mpns:
     - 'Microchip_144-Lead-Plastic-Low-Profile-Quad-Flatpack-(PL)'
     - 'Microsemi_TQ144' # https://web.archive.org/web/20220119120813/https://www.microsemi.com/document-portal/doc_download/131095-pd3068-package-mechanical-drawings#page=64
@@ -1005,7 +1024,11 @@ EQFP-144-1EP_20x20mm_P0.5mm_EP5x5mm:
 
 LQFP-144-1EP_20x20mm_P0.5mm_EP6.5x6.5mm:
   inherit: LQFP-144_20x20mm_P0.5mm
-  size_source: 'JEDEC MS-026 variation BFB, 1.40mm body thickness, custom Exposed Pad from Infineon, https://www.infineon.com/dgdl/Infineon-XMC4500-DS-v01_05-EN.pdf#page=107, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+  size_source:
+    - url: 'JEDEC MS-026 variation BFB, 1.40mm body thickness, custom Exposed Pad from Infineon'
+    - url: 'https://www.infineon.com/dgdl/Infineon-XMC4500-DS-v01_05-EN.pdf'
+      page: 107
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
   compatible_mpns:
   # Has 'U-groove'/anti-flash groove, overall EP size for soldering purposes is 6.5x6.5
   # See also https://www.infineon.com/dgdl/Infineon-Board_Assembly_Recommendations-QFP-Package-v06_00-EN.pdf#page=7
@@ -1185,7 +1208,9 @@ LQFP-176_20x20mm_P0.4mm:
   overall_height: 1.40 .. 1.60 # JEDEC A, minimum calculated from A1_min + A2_min
 
 LQFP-176_24x24mm_P0.5mm:
-  size_source: 'https://www.st.com/resource/en/datasheet/stm32f207vg.pdf#page=163' # actually page 160
+  size_source:
+    url: 'https://www.st.com/resource/en/datasheet/stm32f207vg.pdf' # actually page 160
+    page: 163
   device_type: 'LQFP'
   body_size_x:
     minimum: 23.9
@@ -1302,7 +1327,11 @@ LQFP-216_24x24mm_P0.4mm:
   num_pins_y: 54
 
 TQFP-32_7x7mm_P0.8mm:
-  size_source: 'JEDEC MS-026 variation ABA, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf#page=656'
+  size_source:
+    - url: 'JEDEC MS-026 variation ABA'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf'
+      page: 656
   device_type: 'TQFP'
   body_size_x: 7.0
   body_size_y: 7.0
@@ -1320,7 +1349,11 @@ TQFP-32_7x7mm_P0.8mm:
   num_pins_y: 8
 
 TQFP-44_10x10mm_P0.8mm:
-  size_source: 'JEDEC MS-026 variation ACB, 1.00mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf#page=658'
+  size_source:
+    - url: 'JEDEC MS-026 variation ACB, 1.00mm body thickness'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf'
+      page: 658
   compatible_mpns:
     - 'Microchip_44-Lead-Plastic-Thin-Quad-Flatpack-(PT)'
   device_type: 'TQFP'
@@ -1340,7 +1373,11 @@ TQFP-44_10x10mm_P0.8mm:
 
 TQFP-44-1EP_10x10mm_P0.8mm_EP4.5x4.5mm:
   inherit: TQFP-44_10x10mm_P0.8mm
-  size_source: 'JEDEC MS-026 variation ACB, 1.00mm body thickness, custom Exposed Pad from Microchip, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf#page=662' # https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=444
+  size_source:
+    - url: 'JEDEC MS-026 variation ACB, 1.00mm body thickness, custom Exposed Pad from Microchip'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf'
+      page: 662 # https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=444
   compatible_mpns:
     - 'Microchip_44-Lead-Plastic-Thin-Quad-Flatpack-(MW)'
   EP_size_x: 4.40 .. 4.50 .. 4.60
@@ -1353,7 +1390,8 @@ TQFP-44-1EP_10x10mm_P0.8mm_EP4.5x4.5mm:
 
 LQFP-44_10x10mm_P0.8mm:
   inherit: TQFP-44_10x10mm_P0.8mm
-  size_source: 'JEDEC MS-026 variation BCB, 1.40mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://www.nxp.com.cn/docs/en/package-information/98ASS23225W.pdf'
+  size_source:
+    url: 'JEDEC MS-026 variation BCB, 1.40mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://www.nxp.com.cn/docs/en/package-information/98ASS23225W.pdf'
   compatible_mpns:
     - 'NXP_SOT389-2'
     - 'Onsemi_CASE-561AA' # https://www.mouser.com/datasheet/2/308/1/AMIS_492X0_D-1801898.pdf#page=17'
@@ -1365,7 +1403,11 @@ LQFP-44_10x10mm_P0.8mm:
   overall_height: 1.40 .. 1.60 # JEDEC, minimum calculated from A1_min + A2_min
 
 TQFP-64_14x14mm_P0.8mm:
-  size_source: 'JEDEC MS-026 variation AEB, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf#page=672'
+  size_source:
+    - url: 'JEDEC MS-026 variation AEB'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf'
+      page: 672
   # one more source: https://ww1.microchip.com/downloads/en/DeviceDoc/atmel-2490-8-bit-avr-microcontroller-atmega64-l_datasheet.pdf#page=399
   device_type: 'TQFP'
   body_size_x: 14.00
@@ -1424,7 +1466,11 @@ TQFP-52-1EP_10x10mm_P0.65mm_EP6.5x6.5mm:
 
 TQFP-80_14x14mm_P0.65mm:
 # previously it was VQFP-80_14x14mm_P0.65mm, renamed properly
-  size_source: 'JEDEC MS-026 variation AEC, 1.00mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf#page=679'
+  size_source:
+    - url: 'JEDEC MS-026 variation AEC, 1.00mm body thickness'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf'
+      page: 679
   compatible_mpns:
     - 'Microsemi_VQ80' # Microsemi, https://web.archive.org/web/20220119120813/https://www.microsemi.com/document-portal/doc_download/131095-pd3068-package-mechanical-drawings#page=64
     - 'NXP_TQFP80 NXP_SOT1093-1' # NXP (compatible, D / E sizes have tolerances), https://www.nxp.com/docs/en/package-information/SOT1093-1.pdf
@@ -1446,7 +1492,8 @@ TQFP-80_14x14mm_P0.65mm:
 
 TQFP-80-1EP_14x14mm_P0.65mm_EP9.5x9.5mm:
   inherit: TQFP-80_14x14mm_P0.65mm
-  size_source: 'Based on JEDEC MS-026 variation AEC, 1.00mm body thickness, lead width / tolerances / custom Exposed Pad from Analog Devices, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/tqfp_edsv/sv_80_4.pdf'
+  size_source:
+    url: 'Based on JEDEC MS-026 variation AEC, 1.00mm body thickness, lead width / tolerances / custom Exposed Pad from Analog Devices, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/tqfp_edsv/sv_80_4.pdf'
   compatible_mpns:
     - 'Analog-Devices_SV-80-4' # https://www.analog.com/media/en/technical-documentation/data-sheets/AD9852.pdf#page=41
   force_small_pitch_ipc_definition: False # generates 0.40mm pad with 0.25mm clearance
@@ -1488,7 +1535,11 @@ TQFP-32_5x5mm_P0.5mm:
 
 TQFP-48_7x7mm_P0.5mm:
 # compatible with JEITA 48-001-TBA
-  size_source: 'JEDEC MS-026 variation ABC, 1.00mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf#page=666'
+  size_source:
+    - url: 'JEDEC MS-026 variation ABC, 1.00mm body thickness'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf'
+      page: 666
   # other sources: http://ww1.microchip.com/downloads/en/DeviceDoc/48L_TQFP_7x7x1_0mm_PT_C04-00300d.pdf, https://ww1.microchip.com/downloads/aemDocuments/documents/package-outline-drawings/c04-21016b.pdf
   compatible_mpns:
     - 'P48GA-50-HAA-2 pkg_3304 PTQP0048KC-A' # Intersil / Renesas, https://www.renesas.com/en/document/psc/package-drawing-tfqfp-48pin-ptqp0048kc
@@ -1511,7 +1562,12 @@ TQFP-48_7x7mm_P0.5mm:
 
 TQFP-48-1EP_7x7mm_P0.5mm_EP3.5x3.5mm:
   inherit: TQFP-48_7x7mm_P0.5mm
-  size_source: 'JEDEC MS-026 variation ABC, 1.00mm body thickness, custom Exposed Pad from Microchip and Analog Devices, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf#page=664, https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/tqfp_edsv/sv_48_4.pdf'
+  size_source:
+    - url: 'JEDEC MS-026 variation ABC, 1.00mm body thickness, custom Exposed Pad from Microchip and Analog Devices'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf'
+      page: 664
+    - url: 'https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/tqfp_edsv/sv_48_4.pdf'
   compatible_mpns:
     - 'SV-48-4' # Analog Devices
   device_type: 'TQFP'
@@ -1529,7 +1585,8 @@ TQFP-48-1EP_7x7mm_P0.5mm_EP3.5x3.5mm:
 
 LQFP-48_7x7mm_P0.5mm:
   inherit: TQFP-48_7x7mm_P0.5mm
-  size_source: 'JEDEC MS-026 variation BBC, 1.40mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/ltc-legacy-lqfp/05081760_a_lx48.pdf'
+  size_source:
+    url: 'JEDEC MS-026 variation BBC, 1.40mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/ltc-legacy-lqfp/05081760_a_lx48.pdf'
   compatible_mpns:
     - 'CASE-932AA'  # https://www.onsemi.com/pub/collateral/932aa.pdf, https://www.mouser.com/datasheet/2/308/ADM1026_D-2310009.pdf#page=55
     - 'CASE-932-03' # NXP, https://www.nxp.com/docs/en/data-sheet/MC9S08LG32.pdf#page=48
@@ -1571,7 +1628,9 @@ LQFP-48-1EP_7x7mm_P0.5mm_EP3.6x3.6mm:
 
 Texas_PHP0048E_HTQFP-48_7x7mm_P0.5mm:
 # Generates Texas_PHP0048E_HTQFP-48-1EP_7x7mm_P0.5mm_EP6.5x6.5mm_Mask3.62x3.62mm
-  size_source: 'https://www.ti.com/lit/ds/symlink/tusb4020bi.pdf#page=42'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tusb4020bi.pdf'
+    page: 42
   device_type: 'HTQFP'
   manufacturer: "Texas"
   part_number: "PHP0048E"
@@ -1682,7 +1741,11 @@ TQFP-64_10x10mm_P0.5mm:
 
 Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask4.44x4.44mm:
   inherit: TQFP-64_10x10mm_P0.5mm
-  size_source: 'Texas PAP0064M, based on JEDEC MS-026 variation ACD, 1.00mm body thickness, https://www.ti.com/lit/ml/pptd078j/pptd078j.pdf, https://www.ti.com/lit/ds/symlink/tusb4041i.pdf#page=40'
+  size_source:
+    - url: 'Texas PAP0064M, based on JEDEC MS-026 variation ACD, 1.00mm body thickness'
+    - url: 'https://www.ti.com/lit/ml/pptd078j/pptd078j.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/tusb4041i.pdf'
+      page: 40
   compatible_mpns:
     - 'Texas_PAP0064M Texas_PowerPAD-64-pin-HTQFP'
   manufacturer: 'Texas'
@@ -1706,7 +1769,10 @@ Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask4.44x4.44mm:
 
 Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask5x5mm:
   inherit: Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask4.44x4.44mm
-  size_source: 'Texas PAP (S-PQFP-G64), based on JEDEC MS-026 variation ACD, 1.00mm body thickness, https://www.ti.com/lit/ds/symlink/tfp410.pdf#page=41'
+  size_source:
+    - url: 'Texas PAP (S-PQFP-G64), based on JEDEC MS-026 variation ACD, 1.00mm body thickness'
+    - url: 'https://www.ti.com/lit/ds/symlink/tfp410.pdf'
+      page: 41
   compatible_mpns:
     - 'Texas_PAP-(S-PQFP-G64) Texas_PowerPAD-64-pin-HTQFP'
   manufacturer: 'Texas'
@@ -1723,7 +1789,9 @@ Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask5x5mm:
 
 TQFP-64-1EP_10x10mm_P0.5mm_EP5.305x5.305mm:
 # similar to JEDEC MS-026 variation ACD (but custom Exposed Pad)
-  size_source: 'https://www.esstech.com/wp-content/uploads/2022/09/ES9028PRO-Datasheet-v3.7.pdf#page=54'
+  size_source:
+    url: 'https://www.esstech.com/wp-content/uploads/2022/09/ES9028PRO-Datasheet-v3.7.pdf'
+    page: 54
   compatible_mpns:
     - ESS-eTQFP-64
   device_type: 'TQFP'
@@ -1770,7 +1838,11 @@ TQFP-80_12x12mm_P0.5mm:
   num_pins_y: 20
 
 TQFP-100_14x14mm_P0.5mm:
-  size_source: 'JEDEC MS-026 variation AED, 1.00mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf#page=683'
+  size_source:
+    - url: 'JEDEC MS-026 variation AED, 1.00mm body thickness'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf'
+      page: 683
   compatible_mpns:
     - 'VQ100'      # Microsemi, https://web.archive.org/web/20220119120813/https://www.microsemi.com/document-portal/doc_download/131095-pd3068-package-mechanical-drawings#page=64
     - 'CASE-932AN' # Onsemi, https://www.onsemi.jp/download/package-drawing/pdf/932an.pdf, https://www.onsemi.com/download/data-sheet/pdf/lc88fc2f0b-d.pdf#page=7
@@ -1920,7 +1992,11 @@ TQFP-64_7x7mm_P0.4mm:
 
 TQFP-100_12x12mm_P0.4mm:
 # inherit JEDEC MS-026 BDE (LQFP) from here
-  size_source: 'JEDEC MS-026 variation ADE, 1.00mm body thickness, https://www.jedec.org/document_search?search_api_views_fulltext=MS-026, https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf#page=685'
+  size_source:
+    - url: 'JEDEC MS-026 variation ADE, 1.00mm body thickness'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MS-026'
+    - url: 'https://ww1.microchip.com/downloads/en/PackagingSpec/00000049BZ.pdf'
+      page: 685
   compatible_mpns:
     - 'S100GK-40-9EV-1 pkg_8212 PTQP0100LD-A' # Intersil / Renesas, https://www.renesas.com/en/package/pkg8212, https://www.renesas.com/ja/document/psc/package-drawing-tfqfp-100pin-ptqp0100ld
   device_type: 'TQFP'

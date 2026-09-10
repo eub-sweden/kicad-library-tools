@@ -8,7 +8,9 @@ default_parameters:
 ##############################################################################
 
 Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/drv5032.pdf#page=28'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/drv5032.pdf'
+    page: 28
   device_type: 'X2SON'
   manufacturer: 'Texas'
   ipc_class: 'qfn'
@@ -60,7 +62,9 @@ Texas_X2SON-4-1EP_1.1x1.4mm_P0.5mm_EP0.8x0.6mm:
 
 CDFN-4_2x2.5mm_P1.65mm:
   library: Package_DFN_QFN # TEMPORARY
-  size_source: https://ww1.microchip.com/downloads/aemDocuments/documents/TCG/ProductDocuments/DataSheets/DSC1001-3-4-1.8V-3.3V-Low-Power-Precision-CMOS-Oscillators-DS20005529.pdf#page=17
+  size_source:
+    url: https://ww1.microchip.com/downloads/aemDocuments/documents/TCG/ProductDocuments/DataSheets/DSC1001-3-4-1.8V-3.3V-Low-Power-Precision-CMOS-Oscillators-DS20005529.pdf
+    page: 17
   compatible_mpns:
     - Microchip-DFN2520-4LD-PL-1
   device_type: CDFN
@@ -75,7 +79,9 @@ CDFN-4_2x2.5mm_P1.65mm:
 
 CDFN-4_2.5x3.2mm_P2.1mm:
   library: Package_DFN_QFN # TEMPORARY
-  size_source: https://ww1.microchip.com/downloads/aemDocuments/documents/TCG/ProductDocuments/DataSheets/DSC1001-3-4-1.8V-3.3V-Low-Power-Precision-CMOS-Oscillators-DS20005529.pdf#page=16
+  size_source:
+    url: https://ww1.microchip.com/downloads/aemDocuments/documents/TCG/ProductDocuments/DataSheets/DSC1001-3-4-1.8V-3.3V-Low-Power-Precision-CMOS-Oscillators-DS20005529.pdf
+    page: 16
   compatible_mpns:
     - Microchip-DFN3225-4LD-PL-1
   device_type: CDFN
@@ -90,7 +96,9 @@ CDFN-4_2.5x3.2mm_P2.1mm:
 
 CDFN-4_3.2x5mm_P2.54mm:
   library: Package_DFN_QFN # TEMPORARY
-  size_source: https://ww1.microchip.com/downloads/aemDocuments/documents/TCG/ProductDocuments/DataSheets/DSC1001-3-4-1.8V-3.3V-Low-Power-Precision-CMOS-Oscillators-DS20005529.pdf#page=15
+  size_source:
+    url: https://ww1.microchip.com/downloads/aemDocuments/documents/TCG/ProductDocuments/DataSheets/DSC1001-3-4-1.8V-3.3V-Low-Power-Precision-CMOS-Oscillators-DS20005529.pdf
+    page: 15
   compatible_mpns:
     - Microchip-DFN5032-4LD-PL-1
   device_type: CDFN
@@ -105,7 +113,9 @@ CDFN-4_3.2x5mm_P2.54mm:
 
 DFN-4_5x7mm_P5.08mm:
   library: Package_DFN_QFN # TEMPORARY
-  size_source: https://ww1.microchip.com/downloads/aemDocuments/documents/TCG/ProductDocuments/DataSheets/DSC1001-3-4-1.8V-3.3V-Low-Power-Precision-CMOS-Oscillators-DS20005529.pdf#page=14
+  size_source:
+    url: https://ww1.microchip.com/downloads/aemDocuments/documents/TCG/ProductDocuments/DataSheets/DSC1001-3-4-1.8V-3.3V-Low-Power-Precision-CMOS-Oscillators-DS20005529.pdf
+    page: 14
   compatible_mpns:
     - Microchip-DFN75-4LD-PL-1
   device_type: DFN

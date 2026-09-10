@@ -10,7 +10,10 @@ default_parameters:
   library: Package_DFN_QFN
 
 VQFN-52-1EP_6x6mm_P0.4mm_EP4.7x4.7mm:
-  size_source: 'Nordic QFN52 (QGAA), https://docs-be.nordicsemi.com/bundle/ps_nrf54L15/page/pdf/nRF54L15_nRF54L10_nRF54L05_Datasheet_v1.0.pdf#page=888'
+  size_source:
+    - url: 'Nordic QFN52 (QGAA)'
+    - url: 'https://docs-be.nordicsemi.com/bundle/ps_nrf54L15/page/pdf/nRF54L15_nRF54L10_nRF54L05_Datasheet_v1.0.pdf'
+      page: 888
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x: 6.00
@@ -70,7 +73,9 @@ QFN-52-1EP_7x8mm_P0.5mm_EP5.41x6.45mm:
     paste_via_clearance: 0.1
 
 QFN-56-1EP_7x7mm_P0.4mm_EP3.2x3.2mm:
-  size_source: 'https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf#page=607'
+  size_source:
+    url: 'https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf'
+    page: 607
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -109,7 +114,9 @@ QFN-56-1EP_7x7mm_P0.4mm_EP3.2x3.2mm:
     paste_via_clearance: 0.1
 
 QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm:
-  size_source: 'https://www.espressif.com/sites/default/files/documentation/esp32-s2_datasheet_en.pdf#page=41'
+  size_source:
+    url: 'https://www.espressif.com/sites/default/files/documentation/esp32-s2_datasheet_en.pdf'
+    page: 41
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -149,7 +156,9 @@ QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm:
     paste_via_clearance: 0.1
 
 QFN-56-1EP_7x7mm_P0.4mm_EP5.6x5.6mm:
-  size_source: 'http://www.cypress.com/file/416486/download#page=40'
+  size_source:
+    url: 'http://www.cypress.com/file/416486/download'
+    page: 40
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -184,7 +193,9 @@ QFN-56-1EP_7x7mm_P0.4mm_EP5.6x5.6mm:
     paste_via_clearance: 0.1
 
 QFN-56-1EP_8x8mm_P0.5mm_EP4.3x4.3mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/00002142A.pdf#page=40'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/00002142A.pdf'
+    page: 40
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -322,7 +333,9 @@ VQFN-56-1EP_8x8mm_P0.5mm_EP5.5x5.06mm:
     paste_via_clearance: 0.1
 
 QFN-56-1EP_8x8mm_P0.5mm_EP4.5x5.2mm:
-  size_source: 'http://www.ti.com/lit/an/scea032/scea032.pdf#page=4'
+  size_source:
+    url: 'http://www.ti.com/lit/an/scea032/scea032.pdf'
+    page: 4
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -363,7 +376,9 @@ QFN-56-1EP_8x8mm_P0.5mm_EP4.5x5.2mm:
 
 QFN-56-1EP_8x8mm_P0.5mm_EP5.6x5.6mm:
 # also known as Texas RTQ (S-PVQFN-N56)
-  size_source: 'http://www.ti.com/lit/ds/symlink/tlc5957.pdf#page=23'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tlc5957.pdf'
+    page: 23
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -398,7 +413,9 @@ QFN-56-1EP_8x8mm_P0.5mm_EP5.6x5.6mm:
     paste_via_clearance: 0.1
 
 QFN-56-1EP_8x8mm_P0.5mm_EP5.9x5.9mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/00001734B.pdf#page=50'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/00001734B.pdf'
+    page: 50
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -442,7 +459,9 @@ QFN-56-1EP_8x8mm_P0.5mm_EP6.1x6.1mm:
 # See also ChipQuik IPC0031 adapter/stencil.
 # Intan diagram doesn't contain tolerances, so, where different, use JEDEC standard
 # M0-220 most similar variant VLLD-2: 0.8mm height, 8x8mm, 0.5mm pitch, see Table 8H
-  size_source: 'http://intantech.com/files/Intan_RHD2000_series_datasheet.pdf#page=38'
+  size_source:
+    url: 'http://intantech.com/files/Intan_RHD2000_series_datasheet.pdf'
+    page: 38
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x: # MO-220 dimension D

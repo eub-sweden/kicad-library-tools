@@ -34,7 +34,9 @@ OnSemi_VCT-28_3.5x3.5mm_P0.4mm:
 
 Texas_VQFN-28_RVE0028A:
 # Texas_RVE0028A_VQFN-28-1EP_3.5x4.5mm_P0.4mm_EP2.1x3.1mm
-  size_source: 'http://www.ti.com/lit/ds/symlink/tps51363.pdf#page=29'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tps51363.pdf'
+    page: 29
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RVE0028A'
@@ -96,7 +98,9 @@ WQFN-28-1EP_3.5x5.5mm_P0.5mm_EP2.05x4.05mm:
     drill: 0.2
 
 QFN-28-1EP_4x4mm_P0.4mm_EP2.3x2.3mm:
-  size_source: 'http://www.issi.com/WW/pdf/31FL3731.pdf#page=21'
+  size_source:
+    url: 'http://www.issi.com/WW/pdf/31FL3731.pdf'
+    page: 21
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -139,7 +143,9 @@ QFN-28-1EP_4x4mm_P0.4mm_EP2.3x2.3mm:
     paste_avoid_via: False
 
 UQFN-28-1EP_4x4mm_P0.4mm_EP2.35x2.35mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=338'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 338
   device_type: 'UQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -181,7 +187,9 @@ UQFN-28-1EP_4x4mm_P0.4mm_EP2.35x2.35mm:
     paste_avoid_via: False
 
 QFN-28-1EP_4x4mm_P0.4mm_EP2.4x2.4mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=280'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 280
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -249,7 +257,9 @@ WQFN-28-1EP_4x4mm_P0.4mm_EP2.7x2.7mm:
     paste_avoid_via: False
 
 QFN-28-1EP_4x4mm_P0.45mm_EP2.4x2.4mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/8008S.pdf#page=16'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/8008S.pdf'
+    page: 16
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -293,7 +303,9 @@ QFN-28-1EP_4x4mm_P0.45mm_EP2.4x2.4mm:
     paste_avoid_via: False
 
 VQFN-28-1EP_4x4mm_P0.45mm_EP2.4x2.4mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-9505-AT42-QTouch-BSW-AT42QT1060_Datasheet.pdf#page=28'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-9505-AT42-QTouch-BSW-AT42QT1060_Datasheet.pdf'
+    page: 28
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -411,7 +423,9 @@ QFN-28-1EP_3x6mm_P0.5mm_EP1.7x4.75mm:
     paste_rings_outside: 1
 
 QFN-28_4x4mm_P0.5mm:
-  size_source: 'http://www.st.com/resource/en/datasheet/stm32f031k6.pdf#page=90'
+  size_source:
+    url: 'http://www.st.com/resource/en/datasheet/stm32f031k6.pdf'
+    page: 90
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -439,7 +453,9 @@ QFN-28_4x4mm_P0.5mm:
   chamfer_edge_pins: 0.16
 
 VQFN-28-1EP_4x5mm_P0.5mm_EP2.55x3.55mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/lm5175.pdf#page=40'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/lm5175.pdf'
+    page: 40
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -473,7 +489,9 @@ VQFN-28-1EP_4x5mm_P0.5mm_EP2.55x3.55mm:
     paste_avoid_via: False
 
 QFN-28-1EP_4x5mm_P0.5mm_EP2.65x3.65mm:
-  size_source: 'http://www.analog.com/media/en/technical-documentation/data-sheets/3555fe.pdf#page=32'
+  size_source:
+    url: 'http://www.analog.com/media/en/technical-documentation/data-sheets/3555fe.pdf'
+    page: 32
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -593,7 +611,9 @@ TQFN-28-1EP_5x5mm_P0.5mm_EP2.7x2.7mm:
     paste_avoid_via: False
 
 QFN-28-1EP_5x5mm_P0.5mm_EP3.1x3.1mm:
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2202_TMC2208_TMC2224_datasheet_rev1.14.pdf#page=77'
+  size_source:
+    url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2202_TMC2208_TMC2224_datasheet_rev1.14.pdf'
+    page: 77
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -636,7 +656,9 @@ QFN-28-1EP_5x5mm_P0.5mm_EP3.1x3.1mm:
 
 QFN-28-1EP_5x5mm_P0.5mm_EP3.25x3.25mm:
   inherit: QFN-28-1EP_5x5mm_P0.5mm_EP2.7x2.7mm
-  size_source: 'https://www.silabs.com/documents/public/data-sheets/C8051F32x.pdf#page=39'
+  size_source:
+    url: 'https://www.silabs.com/documents/public/data-sheets/C8051F32x.pdf'
+    page: 39
   lead_width:
     minimum: 0.18
     nominal: 0.23
@@ -662,7 +684,9 @@ QFN-28-1EP_5x5mm_P0.5mm_EP3.25x3.25mm:
     grid: [1.0, 1.0]
 
 VQFN-28-1EP_5x5mm_P0.5mm_EP3.25x3.25mm:
-  size_source: 'https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/MCP251863-External-CAN-FD-Controller-with-Integrated-Transceiver-DS20006624.pdf#page=101'
+  size_source:
+    url: 'https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/MCP251863-External-CAN-FD-Controller-with-Integrated-Transceiver-DS20006624.pdf'
+    page: 101
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -740,7 +764,9 @@ TQFN-28-1EP_5x5mm_P0.5mm_EP3.25x3.25mm:
     paste_avoid_via: False
 
 QFN-28-1EP_5x5mm_P0.5mm_EP3.35x3.35mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=283'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 283
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -782,7 +808,11 @@ QFN-28-1EP_5x5mm_P0.5mm_EP3.35x3.35mm:
     paste_rings_outside: 1
 
 VQFN-28-1EP_5x5mm_P0.5mm_EP3.7x3.7mm:
-  size_source: 'Based on JEDEC MO-220-K.01 variation VHHD-3 and exposed pad nominal size from ADI Trinamic / Analog Devices, https://www.jedec.org/system/files/docs/MO-220K01.pdf, https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf#page=83'
+  size_source:
+    - url: 'Based on JEDEC MO-220-K.01 variation VHHD-3 and exposed pad nominal size from ADI Trinamic / Analog Devices'
+    - url: 'https://www.jedec.org/system/files/docs/MO-220K01.pdf'
+    - url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/TMC2209_datasheet_rev1.09.pdf'
+      page: 83
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x: 5.00
@@ -883,7 +913,9 @@ QFN-28-1EP_5x6mm_P0.5mm_EP3.65x4.65mm:
     paste_rings_outside: 1
 
 QFN-28-1EP_6x6mm_P0.65mm_EP4.25x4.25mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=289'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 289
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:

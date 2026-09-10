@@ -34,7 +34,9 @@ OnSemi_UDFN-16-1EP_3.3x1.35mm_P0.4mm_EP2.8x0.4mm:
   library: Package_DFN_QFN # TEMPORARY
 # OnSemi_UDFN-16-1EP_1.35x3.3mm_P0.4mm_EP0.4x2.8mm
 # very similar to Nexperia_HUSON-16_USON-16-1EP_1.35x3.3mm_P0.4mm_EP0.4x2.8mm
-  size_source: 'https://www.onsemi.com/pdf/datasheet/cm1624-d.pdf#page=7'
+  datasheet:
+    url: 'https://www.onsemi.com/pdf/datasheet/cm1624-d.pdf'
+    page: 7
   device_type: 'UDFN'
   manufacturer: 'OnSemi'
   body_size_x:

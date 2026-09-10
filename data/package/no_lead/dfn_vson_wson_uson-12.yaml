@@ -130,7 +130,9 @@ WDFN-12-1EP_3x3mm_P0.45mm_EP1.7x2.5mm:
 ST_UFDFPN-12-1EP_3x3mm_P0.5mm_EP1.4x2.55mm:
   library: Package_DFN_QFN # TEMPORARY
 # package is close to USON / UDFN package (see height), but minimum height is in X1 range
-  size_source: 'https://www.st.com/resource/en/datasheet/st25dv04k.pdf#page=152'
+  size_source:
+    url: 'https://www.st.com/resource/en/datasheet/st25dv04k.pdf'
+    page: 152
   device_type: 'UFDFPN'
   manufacturer: 'ST'
   body_size_x: 2.95 .. 3.0 .. 3.1
@@ -145,7 +147,9 @@ ST_UFDFPN-12-1EP_3x3mm_P0.5mm_EP1.4x2.55mm:
   EP_size_y: 2.5 .. 2.55 .. 2.6
 
 WSON-12-1EP_3x3mm_P0.5mm_EP1.5x2.5mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/tps63710.pdf#page=33'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tps63710.pdf'
+    page: 33
   device_type: 'WSON'
   ipc_class: 'qfn'
   body_size_x:
@@ -182,7 +186,9 @@ WSON-12-1EP_3x3mm_P0.5mm_EP1.5x2.5mm:
 DFN-12-1EP_3x3mm_P0.5mm_EP1.6x2.5mm:
   library: Package_DFN_QFN # TEMPORARY
 # VSON / VDFN (height = 0.85 +/- 0.05)
-  size_source: 'https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/MIC2207-2MHz-3A-PWM-Buck-Regulator-DS20006470A.pdf#page=22'
+  size_source:
+    url: 'https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/MIC2207-2MHz-3A-PWM-Buck-Regulator-DS20006470A.pdf'
+    page: 22
   device_type: 'DFN'
   body_size_x: 3 +/-0.05
   body_size_y: 3 +/-0.05
@@ -205,7 +211,9 @@ DFN-12-1EP_3x3mm_P0.5mm_EP1.6x2.5mm:
     paste_avoid_via: False
 
 WSON-12-1EP_4x4mm_P0.5mm_EP2.6x3mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/ldc1312.pdf#page=62'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/ldc1312.pdf'
+    page: 62
   device_type: 'WSON'
   ipc_class: 'qfn'
   body_size_x:

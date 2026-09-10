@@ -216,7 +216,9 @@ Texas_S-PDSO-N10_EP1.2x2.0mm:
 # Texas_S-PDSO-N10_EP1.2x2mm
 # body size 2.5x2.5, pitch 0.5
 # Texas DSK0010A, this is a duplicate of WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm
-  size_source: 'http://www.ti.com/lit/ds/symlink/tps7a91.pdf#page=30'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tps7a91.pdf'
+    page: 30
   custom_name_format: 'Texas_S-PDSO-N{pincount}_EP{ep_size_x:g}x{ep_size_y:g}mm{vias:s}'
   device_type: 'DFN'
   body_size_x:
@@ -254,7 +256,9 @@ Texas_S-PDSO-N10_EP1.2x2.0mm:
 
 WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm:
 # Texas DSK0010A
-  size_source: 'http://www.ti.com/lit/gpn/tps63030#page=24'
+  size_source:
+    url: 'http://www.ti.com/lit/gpn/tps63030'
+    page: 24
   device_type: 'WSON'
   ipc_class: 'qfn'
   body_size_x:
@@ -296,7 +300,9 @@ WSON-10-1EP_2.5x2.5mm_P0.5mm_EP1.2x2mm:
 
 DFN-10-1EP_2.6x2.6mm_P0.5mm_EP1.3x2.2mm:
   library: Package_DFN_QFN # TEMPORARY
-  size_source: 'https://www.nxp.com/docs/en/data-sheet/PCF85063A.pdf#page=48'
+  size_source:
+    url: 'https://www.nxp.com/docs/en/data-sheet/PCF85063A.pdf'
+    page: 48
   device_type: 'DFN'
   body_size_x:
     minimum: 2.5
@@ -400,7 +406,9 @@ Maxim_TDFN-10-1EP_3x3mm_P0.95mm_EP1.5x2.3mm:
 
 DFN-10-1EP_3x3mm_P0.5mm_EP1.58x2.35mm:
   library: Package_DFN_QFN # TEMPORARY
-  size_source: 'https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/22005b.pdf#page=24'
+  size_source:
+    url: 'https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/22005b.pdf'
+    page: 24
   device_type: 'DFN'
   body_size_x:
     nominal: 3.0
@@ -440,7 +448,9 @@ DFN-10-1EP_3x3mm_P0.5mm_EP1.58x2.35mm:
 DFN-10-1EP_3x3mm_P0.5mm_EP1.646x3.1mm:
   library: Package_DFN_QFN # TEMPORARY
 # Similar to JEDEC MO-229, variant V3030D-5, but custom Exposed Pad
-  size_source: 'https://www.st.com/resource/en/datasheet/str485.pdf#page=18'
+  size_source:
+    url: 'https://www.st.com/resource/en/datasheet/str485.pdf'
+    page: 18
   compatible_mpns:
     - 'VSON-10-1EP_3x3mm_P0.5mm_EP1.646x3.1mm'
   device_type: 'DFN'
@@ -472,7 +482,9 @@ DFN-10-1EP_3x3mm_P0.5mm_EP1.646x3.1mm:
 
 DFN-10-1EP_3x3mm_P0.5mm_EP1.65x2.38mm:
   library: Package_DFN_QFN # TEMPORARY
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/lt3471.pdf#page=15'
+  size_source:
+    url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/lt3471.pdf'
+    page: 15
   device_type: 'DFN'
   body_size_x:
     nominal: 3.0
@@ -580,7 +592,9 @@ Microchip_USON-10-1EP_3x3mm_P0.5mm_EP1.8x2.5mm:
   manufacturer: 'Microchip'
   compatible_mpns:
     - UDFN-10
-  size_source: 'https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/20002281C.pdf#page=14'
+  size_source:
+    url: 'https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/20002281C.pdf'
+    page: 14
   ipc_class: 'qfn'
   body_size_x:
     nominal: 3.0

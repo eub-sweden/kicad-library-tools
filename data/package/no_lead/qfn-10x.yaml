@@ -10,7 +10,9 @@ default_parameters:
   library: Package_DFN_QFN
 
 QFN-100-1EP_12x12mm_P0.4mm_EP7.4x7.4mm:
-  size_source: 'https://artinchip.com/upload/files/product/20240112/17050529177725663.pdf/#page=44'
+  size_source:
+    url: 'https://artinchip.com/upload/files/product/20240112/17050529177725663.pdf/'
+    page: 44
   device_type: 'QFN'
   manufacturer: 'ArtInChip'
   ipc_class: 'qfn'

@@ -264,7 +264,9 @@ LGA-28_5.2x3.8mm_P0.5mm:
   EP_chamfer: 0.2
 
 ST_HLGA-10_2.5x2.5mm_P0.6mm_LayoutBorder3x2y:
-  size_source: 'https://www.st.com/resource/en/datasheet/lps25hb.pdf#page=46'
+  size_source:
+    url: 'https://www.st.com/resource/en/datasheet/lps25hb.pdf'
+    page: 46
   library: Package_LGA
   body_size_x: 2.5
   body_size_y: 2.5
@@ -1983,7 +1985,9 @@ QFN-64-1EP_9x9mm_Pitch0.5mm:
   EP_chamfer: 0.4
 
 ArtInChip_QFN-68-1EP_7x7mm_P0.35mm_EP5.49x5.49mm:
-  size_source: 'https://artinchip.com/upload/files/product/20240112/17050529177725663.pdf/#page=42'
+  size_source:
+    url: 'https://artinchip.com/upload/files/product/20240112/17050529177725663.pdf/'
+    page: 42
   library: Package_DFN_QFN
   body_size_x: 7.0
   body_size_y: 7.0
@@ -2001,7 +2005,9 @@ ArtInChip_QFN-68-1EP_7x7mm_P0.35mm_EP5.49x5.49mm:
   EP_chamfer: 0.35
 
 ArtInChip_QFN-88-1EP_10x10mm_P0.4mm_EP6.74x6.74mm:
-  size_source: 'https://artinchip.com/upload/files/product/20240112/17050529177725663.pdf/#page=43'
+  size_source:
+    url: 'https://artinchip.com/upload/files/product/20240112/17050529177725663.pdf/'
+    page: 43
   library: Package_DFN_QFN
   body_size_x: 10.0
   body_size_y: 10.0
@@ -2019,7 +2025,9 @@ ArtInChip_QFN-88-1EP_10x10mm_P0.4mm_EP6.74x6.74mm:
   EP_chamfer: 0.35
 
 ArtInChip_QFN-100-1EP_12x12mm_P0.4mm_EP7.4x7.4mm:
-  size_source: 'https://artinchip.com/upload/files/product/20240112/17050529177725663.pdf/#page=44'
+  size_source:
+    url: 'https://artinchip.com/upload/files/product/20240112/17050529177725663.pdf/'
+    page: 44
   library: Package_DFN_QFN
   body_size_x: 12.0
   body_size_y: 12.0
@@ -2315,7 +2323,9 @@ USON-6_1x1.45mm_P0.5mm:
   EP_chamfer: 0.01
 
 Winbond_USON-8-1EP_3x2mm_P0.5mm_EP0.2x1.6mm:
-  size_source: 'https://www.lcsc.com/datasheet/lcsc_datasheet_2205122030_Winbond-Elec-W25Q16JVUXIQ_C2843335.pdf#page=67'
+  size_source:
+    url: 'https://www.lcsc.com/datasheet/lcsc_datasheet_2205122030_Winbond-Elec-W25Q16JVUXIQ_C2843335.pdf'
+    page: 67
   library: Package_SON
   body_size_x: 3.0
   body_size_y: 2.0
@@ -2369,7 +2379,9 @@ WSON-8-1EP_3x3mm_P0.5mm_EP1.6x2.0mm:
   EP_chamfer: 0.25
 
 WSON-8-1EP_6x5mm_P1.27mm_EP3.4x4.3mm:
-  size_source: 'https://www.winbond.com/resource-files/w25q128jv_dtr%20revc%2003272018%20plus.pdf#page=94'
+  size_source:
+    url: 'https://www.winbond.com/resource-files/w25q128jv_dtr%20revc%2003272018%20plus.pdf'
+    page: 94
   library: Package_SON
   body_size_x: 6.0
   body_size_y: 5.0
@@ -2496,7 +2508,9 @@ Texas_S-PVSON-N8:
   EP_chamfer: 0.3
 
 Texas_VSON-HR-8_1.5x2mm_P0.5mm:
-  size_source: https://www.ti.com/lit/ds/symlink/tps62823.pdf#page=29
+  size_source:
+    url: https://www.ti.com/lit/ds/symlink/tps62823.pdf
+    page: 29
   library: Package_SON
   body_size_x: 1.5
   body_size_y: 2.0
@@ -2547,7 +2561,9 @@ Texas_S-PVQFN-N14:
   EP_chamfer: 0.01
 
 Texas_RUN0010A_WQFN-10_2x2mm_P0.5mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/tmp461.pdf#page=35'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tmp461.pdf'
+    page: 35
   library: Package_DFN_QFN
   body_size_x: 2.0
   body_size_y: 2.0
@@ -2579,7 +2595,9 @@ USON-10_2.5x1.0mm_Pitch0.5mm:
   EP_chamfer: 0.01
 
 Texas_R-PUSON-N8_USON-8-1EP_1.6x2.1mm_P0.5mm_EP0.40x1.7mm:
-  size_source: 'https://www.ti.com/lit/gpn/tpd3f303#page=15'
+  size_source:
+    url: 'https://www.ti.com/lit/gpn/tpd3f303'
+    page: 15
   library: Package_SON
   body_size_x: 1.6
   body_size_y: 2.1
@@ -2784,7 +2802,9 @@ Infineon_SG-WLL-2-3_0.58x0.28_P0.36mm:
 
 OnSemi_SIP-38-6EP-9x7mm_P0.65mm_EP1.2x1.2mm:
 # EP size is determined by pad size on PCB
-  size_source: 'https://www.onsemi.cn/download/data-sheet/pdf/ax-sip-sfeu-d.pdf#page=19'
+  size_source:
+    url: 'https://www.onsemi.cn/download/data-sheet/pdf/ax-sip-sfeu-d.pdf'
+    page: 19
   library: Package_DFN_QFN
   body_size_x: 9.0
   body_size_y: 7.0
@@ -2909,7 +2929,9 @@ Bosch_LGA-8_2x2.5mm_P0.65mm_ClockwisePinNumbering:
   EP_chamfer: 0.25
 
 Bosch_LGA-8_3x3mm_P0.8mm_ClockwisePinNumbering:
-  size_source: 'https://web.archive.org/web/20180829083223if_/http://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME680-DS001-00.pdf#page=44'
+  size_source:
+    url: 'https://web.archive.org/web/20180829083223if_/http://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME680-DS001-00.pdf'
+    page: 44
   library: Package_LGA
   body_size_x: 3.0
   body_size_y: 3.0
@@ -3014,7 +3036,9 @@ Texas_RVE0028A_VQFN-28-1EP_3.5x4.5mm_P0.4mm_EP2.1x3.1mm:
   EP_chamfer: 0.25
 
 Texas_RGY_R-PVQFN-N24_EP2.05x3.1mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/bq24133.pdf#page=40'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/bq24133.pdf'
+    page: 40
   library: Package_DFN_QFN
   body_size_x: 3.5
   body_size_y: 5.5
@@ -3033,7 +3057,9 @@ Texas_RGY_R-PVQFN-N24_EP2.05x3.1mm:
   EP_chamfer: 0.25
 
 Texas_RGY_R-PVQFN-N20_EP2.05x3.05mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/txb0108.pdf#page=33'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/txb0108.pdf'
+    page: 33
   library: Package_DFN_QFN
   body_size_x: 3.5
   body_size_y: 4.5
@@ -3204,7 +3230,9 @@ LFCSP-8-1EP_3x3mm_P0.5mm_EP1.45x1.74mm:
   EP_chamfer: 0.5
 
 VLGA-4_2x2.5mm_P1.65mm:
-  size_source: 'https://ww1.microchip.com/downloads/en/DeviceDoc/DSC60XX-Ultra-Small-Ultra-Low-Power-MEMS-Oscillator-DS20005625C.pdf#page=15'
+  size_source:
+    url: 'https://ww1.microchip.com/downloads/en/DeviceDoc/DSC60XX-Ultra-Small-Ultra-Low-Power-MEMS-Oscillator-DS20005625C.pdf'
+    page: 15
   library: Package_LGA
   body_size_x: 2
   body_size_y: 2.5

@@ -36,7 +36,11 @@ VQFN-40-1EP_5x5mm_P0.4mm_EP3.7x3.7mm:
 # Like JEDEC MO-220-K.01 VHHE-1, but different EP and overall_height
 # Silabs states that it's based on VKKD-4, but it's likely a typo (that variation is 7x7mm, 48 pins, pitch 0.5mm)
   inherit: VQFN-40-1EP_5x5mm_P0.4mm_EP3.6x3.6mm
-  size_source: 'Based on JEDEC MO-220-K.01, variation VHHE-1, https://www.silabs.com/documents/public/data-sheets/efm32pg23-datasheet.pdf#page=89, https://www.jedec.org/system/files/docs/MO-220K01.pdf'
+  size_source:
+    - url: 'Based on JEDEC MO-220-K.01, variation VHHE-1'
+    - url: 'https://www.silabs.com/documents/public/data-sheets/efm32pg23-datasheet.pdf'
+      page: 89
+    - url: 'https://www.jedec.org/system/files/docs/MO-220K01.pdf'
   overall_height: 0.80 .. 0.85 .. 0.90
   EP_size_x: 3.55 .. 3.70 .. 3.85
   EP_size_y: 3.55 .. 3.70 .. 3.85
@@ -51,7 +55,10 @@ VQFN-40-1EP_5x5mm_P0.4mm_EP3.5x3.5mm:
 VQFN-40-1EP_5x5mm_P0.4mm_EP3.3x3.3mm:
 # Like JEDEC MO-220-K.01 VHHE-1, however EP is smaller (3.3x3.3mm instead of 3.6x3.6mm)
   inherit: VQFN-40-1EP_5x5mm_P0.4mm_EP3.6x3.6mm
-  size_source: 'Based on JEDEC MO-220-K.01, variation VHHE-1, https://tridentiot.com/wp-content/uploads/2024/11/DS-ZW-0001-01-T32CZ20-Datasheet.pdf#page=36'
+  size_source:
+    - url: 'Based on JEDEC MO-220-K.01, variation VHHE-1'
+    - url: 'https://tridentiot.com/wp-content/uploads/2024/11/DS-ZW-0001-01-T32CZ20-Datasheet.pdf'
+      page: 36
   overall_height: 0.80 .. 0.85 .. 0.90
   lead_len: 0.35 .. 0.4 .. 0.45
   EP_size_x: 3.25 .. 3.30 .. 3.35
@@ -103,7 +110,9 @@ TQFN-40-1EP_5x5mm_P0.40mm_EP3.50x3.50mm:
 
 QFN-40-1EP_5x5mm_P0.4mm_EP3.6x3.6mm:
 # This is a WQFN, similar to JEDEC MO-220-K.01, variation WHHE-1
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=297'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 297
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -141,7 +150,9 @@ QFN-40-1EP_5x5mm_P0.4mm_EP3.6x3.6mm:
     paste_via_clearance: 0.1
 
 QFN-40-1EP_5x5mm_P0.4mm_EP3.8x3.8mm:
-  size_source: 'http://www.issi.com/WW/pdf/31FL3736.pdf#page=28'
+  size_source:
+    url: 'http://www.issi.com/WW/pdf/31FL3736.pdf'
+    page: 28
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -183,7 +194,9 @@ QFN-40-1EP_5x5mm_P0.4mm_EP3.8x3.8mm:
     paste_via_clearance: 0.1
 
 UQFN-40-1EP_5x5mm_P0.4mm_EP3.8x3.8mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=345'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 345
   device_type: 'UQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -225,7 +238,9 @@ UQFN-40-1EP_5x5mm_P0.4mm_EP3.8x3.8mm:
     paste_rings_outside: 1
 
 Texas_RNQ0040A_WQFN-40-1EP_6x4mm_P0.4mm_EP4.7x2.7mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/tusb1046-dci.pdf#page=45'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tusb1046-dci.pdf'
+    page: 45
   device_type: 'WQFN'
   manufacturer: 'Texas'
   part_number: 'RNQ0040A'
@@ -261,7 +276,8 @@ Texas_RNQ0040A_WQFN-40-1EP_6x4mm_P0.4mm_EP4.7x2.7mm:
     drill: 0.2
 
 Texas_RHA0040D_VQFN-40-1EP_6x6mm_P0.5mm_EP2.9x2.9mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/msp430fr5731.pdf#page=111 JEDEC MO-220 variation VJJD-2'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/msp430fr5731.pdf#page=111 JEDEC MO-220 variation VJJD-2'
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RHA0040D'
@@ -298,7 +314,8 @@ Texas_RHA0040D_VQFN-40-1EP_6x6mm_P0.5mm_EP2.9x2.9mm:
     paste_avoid_via: False
 
 Texas_RHA0040E_VQFN-40-1EP_6x6mm_P0.5mm_EP3.52x2.62mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/drv8308.pdf#page=57 JEDEC MO-220 variation VJJD-2'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/drv8308.pdf#page=57 JEDEC MO-220 variation VJJD-2'
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RHA0040E'
@@ -465,7 +482,8 @@ VQFN-40-1EP_6x6mm_P0.5mm_EP3.5x3.5mm:
     drill: 0.2
 
 Texas_RHA0040B_VQFN-40-1EP_6x6mm_P0.5mm_EP4.15x4.15mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/msp430g2755.pdf#page=72 JEDEC MO-220 variation VJJD-2'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/msp430g2755.pdf#page=72 JEDEC MO-220 variation VJJD-2'
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RHA0040B'
@@ -504,7 +522,9 @@ Texas_RHA0040B_VQFN-40-1EP_6x6mm_P0.5mm_EP4.15x4.15mm:
 
 QFN-40-1EP_6x6mm_P0.5mm_EP4.6x4.6mm:
 # this is actually VQFN, height A = 0.80 .. 0.90 .. 1.00 mm
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=295'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 295
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -583,7 +603,9 @@ Texas_WQFN-40-1EP_3x6mm_P0.4mm_EP1.7x4.5mm:
     drill: 0.2
 
 Texas_RHA_VQFN-40-1EP_6x6mm_P0.5mm_EP4.6x4.6mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/dac7750.pdf#page=49'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/dac7750.pdf'
+    page: 49
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RHA'
@@ -657,7 +679,10 @@ QFN-42-1EP_5x6mm_P0.4mm_EP3.7x4.7mm:
     paste_via_clearance: 0.1
 
 WQFN-42-1EP_3.5x9mm_P0.5mm_EP2.05x7.55mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/ts3l501e.pdf#page=23, https://www.diodes.com/assets/Package-Files/PD-2035J_ZH42.pdf'
+  size_source:
+    - url: 'http://www.ti.com/lit/ds/symlink/ts3l501e.pdf'
+      page: 23
+    - url: 'https://www.diodes.com/assets/Package-Files/PD-2035J_ZH42.pdf'
   additional_mpns:
     - Diodes-ZH42
     - TI-RUA0042A
@@ -729,7 +754,9 @@ TQFN-44-1EP_7x7mm_P0.5mm_EP4.7x4.7mm:
     paste_avoid_via: False
 
 QFN-44-1EP_7x7mm_P0.5mm_EP5.2x5.2mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/2512S.pdf#page=17'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/2512S.pdf'
+    page: 17
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -806,7 +833,9 @@ QFN-44-1EP_7x7mm_P0.5mm_EP5.15x5.15mm:
     paste_via_clearance: 0.1
 
 QFN-44-1EP_8x8mm_P0.65mm_EP6.45x6.45mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/39935c.pdf#page=152'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/39935c.pdf'
+    page: 152
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -846,7 +875,9 @@ QFN-44-1EP_8x8mm_P0.65mm_EP6.45x6.45mm:
     paste_via_clearance: 0.1
 
 VQFN-46-1EP_5x6mm_P0.4mm_EP2.8x3.8mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/lp5036.pdf#page=59'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/lp5036.pdf'
+    page: 59
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x: 4.9 .. 5.1
@@ -872,7 +903,9 @@ VQFN-46-1EP_5x6mm_P0.4mm_EP2.8x3.8mm:
     paste_avoid_via: False
 
 QFN-48-1EP_5x5mm_P0.35mm_EP3.7x3.7mm:
-  size_source: 'https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf#page=47'
+  size_source:
+    url: 'https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf'
+    page: 47
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -950,7 +983,9 @@ VQFN-48-1EP_6x6mm_P0.4mm_EP4.1x4.1mm:
     paste_avoid_via: False
 
 QFN-48-1EP_6x6mm_P0.4mm_EP4.2x4.2mm:
-  size_source: 'https://static.dev.sifive.com/SiFive-FE310-G000-datasheet-v1p5.pdf#page=20'
+  size_source:
+    url: 'https://static.dev.sifive.com/SiFive-FE310-G000-datasheet-v1p5.pdf'
+    page: 20
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1030,7 +1065,9 @@ Qorvo_TQFN66-48-1EP_6x6mm_P0.4mm_EP4.2x4.2mm:
     paste_avoid_via: True
 
 QFN-48-1EP_6x6mm_P0.5mm_EP4.3x4.3mm:
-  size_source: 'https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf#page=38'
+  size_source:
+    url: 'https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf'
+    page: 38
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1071,7 +1108,9 @@ QFN-48-1EP_6x6mm_P0.5mm_EP4.3x4.3mm:
     paste_via_clearance: 0.1
 
 QFN-48-1EP_6x6mm_P0.4mm_EP4.4x4.4mm:
-  size_source: 'https://www.st.com/resource/en/datasheet/stm32wb06cc.pdf#page=60'
+  size_source:
+    url: 'https://www.st.com/resource/en/datasheet/stm32wb06cc.pdf'
+    page: 60
   compatible_mpns:
     - "ST-Package-A0BE"
     - "VFQFPN-48"
@@ -1111,7 +1150,9 @@ QFN-48-1EP_6x6mm_P0.4mm_EP4.4x4.4mm:
     paste_via_clearance: 0.1
 
 UQFN-48-1EP_6x6mm_P0.4mm_EP4.45x4.45mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=347'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 347
   device_type: 'UQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1153,7 +1194,9 @@ UQFN-48-1EP_6x6mm_P0.4mm_EP4.45x4.45mm:
     paste_rings_outside: 1
 
 QFN-48-1EP_6x6mm_P0.4mm_EP4.6x4.6mm:
-  size_source: 'http://infocenter.nordicsemi.com/pdf/nRF51822_PS_v3.3.pdf#page=67'
+  size_source:
+    url: 'http://infocenter.nordicsemi.com/pdf/nRF51822_PS_v3.3.pdf'
+    page: 67
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1270,7 +1313,11 @@ QFN-48-1EP_6x6mm_P0.4mm_EP4.66x4.66mm:
     paste_rings_outside: 1
 
 VQFN-48-1EP_7x7mm_P0.5mm_EP2.6x2.6mm:
-  size_source: 'Based on JEDEC MO-220 variation VKKD-2 (using Figure 1), custom Exposed Pad from STMicroeletronics, https://www.jedec.org/document_search?search_api_views_fulltext=MO-220, https://www.st.com/resource/en/datasheet/stspin32f0a.pdf#page=37'
+  size_source:
+    - url: 'Based on JEDEC MO-220 variation VKKD-2 (using Figure 1), custom Exposed Pad from STMicroeletronics'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-220'
+    - url: 'https://www.st.com/resource/en/datasheet/stspin32f0a.pdf'
+      page: 37
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x: 6.90 .. 7.00 .. 7.10
@@ -1292,7 +1339,9 @@ VQFN-48-1EP_7x7mm_P0.5mm_EP2.6x2.6mm:
     paste_avoid_via: False
 
 QFN-48-1EP_7x7mm_P0.5mm_EP3.5x3.5mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/devicedoc/00002117f.pdf#page=69'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/devicedoc/00002117f.pdf'
+    page: 69
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1327,7 +1376,9 @@ QFN-48-1EP_7x7mm_P0.5mm_EP3.5x3.5mm:
     paste_via_clearance: 0.1
 
 VQFN-48-1EP_7x7mm_P0.5mm_EP4.1x4.1mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/cc430f5137.pdf#page=128'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/cc430f5137.pdf'
+    page: 128
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1368,7 +1419,9 @@ VQFN-48-1EP_7x7mm_P0.5mm_EP4.1x4.1mm:
     paste_avoid_via: False
 
 QFN-48-1EP_7x7mm_P0.5mm_EP5.1x5.1mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/devicedoc/00002117f.pdf#page=70'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/devicedoc/00002117f.pdf'
+    page: 70
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1434,7 +1487,9 @@ TQFN-48-1EP_7x7mm_P0.5mm_EP5.1x5.1mm:
     paste_avoid_via: False
 
 VQFN-48-1EP_7x7mm_P0.5mm_EP5.15x5.15mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/cc1312r.pdf#page=48'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/cc1312r.pdf'
+    page: 48
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1474,7 +1529,9 @@ VQFN-48-1EP_7x7mm_P0.5mm_EP5.15x5.15mm:
     paste_avoid_via: False
 
 Texas_RGZ0048A_VQFN-48-1EP_7x7mm_P0.5mm_EP5.15x5.15mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/msp430f5232.pdf#page=113'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/msp430f5232.pdf'
+    page: 113
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RGZ0048A'
@@ -1518,7 +1575,9 @@ Texas_RGZ0048A_VQFN-48-1EP_7x7mm_P0.5mm_EP5.15x5.15mm:
     paste_rings_outside: 1
 
 QFN-48-1EP_7x7mm_P0.5mm_EP5.30x5.30mm:
-  size_source: 'https://www.trinamic.com/fileadmin/assets/Products/ICs_Documents/TMC2041_datasheet.pdf#page=62'
+  size_source:
+    url: 'https://www.trinamic.com/fileadmin/assets/Products/ICs_Documents/TMC2041_datasheet.pdf'
+    page: 62
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1595,7 +1654,9 @@ QFN-48-1EP_7x7mm_P0.5mm_EP5.45x5.45mm:
     paste_via_clearance: 0.1
 
 QFN-48-1EP_7x7mm_P0.5mm_EP5.6x5.6mm:
-  size_source: 'http://www.st.com/resource/en/datasheet/stm32f042k6.pdf#page=94'
+  size_source:
+    url: 'http://www.st.com/resource/en/datasheet/stm32f042k6.pdf'
+    page: 94
   compatible_mpns:
     - ST_UFQFPN48 # from size source
     - Analog_CP-48-13 # ADIN2111 datasheet
@@ -1707,7 +1768,9 @@ QFN-48-1EP_7x7mm_P0.5mm_EP5.70x5.70mm:
     paste_via_clearance: 0.1
 
 QFN-48-1EP_8x8mm_P0.5mm_EP6.2x6.2mm:
-  size_source: 'https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT232H.pdf#page=49'
+  size_source:
+    url: 'https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT232H.pdf'
+    page: 49
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:

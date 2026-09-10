@@ -23,7 +23,9 @@ D_SOD-123:
   num_pins_x: 0
   num_pins_y: 1
   override_lib_name: 'Diode_SMD'
-  size_source: 'https://assets.nexperia.com/documents/package-information/SOD123.pdf#page=2'
+  size_source:
+    url: 'https://assets.nexperia.com/documents/package-information/SOD123.pdf'
+    page: 2
   include_in_qa: True
 
 D_SOD-323:
@@ -45,7 +47,9 @@ D_SOD-323:
   num_pins_x: 0
   num_pins_y: 1
   override_lib_name: 'Diode_SMD'
-  size_source: 'https://assets.nexperia.com/documents/package-information/SOD323.pdf#page=2'
+  size_source:
+    url: 'https://assets.nexperia.com/documents/package-information/SOD323.pdf'
+    page: 2
 
 Diode_Bridge_OnSemi_SDIP-4L:
   body_angle: 0.0
@@ -373,7 +377,9 @@ HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm:
   EP_size_x: 2.51
   EP_size_y: 2.41
   override_lib_name: 'Package_SO'
-  size_source: 'http://www.ti.com/lit/ds/symlink/tlc2660.pdf#page=48'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tlc2660.pdf'
+    page: 48
 
 HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.75x3.43mm:
   body_angle: 9.0
@@ -395,7 +401,8 @@ HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.75x3.43mm:
   EP_size_x: 3.4
   EP_size_y: 6.0
   override_lib_name: 'Package_SO'
-  size_source: 'http://www.ti.com/lit/ds/symlink/tlc5971.pdf#page=37&zoom=160,-90,3'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tlc5971.pdf#page=37&zoom=160,-90,3'
 
 HTSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.4x7.8mm_Mask2.4x4.68mm:
   body_angle: 9.0
@@ -461,7 +468,8 @@ HTSSOP-38-1EP_6.1x12.5mm_P0.65mm_EP5.2x12.5mm_Mask3.39x6.35mm:
   EP_size_x: 5.2
   EP_size_y: 12.0
   override_lib_name: 'Package_SO'
-  size_source: 'http://www.ti.com/lit/ds/symlink/tlc5951.pdf#page=47&zoom=140,-67,15'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tlc5951.pdf#page=47&zoom=140,-67,15'
 
 PowerIntegrations_eSOP-12B:
   body_angle: 9.0
@@ -869,7 +877,9 @@ SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm:
   EP_size_x: 2.1
   EP_size_y: 3.3
   override_lib_name: 'Package_SO'
-  size_source: 'http://download.py32.org/%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C/zh-CN/PY32F002A%20%E7%B3%BB%E5%88%97%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C_Rev1.0.pdf#page=44'
+  size_source:
+    url: 'http://download.py32.org/%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C/zh-CN/PY32F002A%20%E7%B3%BB%E5%88%97%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C_Rev1.0.pdf'
+    page: 44
 
 SSOP-20_3.9x8.7mm_P0.635mm:
   body_angle: 9.0

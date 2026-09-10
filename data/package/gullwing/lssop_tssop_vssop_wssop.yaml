@@ -423,7 +423,11 @@ MSOP-10_3x3mm_P0.5mm:
 TSSOP-10_3x3mm_P0.5mm:
 # similar to JEDEC MO-187, variation BA, but Texas / NXP sizes and tolerances
 # both Texas and NXP dimensions generates the same IPC footprint! See: https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/merge_requests/2011
-  size_source: 'https://www.ti.com/lit/ml/mpds035c/mpds035c.pdf, https://www.ti.com/lit/ds/symlink/ads1115.pdf#page=50, https://www.nxp.com/docs/en/package-information/SOT552-1.pdf'
+  size_source:
+    - url: 'https://www.ti.com/lit/ml/mpds035c/mpds035c.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/ads1115.pdf'
+      page: 50
+    - url: 'https://www.nxp.com/docs/en/package-information/SOT552-1.pdf'
   compatible_mpns:
     - 'Texas_DGS0010A Texas_VSSOP-10'
     - 'NXP_SOT552-1'
@@ -497,7 +501,9 @@ HVSSOP-10-1EP_3x3mm_P0.5mm_EP1.83x1.89mm:
 
 MSOP-10-1EP_3x3mm_P0.5mm_EP1.68x1.88mm:
 # it was previously in msop.yaml file
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/3805fg.pdf#page=18'
+  size_source:
+    url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/3805fg.pdf'
+    page: 18
   device_type: 'MSOP'
   body_size_x:
     nominal: 3
@@ -539,7 +545,9 @@ MSOP-10-1EP_3x3mm_P0.5mm_EP1.68x1.88mm:
 
 MSOP-10-1EP_3x3mm_P0.5mm_EP1.73x1.98mm:
 # it was previously in msop.yaml file
-  size_source: 'www.allegromicro.com/~/media/Files/Datasheets/A4952-3-Datasheet.ashx?la=en#page=10'
+  size_source:
+    url: 'www.allegromicro.com/~/media/Files/Datasheets/A4952-3-Datasheet.ashx?la=en'
+    page: 10
   device_type: 'MSOP'
   body_size_x:
     nominal: 3
@@ -583,7 +591,9 @@ MSOP-10-1EP_3x3mm_P0.5mm_EP1.73x1.98mm:
 
 MSOP-10-1EP_3x3mm_P0.5mm_EP2.2x3.1mm_Mask1.83x1.89mm:
 # it was previously in msop.yaml file
-  size_source: 'https://www.ti.com/lit/ds/symlink/xtr111.pdf#page=27'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/xtr111.pdf'
+    page: 27
   device_type: 'MSOP'
   body_size_x:
     minimum: 2.9
@@ -1191,7 +1201,9 @@ TSSOP-56_8x14mm_P0.5mm:
 
 HTSSOP-44_6.1x14mm_P0.635mm_TopEP4.14x7.01mm:
 # It was previously in httsop.yaml (HTSSOP-44_6.1x14mm_P0.5mm_TopEP4.14x7.01mm, typo in name)
-  size_source: 'http://www.ti.com/lit/ds/symlink/tpa3251.pdf#page=38'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tpa3251.pdf'
+    page: 38
   compatible_mpns:
     - Texas_DDV0044D
   custom_name_format: 'HTSSOP-{pincount}_{size_x:g}x{size_y:g}mm_P{pitch}mm_TopEP4.14x7.01mm'
@@ -1360,7 +1372,9 @@ HVSSOP-8-1EP_3x3mm_P0.65mm_EP1.57x1.89mm:
 
 MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm:
 # it was previously in msop.yaml file
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/4440fb.pdf#page=13'
+  size_source:
+    url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/4440fb.pdf'
+    page: 13
   device_type: 'MSOP'
   force_small_pitch_ipc_definition: True
   body_size_x:
@@ -1403,7 +1417,9 @@ MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm:
 
 MSOP-8-1EP_3x3mm_P0.65mm_EP1.73x1.85mm:
 # it was previously in msop.yaml file
-  size_source: 'http://www.ti.com/lit/ds/symlink/lm25085.pdf#page=32'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/lm25085.pdf'
+    page: 32
   device_type: 'MSOP'
   force_small_pitch_ipc_definition: True
   body_size_x:
@@ -1636,7 +1652,9 @@ Texas_DGN0008B_VSSOP-8-1EP_3x3mm_P0.65mm_EP2x3mm_Mask1.88x1.98mm:
 
 MSOP-8-1EP_3x3mm_P0.65mm_EP2.5x3mm_Mask1.73x2.36mm:
 # it was previously in msop.yaml file
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/mic5355_6.pdf#page=15'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/mic5355_6.pdf'
+    page: 15
   device_type: 'MSOP'
   force_small_pitch_ipc_definition: True
   body_size_x:
@@ -1795,7 +1813,12 @@ TSSOP-14_4.4x5mm_P0.65mm:
 Texas_HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3.155x3.255mm:
 # previously 'HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3x3.1mm' (as 'Texas_PWP0014A' in htssop.yaml)
   inherit: TSSOP-14_4.4x5mm_P0.65mm
-  size_source: 'Texas Instruments PWP0014A, based on JEDEC MO-153 variation ABT-1, 1.00mm body thickness, https://www.ti.com/lit/ml/pptd287a/pptd287a.pdf, https://www.ti.com/lit/ds/symlink/lm5161.pdf#page=34, https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
+  size_source:
+    - url: 'Texas Instruments PWP0014A, based on JEDEC MO-153 variation ABT-1, 1.00mm body thickness'
+    - url: 'https://www.ti.com/lit/ml/pptd287a/pptd287a.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/lm5161.pdf'
+      page: 34
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
   compatible_mpns:
     - 'Texas_PowerPAD-TSSOP'
   device_type: 'HTSSOP'
@@ -1822,7 +1845,11 @@ Texas_HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3.155x3.255mm:
 
 Texas_HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.94x3.34mm:
   inherit: Texas_HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3.155x3.255mm
-  size_source: 'Texas Instruments PWP0014J, https://www.ti.com/lit/ml/pptd381/pptd381.pdf, https://www.ti.com/lit/ds/symlink/tps1htc100-q1.pdf#page=40'
+  size_source:
+    - url: 'Texas Instruments PWP0014J'
+    - url: 'https://www.ti.com/lit/ml/pptd381/pptd381.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/tps1htc100-q1.pdf'
+      page: 40
   EP_size_x: 2.28 .. 2.94
   EP_size_y: 2.68 .. 3.34
   EP_mask_x: 2.94
@@ -1881,7 +1908,9 @@ TSSOP-16-1EP_4.4x5mm_P0.65mm_EP3x3mm:
 
 HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3x3mm:
 # It was previously in htssop.yaml
-  size_source: 'https://www.st.com/resource/en/datasheet/stp08cp05.pdf#page=20'
+  size_source:
+    url: 'https://www.st.com/resource/en/datasheet/stp08cp05.pdf'
+    page: 20
   device_type: 'HTSSOP'
   body_size_x:
     minimum: 4.3
@@ -1915,7 +1944,12 @@ HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3x3mm:
 
 HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.46x2.31mm:
 # It was previously in htssop.yaml, only DRV8833PWP / DRV8847PWP symbols use this footprint
-  size_source: 'Texas Instruments PWP0016C, based on JEDEC MO-153 variation ABT, 1.00mm body thickness, https://www.ti.com/lit/ml/pptd023ac/pptd023ac.pdf, https://www.ti.com/lit/ds/symlink/drv8833.pdf#page=27, https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
+  size_source:
+    - url: 'Texas Instruments PWP0016C, based on JEDEC MO-153 variation ABT, 1.00mm body thickness'
+    - url: 'https://www.ti.com/lit/ml/pptd023ac/pptd023ac.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/drv8833.pdf'
+      page: 27
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
   compatible_mpns:
     - 'Texas_PWP0016C Texas_PowerPAD-TSSOP'
   device_type: 'HTSSOP'
@@ -1948,7 +1982,8 @@ HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.46x2.31mm:
 
 HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.78x3.37mm:
   inherit: HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.46x2.31mm
-  size_source: 'Texas Instruments PWP0016M, 1.00mm body thickness, https://www.ti.com/lit/ml/pptd352a/pptd352a.pdf'
+  size_source:
+    url: 'Texas Instruments PWP0016M, 1.00mm body thickness, https://www.ti.com/lit/ml/pptd352a/pptd352a.pdf'
   compatible_mpns:
     - 'Texas_PWP0016M Texas_PowerPAD-TSSOP'
     - 'JEDEC_MO-153-variation-ABT'
@@ -1966,7 +2001,9 @@ HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.78x3.37mm:
     EP_num_paste_pads: [2, 2]
 
 HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/tps2660.pdf#page=48'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tps2660.pdf'
+    page: 48
   compatible_mpns:
     - Texas_PWP0016H
   device_type: 'HTSSOP'
@@ -2078,7 +2115,9 @@ TSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP2.15x3.35mm:
 
 HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP2.74x3.86mm:
 # It was previously in httsop.yaml
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/4011fb.pdf#page=24'
+  size_source:
+    url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/4011fb.pdf'
+    page: 24
   compatible_mpns:
     - Analog-FE-CB
   device_type: 'HTSSOP'
@@ -2177,7 +2216,8 @@ HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.4x3.7mm:
 Texas_PWP0020U:
 # HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.75x3.43mm:
 # It was previously in httsop.yaml
-  size_source: 'http://www.ti.com/lit/ds/symlink/tlc5971.pdf#page=37&zoom=160,-90,3'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tlc5971.pdf#page=37&zoom=160,-90,3'
   compatible_mpns:
     - Texas_PWP0020U
   device_type: 'HTSSOP'
@@ -2219,7 +2259,9 @@ Texas_PWP0020U:
 Texas_PWP0020T:
 # HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm:
 # It was previously in httsop.yaml
-  size_source: 'https://www.ti.com/lit/ds/symlink/tps2663.pdf#page=49'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tps2663.pdf'
+    page: 49
   compatible_mpns:
     - Texas_PWP0020T
   device_type: 'HTSSOP'
@@ -2281,7 +2323,13 @@ HTSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.2x5mm:
 # It was previously in htssop.yaml; merged with TSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.2x5mm
 # JEDEC has exposed pad size E2xD1 = 1.50x2.70mm minimum
   inherit: TSSOP-24_4.4x7.8mm_P0.65mm
-  size_source: 'JEDEC MO-153 variation ADT, 1.00mm body thickness, custom Exposed Pad size from STMicroelectronics, https://www.jedec.org/document_search?search_api_views_fulltext=MO-153, https://www.st.com/resource/en/datasheet/stp16cp05.pdf#page=25, https://www.st.com/resource/en/datasheet/led1642gw.pdf#page=37'
+  size_source:
+    - url: 'JEDEC MO-153 variation ADT, 1.00mm body thickness, custom Exposed Pad size from STMicroelectronics'
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
+    - url: 'https://www.st.com/resource/en/datasheet/stp16cp05.pdf'
+      page: 25
+    - url: 'https://www.st.com/resource/en/datasheet/led1642gw.pdf'
+      page: 37
   device_type: 'HTSSOP'
   overall_size_x: 6.20 .. 6.40 .. 6.60 # JEDEC E, nominal agrees with JEDEC, minimum / maximum are from ST
   lead_width: 0.19 .. 0.30 # ST's b, differs a little from JEDEC
@@ -2292,7 +2340,12 @@ HTSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.2x5mm:
 HTSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.4x7.8mm_Mask2.4x2.98mm:
 # It was previously in htssop.yaml as 'Texas_PWP0024P'
   inherit: TSSOP-24_4.4x7.8mm_P0.65mm
-  size_source: 'Texas Instruments PWP0024P, based on JEDEC MO-153 variation ADT, 1.00mm body thickness, https://www.ti.com/lit/ml/pptd064i/pptd064i.pdf, https://web.archive.org/web/20170223145154/http://www.ti.com/lit/ds/symlink/tlc5949.pdf#page=49, https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
+  size_source:
+    - url: 'Texas Instruments PWP0024P, based on JEDEC MO-153 variation ADT, 1.00mm body thickness'
+    - url: 'https://www.ti.com/lit/ml/pptd064i/pptd064i.pdf'
+    - url: 'https://web.archive.org/web/20170223145154/http://www.ti.com/lit/ds/symlink/tlc5949.pdf'
+      page: 49
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
   compatible_mpns:
     - 'Texas_PWP0024P Texas_PowerPAD'
   device_type: 'HTSSOP'
@@ -2314,7 +2367,12 @@ HTSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.4x7.8mm_Mask2.4x2.98mm:
 
 HTSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.4x7.8mm_Mask2.44x3.42mm:
   inherit: HTSSOP-24-1EP_4.4x7.8mm_P0.65mm_EP3.4x7.8mm_Mask2.4x2.98mm # PWP0024U is similar to PWP0024P
-  size_source: 'Texas Instruments PWP0024U, based on JEDEC MO-153 variation ADT, 1.00mm body thickness, https://www.ti.com/lit/ml/pptd402/pptd402.pdf, https://www.ti.com/lit/ds/symlink/tlc5949.pdf#page=50, https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
+  size_source:
+    - url: 'Texas Instruments PWP0024U, based on JEDEC MO-153 variation ADT, 1.00mm body thickness'
+    - url: 'https://www.ti.com/lit/ml/pptd402/pptd402.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/tlc5949.pdf'
+      page: 50
+    - url: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
   compatible_mpns:
     - 'Texas_PWP0024U Texas_PowerPAD'
   device_type: 'HTSSOP'
@@ -2498,7 +2556,11 @@ TSSOP-28-1EP_4.4x9.7mm_P0.65mm_EP2.85x6.7mm:
 
 TSSOP-28-1EP_4.4x9.7mm_P0.65mm_EP3.4x9.7mm_Mask3.1x4.05mm:
 # Similar to JEDEC MO-153, variation AET, custom Exposed Pad from Texas
-  size_source: 'Texas Instruments PWP0028M, https://www.ti.com/lit/ml/pptd351/pptd351.pdf, https://www.ti.com/lit/ds/symlink/tas5805m.pdf#page=99'
+  size_source:
+    - url: 'Texas Instruments PWP0028M'
+    - url: 'https://www.ti.com/lit/ml/pptd351/pptd351.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/tas5805m.pdf'
+      page: 99
   device_type: 'TSSOP' # It's actually HTSSOP
   compatible_mpns:
     - 'Texas_PowerPAD-TSSOP'
@@ -2882,7 +2944,9 @@ TSSOP-40_8x14mm_P0.65mm:
 
 TSSOP-4_4.4x5mm_P4mm:
 # height is actually 1.45 + 0.15 = 1.60 mm maximum, it's not really TSSOP since manufacturer says this package does not conform to any standard
-  size_source: 'https://www.onsemi.com/pub/Collateral/MDB8S-D.PDF#page=4'
+  size_source:
+    url: 'https://www.onsemi.com/pub/Collateral/MDB8S-D.PDF'
+    page: 4
   device_type: 'TSSOP'
   body_size_x: 4.25 .. 4.55
   body_size_y: 4.85 .. 5.15
@@ -2901,7 +2965,9 @@ TSSOP-4_4.4x5mm_P4mm:
 
 Texas_DYY0016A_TSOT-23-16_2x4.2mm_P0.5mm:
 # JEDEC MO-345, this package seems not to be TSOT (manufacturer states it's SOT)
-  size_source: 'https://www.ti.com/lit/ds/symlink/tmux1574.pdf#page=42'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tmux1574.pdf'
+    page: 42
   compatible_mpns:
     - SOT-23-THIN
   custom_name_format: 'Texas_DYY0016A_TSOT-23-16_2x4.2mm_P0.5mm'

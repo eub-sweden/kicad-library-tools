@@ -66,7 +66,9 @@ UQFN-10_1.4x1.8mm_P0.4mm:
 
 Texas_RSW0010A_UQFN-10_1.4x1.8mm_P0.4mm:
 # height = 0.45 .. 0.55 mm, similar to JEDEC MO-288 variation UDEE
-  size_source: 'https://www.ti.com/lit/ds/symlink/ts3a5223.pdf#page=19'
+  datasheet:
+    url: 'https://www.ti.com/lit/ds/symlink/ts3a5223.pdf'
+    page: 19
   device_type: 'UQFN'
   manufacturer: 'Texas'
   part_number: 'RSW0010A'
@@ -151,7 +153,9 @@ LQFN-10-1EP_2x2mm_P0.5mm_EP0.7x0.7mm:
     tolerance: 0.1
 
 WQFN-12_1.8x1.8mm_P0.4mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/tmux131.pdf#page=18'
+  datasheet:
+    url: 'https://www.ti.com/lit/ds/symlink/tmux131.pdf'
+    page: 18
   device_type: 'WQFN'
   manufacturer: 'Texas'
   part_number: 'RMG0012A'
@@ -281,7 +285,9 @@ UQFN-12-1EP_2x2mm_P0.4mm_EP1.1x1.1mm:
   EP_size_y: 1.1 +/- 0.2
 
 QFN-12-1EP_3x3mm_P0.5mm_EP1.45x1.45mm:
-  size_source: https://www.st.com/resource/en/datasheet/tcpp01-m12.pdf#page=22
+  datasheet:
+    url: https://www.st.com/resource/en/datasheet/tcpp01-m12.pdf
+    page: 22
   additional_tags:
     - QFN12L
   device_type: 'QFN'
@@ -474,7 +480,9 @@ VQFN-12-1EP_4x4mm_P0.8mm_EP2.1x2.1mm:
     paste_avoid_via: False
 
 WQFN-14-1EP_2.5x2.5mm_P0.5mm_EP1.45x1.45mm:
-  size_source: 'https://www.onsemi.com/pub/Collateral/FUSB302B-D.PDF#page=32'
+  datasheet:
+    url: 'https://www.onsemi.com/pub/Collateral/FUSB302B-D.PDF'
+    page: 32
   device_type: 'WQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -541,7 +549,9 @@ UQFN-16_1.8x2.6mm_P0.4mm:
       move: [0.05, null] # Move inside (half of size increase)
 
 QFN-16-1EP_1.8x2.6mm_P0.4mm_EP0.7x1.5mm:
-  size_source: https://www.st.com/resource/en/datasheet/stg3692.pdf#page=13
+  datasheet:
+    url: https://www.st.com/resource/en/datasheet/stg3692.pdf
+    page: 13
   additional_tags:
     - QFN16L
   device_type: 'QFN'
@@ -655,7 +665,10 @@ Renesas_UQFN-16_2x2mm_P0.4mm:
 # in JEITA there is 12-001-UAAEA (but it has 12 leads). The smallest 16-leads
 # packages in both standards seems to be 3.00x3.00mm, so we are using
 # manufacturer's prefix here.
-  size_source: 'Renesas STQFN-16L, https://www.renesas.com/en/document/dst/slg47011-datasheet#page=228'
+  datasheet:
+    - url: 'Renesas STQFN-16L'
+    - url: 'https://www.renesas.com/en/document/dst/slg47011-datasheet'
+      page: 228
   device_type: 'UQFN'
   manufacturer: 'Renesas'
   ipc_class: 'qfn'
@@ -676,7 +689,9 @@ Renesas_UQFN-16_2x2mm_P0.4mm:
       move: [0.05, null]
 
 Texas_RTE0016D_WQFN-16-1EP_3x3mm_P0.5mm_EP0.8x0.8mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/dac80504.pdf#page=47'
+  datasheet:
+    url: 'https://www.ti.com/lit/ds/symlink/dac80504.pdf'
+    page: 47
   device_type: 'WQFN'
   manufacturer: 'Texas'
   part_number: 'RTE0016D'
@@ -750,7 +765,9 @@ VQFN-16-1EP_3x3mm_P0.5mm_EP1.1x1.1mm:
     paste_rings_outside: 1
 
 Texas_RTE_WQFN-16-1EP_3x3mm_P0.5mm_EP1.2x0.8mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/tps43060.pdf#page=40'
+  datasheet:
+    url: 'https://www.ti.com/lit/ds/symlink/tps43060.pdf'
+    page: 40
   device_type: 'WQFN'
   manufacturer: 'Texas'
   part_number: 'RTE'
@@ -968,7 +985,9 @@ HVQFN-16-1EP_3x3mm_P0.5mm_EP1.5x1.5mm:
   EP_num_paste_pads: [2, 2]
 
 VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/cdclvp1102.pdf#page=28'
+  datasheet:
+    url: 'http://www.ti.com/lit/ds/symlink/cdclvp1102.pdf'
+    page: 28
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1005,7 +1024,9 @@ VQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm:
 
 TQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm:
 # This is a WQFN
-  size_source: 'https://www.diodes.com/assets/Datasheets/PI6C5946002.pdf#page=12'
+  datasheet:
+    url: 'https://www.diodes.com/assets/Datasheets/PI6C5946002.pdf'
+    page: 12
   compatible_mpns:
     - 'Pericom-TQFN-16-ZH' # e.g. PI6C5946002
     - 'Analog-CP-16-22' # e.g. ADL5303ACP
@@ -1050,7 +1071,9 @@ TQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm:
   EP_num_paste_pads: [2, 2]
 
 WQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/tpa6132a2.pdf#page=24'
+  datasheet:
+    url: 'https://www.ti.com/lit/ds/symlink/tpa6132a2.pdf'
+    page: 24
   device_type: 'WQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1090,7 +1113,9 @@ WQFN-16-1EP_3x3mm_P0.5mm_EP1.6x1.6mm:
     paste_avoid_via: False
 
 QFN-16-1EP_3x3mm_P0.5mm_EP1.675x1.675mm:
-  size_source: 'https://media.melexis.com/-/media/files/documents/datasheets/mlx90395-datasheet-melexis.pdf#page=55'
+  datasheet:
+    url: 'https://media.melexis.com/-/media/files/documents/datasheets/mlx90395-datasheet-melexis.pdf'
+    page: 55
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1158,7 +1183,11 @@ VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm:
     paste_between_vias: 2
 
 WQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm:
-  size_source: 'Texas RTE0016C, https://www.ti.com/lit/ml/qfnd525b/qfnd525b.pdf, https://www.ti.com/lit/ds/symlink/tlv9064.pdf#page=49'
+  datasheet:
+    - url: 'Texas RTE0016C'
+    - url: 'https://www.ti.com/lit/ml/qfnd525b/qfnd525b.pdf'
+    - url: 'https://www.ti.com/lit/ds/symlink/tlv9064.pdf'
+      page: 49
   device_type: 'WQFN'
   compatible_mpns:
     - 'Texas_RTE0016C'
@@ -1307,7 +1336,9 @@ QFN-16-1EP_3x3mm_P0.5mm_EP1.75x1.75mm:
     paste_avoid_via: False
 
 WQFN-16-1EP_3x3mm_P0.5mm_EP1.75x1.75mm:
-  size_source: 'https://www.onsemi.com/pub/Collateral/FUSB307B-D.PDF#page=56'
+  datasheet:
+    url: 'https://www.onsemi.com/pub/Collateral/FUSB307B-D.PDF'
+    page: 56
   device_type: 'WQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1407,7 +1438,9 @@ WCH_QFN-16-1EP_3x3mm_P0.5mm_EP1.8x1.8mm:
   EP_num_paste_pads: [2, 2]
 
 HXQFN-16-1EP_3x3mm_P0.5mm_EP1.85x1.85mm:
-  size_source: 'https://www.nxp.com/docs/en/data-sheet/NX3L4051.pdf#page=17'
+  datasheet:
+    url: 'https://www.nxp.com/docs/en/data-sheet/NX3L4051.pdf'
+    page: 17
   device_type: 'HXQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1525,7 +1558,9 @@ Texas_RVA_VQFN-16-1EP_3.5x3.5mm_P0.5mm_EP2.14x2.14mm:
     paste_avoid_via: false
 
 QFN-16-1EP_4x4mm_P0.5mm_EP2.45x2.45mm:
-  size_source: 'https://www.renesas.com/eu/en/www/doc/datasheet/isl8117.pdf#page=22'
+  datasheet:
+    url: 'https://www.renesas.com/eu/en/www/doc/datasheet/isl8117.pdf'
+    page: 22
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1562,7 +1597,9 @@ QFN-16-1EP_4x4mm_P0.5mm_EP2.45x2.45mm:
     paste_avoid_via: False
 
 WQFN-16-1EP_4x4mm_P0.5mm_EP2.6x2.6mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/ldc1312.pdf#page=59'
+  datasheet:
+    url: 'http://www.ti.com/lit/ds/symlink/ldc1312.pdf'
+    page: 59
   device_type: 'WQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1638,7 +1675,9 @@ QFN-16-1EP_4x4mm_P0.65mm_EP2.1x2.1mm:
     paste_avoid_via: False
 
 Texas_RGV0016A_VQFN-16-1EP_4x4mm_P0.65mm_EP2.1x2.1mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/ina3221.pdf#page=44'
+  datasheet:
+    url: 'http://www.ti.com/lit/ds/symlink/ina3221.pdf'
+    page: 44
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RGV0016A'
@@ -1676,7 +1715,8 @@ Texas_RGV0016A_VQFN-16-1EP_4x4mm_P0.65mm_EP2.1x2.1mm:
     paste_avoid_via: False
 
 Texas_RTY_WQFN-16-1EP_4x4mm_P0.65mm_EP2.1x2.1mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/drv8801.pdf#page=36 MO-220 variation VGGC'
+  datasheet:
+    url: 'http://www.ti.com/lit/ds/symlink/drv8801.pdf#page=36 MO-220 variation VGGC'
   device_type: 'WQFN'
   manufacturer: 'Texas'
   part_number: 'RTY'
@@ -1787,7 +1827,9 @@ QFN-16-1EP_4x4mm_P0.65mm_EP2.15x2.15mm:
     paste_avoid_via: False
 
 QFN-16-1EP_4x4mm_P0.65mm_EP2.5x2.5mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf#page=266'
+  datasheet:
+    url: 'http://ww1.microchip.com/downloads/en/PackagingSpec/00000049BQ.pdf'
+    page: 266
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1828,7 +1870,9 @@ QFN-16-1EP_4x4mm_P0.65mm_EP2.5x2.5mm:
     paste_avoid_via: False
 
 Texas_RUM0016A_WQFN-16-1EP_4x4mm_P0.65mm_EP2.6x2.6mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/lmh0074.pdf#page=13'
+  datasheet:
+    url: 'http://www.ti.com/lit/ds/symlink/lmh0074.pdf'
+    page: 13
   device_type: 'WQFN'
   manufacturer: 'Texas'
   part_number: 'RUM0016A'
@@ -1979,7 +2023,9 @@ QFN-16-1EP_4x4mm_P0.65mm_EP2.7x2.7mm:
     paste_avoid_via: False
 
 Texas_RSA_VQFN-16-1EP_4x4mm_P0.65mm_EP2.7x2.7mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/msp430g2001.pdf#page=44'
+  datasheet:
+    url: 'http://www.ti.com/lit/ds/symlink/msp430g2001.pdf'
+    page: 44
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RSA'
@@ -2021,7 +2067,9 @@ Texas_RSA_VQFN-16-1EP_4x4mm_P0.65mm_EP2.7x2.7mm:
     paste_via_clearance: 0.1
 
 QFN-16-1EP_4x4mm_P0.65mm_EP2.7x2.7mm_PullBack:
-  size_source: 'https://ams.com/documents/20143/36005/AS5055A_DS000304_2-00.pdf#page=24'
+  datasheet:
+    url: 'https://ams.com/documents/20143/36005/AS5055A_DS000304_2-00.pdf'
+    page: 24
   device_type: 'QFN'
   #manufacturer: 'AMS'
   suffix: '_PullBack'
@@ -2723,7 +2771,9 @@ LFCSP-16-1EP_4x4mm_P0.65mm_EP2.6x2.6mm:
     paste_avoid_via: False
 
 MPS_QFN-18_2x3mm_P0.4mm:
-  size_source: 'https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP2672/#page=40'
+  datasheet:
+    url: 'https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP2672/'
+    page: 40
   device_type: 'QFN'
   manufacturer: 'MPS'
   ipc_class: 'qfn'

@@ -85,7 +85,9 @@ DFN-6_1.6x1.3mm_P0.4mm:
 
 MPS_VSON-6_1x1.5mm_P0.5mm:
 # VSON / VDFN package (height = 0.80 .. 1.00)
-  size_source: 'https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP21148/document_id/1006/#page=14'
+  size_source:
+    url: 'https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP21148/document_id/1006/'
+    page: 14
   device_type: 'VSON'
   manufacturer: 'MPS' # manufacturer prefix is needed due to non-standard lead count (if you compare to JEDEC MO-229 variant V1510D)
   ipc_class: 'qfn'
@@ -110,7 +112,9 @@ MPS_VSON-6_1x1.5mm_P0.5mm:
 
 MPS_USON-6_1.2x1.6mm_P0.5mm:
 # USON / UDFN package (height = 0.50 .. 0.60)
-  size_source: 'https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP2151/document_id/4678/#page=21'
+  size_source:
+    url: 'https://www.monolithicpower.com/en/documentview/productdocument/index/version/2/document_type/Datasheet/lang/en/sku/MP2151/document_id/4678/'
+    page: 21
   device_type: 'USON'
   manufacturer: 'MPS' # manufacturer prefix is needed due to non-standard D/E size (if you compare to JEDEC MO-229)
   ipc_class: 'qfn'
@@ -201,7 +205,9 @@ MLF-6-1EP_1.6x1.6mm_P0.5mm_EP0.5x1.26mm:
 
 DFN-6-1EP_2x1.6mm_P0.5mm_EP1.15x1.3mm:
   library: Package_DFN_QFN # TEMPORARY
-  size_source: 'https://www.onsemi.com/pdf/datasheet/ncp349-d.pdf#page=12'
+  size_source:
+    url: 'https://www.onsemi.com/pdf/datasheet/ncp349-d.pdf'
+    page: 12
   device_type: 'DFN'
   body_size_x: 2 +/-0.1
   body_size_y: 1.6 +/-0.1
@@ -277,7 +283,9 @@ DFN-6-1EP_2x2mm_P0.5mm_EP0.7x1.6mm:
   library: Package_DFN_QFN # TEMPORARY
 # WSON / WDFN package (height = 0.70 .. 0.75 .. 0.80)
 # there's an opening on top, should it go to 'sensors.yaml' ?
-  size_source: 'http://www.junmintech.com/UploadFiles/Product/20211129145204_37021.pdf#page=10'
+  size_source:
+    url: 'http://www.junmintech.com/UploadFiles/Product/20211129145204_37021.pdf'
+    page: 10
   device_type: 'DFN'
   body_size_x:
     nominal: 2
@@ -371,7 +379,9 @@ DFN-6-1EP_2x2mm_P0.65mm_EP1.01x1.7mm:
 #  num_pins_y: 3
 
 WSON-6-1EP_2x2mm_P0.65mm_EP1x1.6mm:
-  size_source: 'http://www.ti.com/lit/ds/symlink/tps61040.pdf#page=35'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/tps61040.pdf'
+    page: 35
   device_type: 'WSON'
   ipc_class: 'qfn_pull_back'
   body_size_x:
@@ -476,7 +486,10 @@ TDFN-6-1EP_2.5x2.5mm_P0.65mm_EP1.3x2mm:
 Maxim_TDFN-6-1EP_3x3mm_P0.95mm_EP1.5x2.3mm:
   library: Package_DFN_QFN # TEMPORARY
 # WSON / WDFN (height = 0.70 .. 0.80)
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/MAX4460-MAX4462.pdf#page=19, https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/tdfn-ep/21-0137.pdf'
+  size_source:
+    - url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/MAX4460-MAX4462.pdf'
+      page: 19
+    - url: 'https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/tdfn-ep/21-0137.pdf'
   device_type: 'TDFN'
   manufacturer: 'Maxim'
   # part_number: 'MAX4461'

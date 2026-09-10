@@ -1,7 +1,9 @@
 BatteryHolder_Bulgin_BX0123_1xCR123:
   library_name: "Battery"
   description: "Battery holder, Bulgin BX0123, battery type 1xCR123"
-  datasheet: "https://www.bulgin.com/products/pub/media/import/attachments/Battery_holders.pdf#page=7"
+  datasheet:
+    url: "https://www.bulgin.com/products/pub/media/import/attachments/Battery_holders.pdf"
+    page: 7
   tags: "horizontal single"
   at: [-1.75, 10.0]
   size: [41.3, 20.0]

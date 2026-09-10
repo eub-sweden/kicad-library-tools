@@ -10,7 +10,9 @@ default_parameters:
   library: Package_DFN_QFN
 
 Texas_RNH0030A_WQFN-30-1EP_2.5x4.5mm_P0.4mm_EP1.2x3.2mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/hd3ss3220.pdf#page=44'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/hd3ss3220.pdf'
+    page: 44
   device_type: 'WQFN'
   manufacturer: 'Texas'
   part_number: 'RNH0030A'
@@ -47,7 +49,9 @@ Texas_RNH0030A_WQFN-30-1EP_2.5x4.5mm_P0.4mm_EP1.2x3.2mm:
     paste_via_clearance: 0.1
 
 Texas_RNP0030B_WQFN-30-1EP_4x6mm_P0.5mm_EP1.8x4.5mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/lm76003-q1.pdf#page=53'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/lm76003-q1.pdf'
+    page: 53
   compatible_mpns:
     - Texas_RNP0030E # Identical drawings to RNP0030B, https://www.ti.com/lit/ds/symlink/lm76005-q1.pdf
   device_type: 'WQFN'
@@ -196,7 +200,9 @@ QFN-32-1EP_4x4mm_P0.4mm_EP2.65x2.65mm:
     paste_rings_outside: 1
 
 VQFN-32-1EP_4x4mm_P0.4mm_EP2.8x2.8mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/tps25750.pdf#page=78'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/tps25750.pdf'
+    page: 78
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -240,7 +246,9 @@ VQFN-32-1EP_4x4mm_P0.4mm_EP2.8x2.8mm:
     paste_avoid_via: False
 
 Texas_RSN_WQFN-32-1EP_4x4mm_P0.4mm_EP2.8x2.8mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/bq25703a.pdf#page=90'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/bq25703a.pdf'
+    page: 90
   device_type: 'WQFN'
   manufacturer: 'Texas'
   part_number: 'RSN'
@@ -278,7 +286,9 @@ Texas_RSN_WQFN-32-1EP_4x4mm_P0.4mm_EP2.8x2.8mm:
     paste_avoid_via: False
 
 QFN-32-1EP_4x4mm_P0.4mm_EP2.9x2.9mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/atmel-8153-8-and-16-bit-avr-microcontroller-xmega-e-atxmega8e5-atxmega16e5-atxmega32e5_datasheet.pdf#page=70'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/atmel-8153-8-and-16-bit-avr-microcontroller-xmega-e-atxmega8e5-atxmega16e5-atxmega32e5_datasheet.pdf'
+    page: 70
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -321,7 +331,9 @@ QFN-32-1EP_4x4mm_P0.4mm_EP2.9x2.9mm:
     paste_between_vias: 1
 
 Texas_RHB0032M_VQFN-32-1EP_5x5mm_P0.5mm_EP2.1x2.1mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/dp83td510e.pdf#page=91'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/dp83td510e.pdf'
+    page: 91
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RHB0032M'
@@ -403,7 +415,9 @@ TQFN-32-1EP_5x5mm_P0.50mm_EP2.10x2.10mm:
     paste_avoid_via: False
 
 QFN-32-1EP_5x5mm_P0.5mm_EP3.1x3.1mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/8008S.pdf#page=20'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/8008S.pdf'
+    page: 20
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -520,7 +534,9 @@ TQFN-32-1EP_5x5mm_P0.50mm_EP3.10x3.10mm:
     paste_avoid_via: False
 
 VQFN-32-1EP_5x5mm_P0.5mm_EP3.1x3.1mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/devicedoc/atmel-9520-at42-qtouch-bsw-at42qt1110_datasheet.pdf#page=42'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/devicedoc/atmel-9520-at42-qtouch-bsw-at42qt1110_datasheet.pdf'
+    page: 42
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -564,7 +580,9 @@ VQFN-32-1EP_5x5mm_P0.5mm_EP3.1x3.1mm:
     paste_avoid_via: False
 
 VQFN-32-1EP_5x5mm_P0.5mm_EP3.15x3.15mm:
-  size_source: 'https://www.ti.com/lit/ds/slvs589d/slvs589d.pdf#page=33'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/slvs589d/slvs589d.pdf'
+    page: 33
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x: 5.0 +/- 0.15
@@ -590,7 +608,9 @@ VQFN-32-1EP_5x5mm_P0.5mm_EP3.15x3.15mm:
     paste_avoid_via: False
 
 QFN-32-1EP_5x5mm_P0.5mm_EP3.3x3.3mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/00002164B.pdf#page=68'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/00002164B.pdf'
+    page: 68
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -681,7 +701,9 @@ TQFN-32-1EP_5x5mm_P0.50mm_EP3.40x3.40mm:
 
 Texas_VQFN-32_RHB0032E:
 # Texas_RHB0032E_VQFN-32-1EP_5x5mm_P0.5mm_EP3.45x3.45mm
-  size_source: 'http://www.ti.com/lit/ds/symlink/msp430f1122.pdf#page=54'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/symlink/msp430f1122.pdf'
+    page: 54
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RHB0032E'
@@ -828,7 +850,9 @@ UQFN-32_5x5mm_P0.5mm:
     maximum: 0.22
 
 VQFN-32-1EP_5x5mm_P0.5mm_EP3.5x3.5mm:
-  size_source: 'https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT4222H.pdf#page=40'
+  size_source:
+    url: 'https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT4222H.pdf'
+    page: 40
   device_type: 'VQFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -864,7 +888,9 @@ VQFN-32-1EP_5x5mm_P0.5mm_EP3.5x3.5mm:
     paste_avoid_via: False
 
 QFN-32-1EP_5x5mm_P0.5mm_EP3.6x3.6mm:
-  size_source: 'http://infocenter.nordicsemi.com/pdf/nRF52810_PS_v1.1.pdf#page=468'
+  size_source:
+    url: 'http://infocenter.nordicsemi.com/pdf/nRF52810_PS_v1.1.pdf'
+    page: 468
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -908,7 +934,9 @@ QFN-32-1EP_5x5mm_P0.5mm_EP3.6x3.6mm:
     paste_rings_outside: 1
 
 QFN-32-1EP_5x5mm_P0.5mm_EP3.65x3.65mm:
-  size_source: 'https://www.exar.com/ds/mxl7704.pdf#page=35'
+  size_source:
+    url: 'https://www.exar.com/ds/mxl7704.pdf'
+    page: 35
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1000,7 +1028,9 @@ QFN-32-1EP_5x5mm_P0.5mm_EP3.7x3.7mm:
     paste_rings_outside: 1
 
 QFN-32-1EP_7x7mm_P0.65mm_EP4.65x4.65mm:
-  size_source: 'http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-8209-8-bit%20AVR%20ATmega16M1-32M1-64M1_Datasheet.pdf#page=426'
+  size_source:
+    url: 'http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-8209-8-bit%20AVR%20ATmega16M1-32M1-64M1_Datasheet.pdf'
+    page: 426
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1044,7 +1074,9 @@ QFN-32-1EP_7x7mm_P0.65mm_EP4.65x4.65mm:
     paste_rings_outside: 1
 
 QFN-32-1EP_7x7mm_P0.65mm_EP4.7x4.7mm:
-  size_source: 'https://www.nxp.com/docs/en/data-sheet/LPC111X.pdf#page=108'
+  size_source:
+    url: 'https://www.nxp.com/docs/en/data-sheet/LPC111X.pdf'
+    page: 108
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1125,7 +1157,9 @@ QFN-32-1EP_7x7mm_P0.65mm_EP5.4x5.4mm:
     paste_rings_outside: 1
 
 QFN-36-1EP_5x6mm_P0.5mm_EP3.6x4.1mm:
-  size_source: 'https://www.trinamic.com/fileadmin/assets/Products/ICs_Documents/TMC2100_datasheet_Rev1.08.pdf#page=43'
+  size_source:
+    url: 'https://www.trinamic.com/fileadmin/assets/Products/ICs_Documents/TMC2100_datasheet_Rev1.08.pdf'
+    page: 43
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1244,7 +1278,9 @@ QFN-36-1EP_6x6mm_P0.5mm_EP3.7x3.7mm:
     paste_rings_outside: 1
 
 QFN-36-1EP_6x6mm_P0.5mm_EP4.1x4.1mm:
-  size_source: 'www.st.com/resource/en/datasheet/stm32f101t6.pdf#page=72'
+  size_source:
+    url: 'www.st.com/resource/en/datasheet/stm32f101t6.pdf'
+    page: 72
   device_type: 'QFN'
   ipc_class: 'qfn'
   body_size_x:
@@ -1291,7 +1327,9 @@ QFN-36-1EP_6x6mm_P0.5mm_EP4.1x4.1mm:
 
 Texas_VQFN-36_RHH0036C:
 # Texas_RHH0036C_VQFN-36-1EP_6x6mm_P0.5mm_EP4.4x4.4mm
-  size_source: 'http://www.ti.com/lit/ds/slvsba5d/slvsba5d.pdf#page=37'
+  size_source:
+    url: 'http://www.ti.com/lit/ds/slvsba5d/slvsba5d.pdf'
+    page: 37
   device_type: 'VQFN'
   manufacturer: 'Texas'
   part_number: 'RHH0036C'
@@ -1554,7 +1592,9 @@ LFCSP-32-1EP_5x5mm_P0.5mm_EP3.5x3.5mm:
 
 LFCSP-32-1EP_5x5mm_P0.5mm_EP3.6x3.6mm:
 # JEDEC MO-220, variation WHHD-5
-  size_source: 'https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7280.PDF#page=28'
+  size_source:
+    url: 'https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7280.PDF'
+    page: 28
   library: Package_CSP
   device_type: 'LFCSP'
   ipc_class: 'qfn'
@@ -1606,7 +1646,9 @@ LFCSP-32-1EP_5x5mm_P0.5mm_EP3.6x3.6mm:
     paste_avoid_via: False
 
 Texas_REE0036A_WQFN-36-1EP_4x5mm_P0.4mm_EP2.7x3.7mm:
-  size_source: 'https://www.ti.com/lit/ds/symlink/drv8317.pdf#page=66'
+  size_source:
+    url: 'https://www.ti.com/lit/ds/symlink/drv8317.pdf'
+    page: 66
   device_type: 'WQFN'
   manufacturer: 'Texas'
   part_number: 'REE0036A'
