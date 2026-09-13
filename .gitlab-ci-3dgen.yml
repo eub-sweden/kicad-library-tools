@@ -2,6 +2,7 @@ variables:
   PYTHONUNBUFFERED: "1"
 
 .model:
+  image: python:3.13
   stage: 3D Generate
   needs: []
   rules:
