@@ -584,6 +584,70 @@ QFN-16-1EP_1.8x2.6mm_P0.4mm_EP0.7x1.5mm:
     EP_paste_coverage: 0.75
     paste_avoid_via: False
 
+NXP_SOT1832-1_UQFN-16-1EP_1.6x2.4mm_P0.4mm_EP0.6x1.4mm:
+  size_source: 'NXP SOT1832-1, https://www.nxp.com/docs/en/package-information/SOT1832-1.pdf'
+  compatible_mpns:
+    - 'NXP_HUQFN16'
+  device_type: 'UQFN'
+  manufacturer: 'NXP'
+  part_number: 'SOT1832-1'
+  ipc_class: 'qfn_pull_back'
+  body_size_x:
+    minimum: 1.55
+    nominal: 1.6
+    maximum: 1.65
+  body_size_y:
+    minimum: 2.35
+    nominal: 2.4
+    maximum: 2.45
+  body_pcb_gap:
+    # minimum: 0.00
+    nominal: 0.03
+    maximum: 0.05
+  overall_height:
+    minimum: 0.45
+    nominal: 0.5
+    maximum: 0.55
+  num_pins_x: 2
+  num_pins_y: 6
+  pitch: 0.4
+  lead_width:
+    minimum: 0.15
+    nominal: 0.2
+    maximum: 0.25
+  lead_len:
+    minimum: 0.2
+    nominal: 0.25
+    maximum: 0.3
+  lead_height:
+    minimum: 0
+    nominal: 0.03
+    maximum: 0.05
+  lead_to_edge:
+    minimum: 0.01
+    nominal: 0.05
+    maximum: 0.1
+  lead_shape: square
+  pad_width:
+    nominal: 0.25
+  pad_length:
+    nominal: 0.45
+  pad_center_to_center_x:
+    nominal: 1.4
+  pad_center_to_center_y:
+    nominal: 2.2
+  paste_margin: -0.025
+  EP_size_x:
+    minimum: 0.55
+    nominal: 0.6
+    maximum: 0.65
+  EP_size_y:
+    minimum: 1.35
+    nominal: 1.4
+    maximum: 1.45
+  EP_paste_coverage: 0.48 # (2 * 0.4 * 0.5) / (0.6 * 1.4)
+  EP_num_paste_pads: [1, 2]
+
 Renesas_UQFN-16_2x2mm_P0.4mm:
 # This package is very small, so lead length matters. The closest package in
 # JEDEC MO-248-E appears to be variation UCCE (which is not listed in the
