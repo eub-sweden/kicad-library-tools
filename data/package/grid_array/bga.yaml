@@ -2100,3 +2100,41 @@ NXP_SOT2162-1_VFBGA-59_4x4mm_Layout9x9_P0.4mm:
   pad_diameter: 0.24
   mask_margin: 0.04
   paste_margin: 0.0175
+
+Microchip_4HB_TFBGA-343_14x14mm_Layout21x21_P0.65mm:
+  size_source: "https://ww1.microchip.com/downloads/aemDocuments/documents/package-outline-drawings/c04-21516a.pdf"
+  description: "Microchip 4HB TFBGA-343, 14x14mm, Layout 21x21, Pitch 0.65mm"
+  device_type: "TFBGA"
+  manufacturer: "Microchip"
+  part_number: "4HB"
+  body_size_y: 14
+  body_size_x: 14
+  body_pcb_gap: 0.08
+  overall_height: 1.2
+  pad_diameter: 0.4
+  pitch: 0.65
+  layout_y: 21
+  layout_x: 21
+  row_skips: [
+    [10,12], # A
+    [5,8,10,11,12,14,17], # B
+    [9,10,12,13], # C
+    [10,11,12], # D
+    [2, 9,10,11,12,13,20], # E
+    [10,11,12], # F
+    [], # G
+    [2,20], # H
+    [3, 5, 17, 19], # J
+    [1,2,3,4,5,6,16,17,18,19,20,21], # K
+    [2,4,5,6,10,12,16,17,18,20], # L
+    [1,2,3,4,5,6,16,17,18,19,20,21], # M
+    [3, 5, 17, 19], # N
+    [2,20], # P
+    [], # R
+    [10,11,12], # T
+    [2, 9,10,11,12,13,20], # U
+    [10,11,12], # V
+    [9,10,12,13], # W
+    [5,8,10,11,12,14,17], # YY
+    [10,12] # AA
+  ]
