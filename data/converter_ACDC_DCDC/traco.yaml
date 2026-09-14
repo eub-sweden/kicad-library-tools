@@ -770,6 +770,24 @@ Converter_ACDC_TRACO_TMPW25_1xx_THT:
     ["tht", "4", 45.7, -21.5, 2.3, 2.3, 1.5]
   ]
 
+Converter_ACDC_TRACO_TMPW50-1xx_THT:
+  library_name: 'Converter_ACDC'
+  description: "ACDC-Converter, TRACO, TMPW 50, 50W, Rev. July 20. 2026"
+  datasheet: "https://www.tracopower.com/products/tmpw50.pdf"
+  tags: "ACDC-Converter TRACO THT 2.92\"x1.85\" 50W TMPW50"
+  extratexts: []
+  at: [-6.1, 22.8]
+  size: [74.2, 47]
+  body_position_tolerance: [0.5, 0.5]
+  # For future use
+  height: 23.1
+  pins: [
+    ["thtr", "1", 0, 0, 2.3, 2.3, 1.5],
+    ["tht", "2", 0, -20, 2.3, 2.3, 1.5],
+    ["tht", "3", 62, 11.5, 2.3, 2.3, 1.5],
+    ["tht", "4", 62, 0, 2.3, 2.3, 1.5]
+  ]
+
 Converter_DCDC_TRACO_TMR2-xxxxWI_THT:
   library_name: 'Converter_DCDC'
   description: "DCDC-Converter, TRACO, TMR2-xxxxWI, 2W, Rev. October 7. 2025"
