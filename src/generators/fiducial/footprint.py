@@ -199,6 +199,7 @@ def generateFootprint(spec: dict[str, Any], generator_name: str) -> None:
             layers=["F.Cu", "F.Mask"],
             size=fp_config.marking_width,
             primitives=primitives,
+            fab_property=Pad.FabProperty.FIDUCIAL_GLOBAL
         )
         pad_circle_size = fp_config.marking_width
     else:
@@ -217,6 +218,7 @@ def generateFootprint(spec: dict[str, Any], generator_name: str) -> None:
         size=pad_circle_size,
         clearance=pad_clearance,
         solder_mask_margin=pad_mask_clearance,
+        fab_property=Pad.FabProperty.FIDUCIAL_GLOBAL
     )
     kicad_mod.append(pad)
 
