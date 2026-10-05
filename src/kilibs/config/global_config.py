@@ -458,7 +458,7 @@ class GlobalConfig:
         """
         Get the text properties for a given layer.
         """
-        if layer in ["F.Fab", "B.Fab"]:
+        if layer in ["F.Fab", "B.Fab", "Cmts.User"]:
             layer_key = "fab"
         elif layer in ["F.SilkS", "B.SilkS"]:
             layer_key = "silk"
