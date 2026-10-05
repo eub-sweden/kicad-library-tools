@@ -53,3 +53,24 @@ PA4341:
     - Pulse
     - SMT
     - PA4341
+
+PA5449:
+  datasheet: "https://yageogroup.com/content/datasheet/asset/file/DATASHEET_P871"
+  PartNumber: PA5449
+  widthX: 8.8 # A
+  lengthY: 8.2 # B
+  height: 3.8 # C
+  padY: 5.0 # E
+  padOutsideX: 8.8 # A
+  padX: 1.4 # D
+  landingY: 5.5 # H
+  landingOutsideX: 9.5 # L
+  landingInsideX: 4.0 # G
+  3d:
+    type: 2
+    bodyColor: black body
+    pinColor: metal grey pins
+  tags:
+    - Pulse
+    - SMT
+    - PA5449
