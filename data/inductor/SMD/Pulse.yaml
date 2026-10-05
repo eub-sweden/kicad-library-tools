@@ -14,7 +14,7 @@ series_PA4332:
   csv: pulse_pa43xx.csv
 
 PA5402:
-  datasheet: "https://productfinder.pulseelectronics.com/api/open/part-attachments/datasheet/PM5402.222NLT"
+  datasheet: "https://yageogroup.com/content/Resource%20Library/Datasheet/DATASHEET_P875.pdf"
   PartNumber: PA5402
   lengthY: 4.06 # B
   widthX: 4.45 # A
@@ -34,7 +34,7 @@ PA5402:
     - PA5402
 
 PA4341:
-  datasheet: "https://productfinder.pulseelectronics.com/api/open/part-attachments/datasheet/pa4341.102anlt"
+  datasheet: "https://yageogroup.com/content/Resource%20Library/Datasheet/DATASHEET_P768.pdf"
   PartNumber: PA4341
   widthX: 6.4 # A'
   lengthY: 6.6 # B
