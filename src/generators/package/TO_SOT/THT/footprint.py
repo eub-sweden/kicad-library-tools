@@ -26,6 +26,7 @@ from KicadModTree import (
     Text,
     Translation,
 )
+from KicadModTree.nodes import Point
 from KicadModTree.util.courtyard_builder import CourtyardBuilder
 from kilibs.geom import GeomRectangle
 from kilibs.geom.operations import round_to_grid_e
@@ -224,6 +225,15 @@ def generate_rect_to_fp_vertical(
         )
         fpt.append(hole_v_line_left)
         fpt.append(hole_v_line_right)
+
+    ###  SNAP-POINT  ######################################################
+    fpt.append(
+        Point(
+            at=[left_fab_plastic - 0.5* (left_fab_plastic - right_fab_plastic), top_fab_plastic],
+            size=2,
+            layer=GLOBAL_CONFIG.get_layer_for_function("centroid"),
+        )
+    )
 
     ###  COURTYYRD  #######################################################
 
