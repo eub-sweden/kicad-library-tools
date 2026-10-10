@@ -77,6 +77,38 @@ Nexperia_WLCSP-15_2.37x1.17mm_Layout6x3_P0.4mmP0.8mm:
       layout_y: 1
       row_names: [B]
 
+NXP_WLCSP-12_1.405x1.055mm_Layout3x4_P0.35mm:
+  size_source: "https://www.nxp.com/docs/en/package-information/SOT2063-4.pdf"
+  description: "NXP WLCSP-12 package, 3x4 grid"
+  device_type: "WLCSP"
+  manufacturer: "NXP"
+  compatible_mpns:
+    - 'SOT2063-4'
+  body_size_y: 1.405 # ± 0.03
+  body_size_x: 1.055 # ± 0.03
+  pitch: 0.35
+  layout_y: 4
+  layout_x: 3
+  pad_diameter: 0.22 # ±0.025
+  mask_margin: 0.05
+  paste_margin: 0.01
+
+NXP_WLCSP-15_2.56x1.54mm_Layout3x5_P0.5mm:
+  size_source: "https://www.nxp.com/docs/en/package-information/SOT1392-1.pdf"
+  description: "NXP 12-pin WLCSP; 3x5 grid"
+  device_type: "WLCSP"
+  manufacturer: "NXP"
+  compatible_mpns:
+   - 'SOT1392-4'
+  body_size_y: 2.56 # ± 0.03
+  body_size_x: 1.54 # ± 0.03
+  pitch: 0.5
+  layout_y: 5
+  layout_x: 3
+  pad_diameter: 0.32 # ± 0.03
+  mask_margin: 0.05 # not specified; taken from the NXP_WLCSP-12
+  paste_margin: 0.01 # likewise
+
 WLCSP-6_1.46x1.1mm_Layout2x3_P0.4mm:
   size_source:
     url: 'https://look.ams-osram.com/m/19562c0de86ac97e/original/AS5510-DS000318.pdf'
