@@ -92,6 +92,9 @@ NXP_WLCSP-12_1.405x1.055mm_Layout3x4_P0.35mm:
   pad_diameter: 0.22 # ±0.025
   mask_margin: 0.05
   paste_margin: 0.01
+  overall_height: 0.49
+  body_height: 0.325
+  ball_diameter: 0.22 # 'center' of 0.195 - 0.245
 
 NXP_WLCSP-15_2.56x1.54mm_Layout3x5_P0.5mm:
   size_source: "https://www.nxp.com/docs/en/package-information/SOT1392-1.pdf"
@@ -108,6 +111,9 @@ NXP_WLCSP-15_2.56x1.54mm_Layout3x5_P0.5mm:
   pad_diameter: 0.32 # ± 0.03
   mask_margin: 0.05 # not specified; taken from the NXP_WLCSP-12
   paste_margin: 0.01 # likewise
+  overall_height: 0.555
+  body_height: 0.325
+  ball_diameter: 0.32
 
 WLCSP-6_1.46x1.1mm_Layout2x3_P0.4mm:
   size_source:
