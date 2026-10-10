@@ -653,7 +653,7 @@ ST_DFN-10-1EP_3x3mm_P0.5mm_EP0.62x0.98mm:
   EP_size_y: 0.63 .. 0.78 .. 0.88
   EP_size_x_overwrite: 0.62
   EP_size_y_overwrite: 0.98
-  EP_center_y: -0.15
+  EP_center_y: 0.15
   EP_num_paste_pads: [1, 1]
   thermal_vias:
     count: [1, 2]
