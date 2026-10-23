@@ -1860,6 +1860,27 @@ Texas_HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.94x3.34mm:
     grid: [1.1, 1.1]
     paste_between_vias: 1
 
+TSSOP-14_4.4x5mm_P0.65mm:
+  size_source: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
+  compatible_mpns:
+    - JEDEC-MO-153-AB-1
+    - Texas_PW0014A # https://www.ti.com/lit/ml/mpds360a/mpds360a.pdf
+    - NXP-SOT402-1 # https://www.nxp.com/docs/en/package-information/SOT402-1.pdf
+    - Infineon_PG-TSSOP-14-1 # https://www.infineon.com/package/PG-TSSOP-14-1
+  device_type: 'TSSOP'
+  body_size_x: 4.4 +/-0.1
+  body_size_y: 5.0 +/-0.1
+  body_height: 1.0 +0.05 -0.2
+  overall_height: 1.2
+  body_pcb_gap: 0.05 .. 0.15
+  overall_size_x: 6.4 +/-0.2
+  lead_width: 0.17 .. 0.30
+  lead_len: 0.6 +/-0.15
+  lead_height: 0.09 .. 0.20
+  pitch: 0.65
+  num_pins_x: 0
+  num_pins_y: 8
+
 TSSOP-16_4.4x5mm_P0.65mm:
   size_source: 'https://www.jedec.org/document_search?search_api_views_fulltext=MO-153'
   compatible_mpns:
