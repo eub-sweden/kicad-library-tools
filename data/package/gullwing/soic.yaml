@@ -497,6 +497,43 @@ SOP-8_3.76x4.96mm_P1.27mm:
   num_pins_x: 0
   num_pins_y: 4
 
+SOIC-8_1EP_3.85x4.9mm_P1.27mm_EP2.41x3.05mm:
+  size_source: 'https://www.diodes.com/assets/Package-Files/SO-8EP.pdf'
+  device_type: 'SOIC'
+  compatible_mpns:
+    - 'Diodes_SO-8EP'
+  body_size_x: # E0 from the DS
+    nominal: 3.9
+    tolerance: 0.05
+  body_size_y: # D from the DS
+    nominal: 4.9
+    tolerance: 0.05
+  body_height: 1.40 .. 1.5 # A from the DS
+  body_pcb_gap: 0.00 .. 0.13 # A1 from the DS
+  overall_size_x:
+    nominal: 6.0 # E1 from the DS
+    tolerance: 0.1
+  lead_width: # b from the DS
+    nominal: 0.40
+    tolerance: 0.1
+  lead_len: # L from the DS
+    nominal: 0.72
+    tolerance: 0.1
+  pitch: 1.27 # e from the DS
+  num_pins_x: 0
+  num_pins_y: 4
+  EP_size_x: # H from the DS
+    nominal: 2.41
+    tolerance: 0.3
+  EP_size_y: # F from the DS
+    nominal: 3.05
+    tolerance: 0.3
+  EP_num_paste_pads: [2, 2] # paste pads, not specified, but makes more sense here
+  thermal_vias: # Not specified in the DS, but e.g. in https://www.diodes.com/assets/Datasheets/AP64202Q.pdf
+    count: [3, 4]
+    drill: 0.2 # not specified, for good measure
+
+
 SOIC-8_3.9x4.9mm_P1.27mm:
   size_source: 'JEDEC MS-012AA, https://www.analog.com/media/en/package-pcb-resources/package/pkg_pdf/soic_narrow-r/r_8.pdf'
   device_type: 'SOIC' # temporary
