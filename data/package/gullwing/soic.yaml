@@ -519,6 +519,9 @@ SOIC-8_1EP_3.85x4.9mm_P1.27mm_EP2.41x3.05mm:
   lead_len: # L from the DS
     nominal: 0.72
     tolerance: 0.1
+  lead_height:
+    nominal: 0.2 # C from the DS
+    tolerance: 0.05
   pitch: 1.27 # e from the DS
   num_pins_x: 0
   num_pins_y: 4
