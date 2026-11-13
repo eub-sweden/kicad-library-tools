@@ -95,5 +95,11 @@ class KLCRule(KLCRuleBase):
         self.args = args
         self.needsFixMore: bool = False
 
+        # Footprints have no private fields, so any property with the KLC_ prefix
+        # is treated as an exception, e.g. (property "KLC_F5.3" "reason")
+        self.parse_exceptions(
+            filter(lambda x: x.name.startswith("KLC_"), module.properties)
+        )
+
         # Illegal chars
         self.illegal_chars = ["*", "?", ":", "/", "\\", "[", "]", ";", "|", "=", ","]

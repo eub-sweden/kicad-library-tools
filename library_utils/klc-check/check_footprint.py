@@ -17,7 +17,7 @@ if common not in sys.path:
 import junit
 from kicad_mod import KicadMod
 from print_color import PrintColor
-from rulebase import Verbosity
+from rulebase import Severity, Verbosity
 from rules_footprint import get_all_footprint_rules
 from rules_footprint.rule import KLCRule
 
@@ -72,8 +72,10 @@ def do_unittest(footprint, rules) -> Tuple[int, int]:
     unittest_descrp = m.group(3)  # noqa: F841
     for rule_class in rules:
         rule = rule_class(footprint, args)
+        rule.disable_exceptions = args.no_exceptions
         if unittest_rule == rule.name:
             rule.check()
+            rule.apply_exceptions()
             if unittest_result == "Fail" and rule.error_count == 0:
                 printer.red("Test '{foot}' failed".format(foot=footprint.name))
                 error_count += 1
@@ -102,28 +104,40 @@ def do_rulecheck(module, rules, junit_case: junit.JunitTestCase) -> Tuple[int, i
 
     for index, rule in enumerate(rules):
         rule = rule(module, args)
+        rule.disable_exceptions = args.no_exceptions
+
+        # add the exceptions to the junit reporter
+        if not rule.disable_exceptions:
+            for exception_note in rule.exception_notes:
+                junit_case.add_result(
+                    Severity.INFO,
+                    junit.JUnitResult(f"{rule.name} {exception_note}"),
+                )
 
         # run the actual check
         rule.check()
 
+        # decide on output before exceptions nullify the counts, so that
+        # excepted violations are still shown (as exceptions)
+        show = rule.hasOutput and not (args.nowarnings and not rule.hasErrors)
+
+        # if there is an exception, the rule cannot produce 'real' errors or
+        # warnings, so nullify them
+        rule.apply_exceptions()
+
         # count errors
-        if rule.hasErrors:
-            ec += rule.error_count
-        if rule.hasWarnings:
-            wc += rule.warning_count
+        ec += rule.error_count
+        wc += rule.warning_count
 
-        if args.nowarnings and not rule.hasErrors:
-            continue
-
-        if rule.hasOutput:
+        if show:
             if first:
                 printer.green("Checking footprint '{fp}':".format(fp=module.name))
                 first = False
 
-            printer.yellow("Violating " + rule.name + " - " + rule.url, indentation=2)
+            # prints the 'Violating ...' or 'Exception ...' header and the messages
+            rule.printOutput(printer, verbosity)
 
             junit.add_klc_rule_results(junit_case, rule)
-            rule.printOutput(printer, verbosity)
 
     # No messages?
     if first:
@@ -178,6 +192,11 @@ parser.add_argument(
 )
 parser.add_argument(
     "-w", "--nowarnings", help="Hide warnings (only show errors)", action="store_true"
+)
+parser.add_argument(
+    "--no-exceptions",
+    help="Disable rule-exceptions processing (KLC_* footprint properties)",
+    action="store_true",
 )
 parser.add_argument(
     "-u",

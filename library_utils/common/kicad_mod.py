@@ -5,10 +5,19 @@ Library for handling KiCad's footprint files (`*.kicad_mod`).
 import copy
 import math
 import time
+from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
 import sexpr
 from boundingbox import BoundingBox
+
+
+@dataclass
+class FootprintProperty:
+    """A footprint property (aka field), as a simple name/value pair"""
+
+    name: str
+    value: str
 
 
 # Rotate a point by given angle (in degrees)
@@ -125,6 +134,9 @@ class KicadMod:
             raise ValueError(
                 'file is missing the "value" property. This file is broken and can\'t be parsed!'
             )
+
+        # all properties (fields) as name/value pairs
+        self.properties: List[FootprintProperty] = self._getProperties()
 
         # user text
         self.userText: List[Dict[str, Any]] = self._getText("user")
@@ -298,6 +310,16 @@ class KicadMod:
                     result.append(text_dict)
 
         return result
+
+    def _getProperties(self) -> List[FootprintProperty]:
+        """
+        Get all top-level properties of the footprint, in file order
+        """
+        return [
+            FootprintProperty(name=str(item[1]), value=str(item[2]))
+            for item in self.sexpr_data
+            if isinstance(item, list) and len(item) >= 3 and item[0] == "property"
+        ]
 
     def getProperty(self, key: str) -> Optional[dict]:
         """
