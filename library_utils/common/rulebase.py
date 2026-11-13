@@ -73,6 +73,8 @@ class KLCRuleLogItem:
         self.severity = severity
         self.message = message
         self.extras = []
+        # set for messages about an exception being applied (e.g. per pin)
+        self.is_exception = False
 
     def add_extra(self, extra: str):
         self.extras.append(extra)
@@ -147,15 +149,30 @@ class KLCRuleBase:
     def hasOutput(self) -> bool:
         return len(self.logEntries) > 0
 
+    @property
+    def isExcepted(self) -> bool:
+        """True if an exception covers the whole rule (i.e. not fine-grained)"""
+        return (
+            len(self.exceptions_map) > 0
+            and not self.finegrained_exceptions
+            and not self.disable_exceptions
+        )
+
+    def visibleEntries(self, hide_exceptions: bool = False) -> List[KLCRuleLogItem]:
+        """
+        The log entries to print. With hide_exceptions, a rule covered by an
+        exception has none, and messages about applied exceptions are dropped
+        """
+        if not hide_exceptions or self.disable_exceptions:
+            return self.logEntries
+        if self.isExcepted:
+            return []
+        return [e for e in self.logEntries if not e.is_exception]
+
     # if there is an exception, that also means that is cannot produce 'real'
     # errors or warnings. So we need to nullify them
     def apply_exceptions(self) -> None:
-        if (
-            self.hasOutput
-            and len(self.exceptions_map) > 0
-            and not self.finegrained_exceptions
-            and not self.disable_exceptions
-        ):
+        if self.hasOutput and self.isExcepted:
             self.error_count = 0
             self.warning_count = 0
 
@@ -167,7 +184,9 @@ class KLCRuleBase:
 
     def exception(self, msg: str) -> None:
         self.exception_count += 1
-        self.logEntries.append(KLCRuleLogItem(Severity.INFO, msg))
+        item = KLCRuleLogItem(Severity.INFO, msg)
+        item.is_exception = True
+        self.logEntries.append(item)
 
     def warning(self, msg: str) -> None:
         self.warning_count += 1
@@ -227,6 +246,7 @@ class KLCRuleBase:
         verbosity: Verbosity = Verbosity.NONE,
         no_warnings: bool = False,
         first: bool = False,
+        hide_exceptions: bool = False,
     ) -> bool:
 
         # print this message only for the first rule that gets checked per symbol
@@ -236,8 +256,10 @@ class KLCRuleBase:
         if verbosity.value >= Verbosity.DEBUG.value:
             printer.white("Checking rule " + self.name)
 
-        # No violations
-        if len(self.logEntries) == 0:
+        entries = self.visibleEntries(hide_exceptions)
+
+        # No violations (or only hidden exceptions)
+        if len(entries) == 0:
             return False
 
         # Verbosity.NONE:   Only print that a rule was violated
@@ -285,7 +307,7 @@ class KLCRuleBase:
                         entry.severity = Severity.INFO
 
         # now print all the log entries
-        for entry in self.logEntries:
+        for entry in entries:
             s = entry.severity  # Severity
             entry_verbosity = {
                 Severity.INFO: Verbosity.NONE,

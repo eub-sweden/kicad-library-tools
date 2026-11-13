@@ -118,8 +118,9 @@ def do_rulecheck(module, rules, junit_case: junit.JunitTestCase) -> Tuple[int, i
         rule.check()
 
         # decide on output before exceptions nullify the counts, so that
-        # excepted violations are still shown (as exceptions)
-        show = rule.hasOutput and not (args.nowarnings and not rule.hasErrors)
+        # excepted violations are still reported (as exceptions)
+        report = rule.hasOutput and not (args.nowarnings and not rule.hasErrors)
+        show = report and len(rule.visibleEntries(args.hide_exceptions)) > 0
 
         # if there is an exception, the rule cannot produce 'real' errors or
         # warnings, so nullify them
@@ -135,8 +136,9 @@ def do_rulecheck(module, rules, junit_case: junit.JunitTestCase) -> Tuple[int, i
                 first = False
 
             # prints the 'Violating ...' or 'Exception ...' header and the messages
-            rule.printOutput(printer, verbosity)
+            rule.printOutput(printer, verbosity, hide_exceptions=args.hide_exceptions)
 
+        if report:
             junit.add_klc_rule_results(junit_case, rule)
 
     # No messages?
@@ -196,6 +198,11 @@ parser.add_argument(
 parser.add_argument(
     "--no-exceptions",
     help="Disable rule-exceptions processing (KLC_* footprint properties)",
+    action="store_true",
+)
+parser.add_argument(
+    "--hide-exceptions",
+    help="Do not print rules and messages covered by exceptions",
     action="store_true",
 )
 parser.add_argument(

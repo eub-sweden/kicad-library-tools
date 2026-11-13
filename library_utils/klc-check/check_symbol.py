@@ -38,6 +38,8 @@ class SymbolCheck:
         use_color: bool = True,
         no_warnings: bool = False,
         log: bool = False,
+        silent: bool = False,
+        hide_exceptions: bool = False,
     ):
         self.footprints = footprints
         self.printer = PrintColor(use_color=use_color)
@@ -45,6 +47,8 @@ class SymbolCheck:
         self.disable_exceptions: bool = disable_exceptions
         self.no_warnings: bool = no_warnings
         self.log: bool = log
+        self.silent: bool = silent
+        self.hide_exceptions: bool = hide_exceptions
         self.error_count: int = 0
         self.warning_count: int = 0
         self.junit_cases = []
@@ -104,7 +108,13 @@ class SymbolCheck:
         junit_case = junit.JunitTestCase(name=f"{symbol.libname}:{symbol.name}")
         self.junit_cases.append(junit_case)
 
-        for index, rule_class in enumerate(self.rules):
+        header = f"Checking component '{symbol.libname}:{symbol.name}':"
+        # in silent mode, only print the header for symbols with output
+        if not self.silent:
+            self.printer.green(header)
+        first = self.silent
+
+        for rule_class in self.rules:
             rule_class.footprints_dir = self.footprints
             rule = rule_class(symbol)
             rule.disable_exceptions = self.disable_exceptions
@@ -119,9 +129,16 @@ class SymbolCheck:
             rule.check()
 
             # call the generic printer function
-            rule.printOutput(
-                self.printer, self.verbosity, self.no_warnings, first=(index == 0)
-            )
+            if not self.silent or rule.visibleEntries(self.hide_exceptions):
+                if first:
+                    self.printer.green(header)
+                    first = False
+                rule.printOutput(
+                    self.printer,
+                    self.verbosity,
+                    self.no_warnings,
+                    hide_exceptions=self.hide_exceptions,
+                )
 
             # if there are only warnings, and we disabled warnings, don't do anything
             # and start checking the next rule
@@ -223,6 +240,8 @@ def worker(
         not args.nocolor,
         no_warnings=args.nowarnings,
         log=args.log,
+        silent=args.silent,
+        hide_exceptions=args.hide_exceptions,
     )
     checker.printer.buffered = True
 
@@ -306,6 +325,11 @@ if __name__ == "__main__":
         action="store_true",
     )
     parser.add_argument(
+        "--hide-exceptions",
+        help="Do not print rules and messages covered by exceptions",
+        action="store_true",
+    )
+    parser.add_argument(
         "-s",
         "--silent",
         help="skip output for symbols passing all checks",
@@ -353,8 +377,6 @@ if __name__ == "__main__":
     verbosity = Verbosity.NONE
     if args.verbose:
         verbosity = Verbosity(args.verbose)
-    if args.silent:
-        verbosity = Verbosity.SILENT
     KLCRule.verbosity = verbosity
 
     # Set disable_exceptions globally
